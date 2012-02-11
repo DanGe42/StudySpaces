@@ -2,3 +2,4 @@ bin/
 build.xml
 *.apk
 local.properties
+out/
