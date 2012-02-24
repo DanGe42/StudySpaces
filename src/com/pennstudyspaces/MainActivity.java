@@ -45,12 +45,13 @@ public class MainActivity extends Activity
     public void testJson (View v) {
         StudySpacesApiRequest req = new StudySpacesApiRequest("json");
         req.setNumberOfPeople(2);
-        req.setDate(2012, 2, 24);
+        req.setDate(2012, 2, 28);
         req.setStartTime(15, 30);
         req.setEndTime(16, 30);
         Log.d(TAG, "API request created: " + req.toString());
 
         try {
+            // TODO: This call is blocking. Wrap this with an AsyncTask
             StudySpacesData.sendRequest(req);
         } catch (IOException e) {
             Log.d(TAG, "Something went wrong", e);

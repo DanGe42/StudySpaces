@@ -43,6 +43,30 @@ class RoomKind {
         this.rooms = rooms;
     }
 
+    public static RoomKind createRoomKind (String privacy, String reserve,
+                     boolean computer, boolean whiteboard, boolean projector,
+                     String name, int occupancy, String comments,
+                     Map<Integer, Room> rooms) {
+        Reservation r;
+        if (reserve.equals("N"))
+            r = Reservation.NONE;
+        else if (reserve.equals("E"))
+            r = Reservation.EXTERNAL;
+        else 
+            throw new IllegalArgumentException("Bad reservation type: " + reserve);
+
+        Privacy p;
+        if (privacy.equals("S"))
+            p = Privacy.COMMON;
+        else if (privacy.equals("P"))
+            p = Privacy.PRIVATE;
+        else
+            throw new IllegalArgumentException("Bad privacy type: " + privacy);
+        
+        return new RoomKind(p, r, computer, whiteboard, projector, name,
+                occupancy, comments, rooms);
+    }
+
     public boolean isComputer() {
         return computer;
     }

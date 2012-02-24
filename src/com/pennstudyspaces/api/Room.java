@@ -1,5 +1,8 @@
 package com.pennstudyspaces.api;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Daniel Ge
@@ -12,9 +15,9 @@ class Room {
     private int id;
     
     // TODO: This is currently here because I don't understand the JSON here
-    private String availabilities;
+    private Map<String, Object[]> availabilities;
 
-    Room(String name, int id, String availabilities) {
+    Room(String name, int id, Map<String, Object[]> availabilities) {
         this.name = name;
         this.id = id;
         this.availabilities = availabilities;
@@ -28,7 +31,7 @@ class Room {
         return id;
     }
 
-    public String getAvailabilities() {
+    public Map<String, Object[]> getAvailabilities() {
         return availabilities;
     }
 }
