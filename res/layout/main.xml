@@ -13,12 +13,22 @@
         android:id="@+id/spaces_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_weight="1"
         />
     <TextView
         android:id="@+id/spaces_list_empty"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:text="No data"
+        android:layout_weight="1"
+        />
+    <Button
+        android:id="@+id/json_test"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Test!"
+        android:layout_weight="0"
+        android:onClick="testJson"
         />
 </LinearLayout>
 

@@ -11,6 +11,7 @@ public final class R {
     public static final class attr {
     }
     public static final class id {
+        public static final int json_test=0x7f040002;
         public static final int spaces_list=0x7f040000;
         public static final int spaces_list_empty=0x7f040001;
     }
