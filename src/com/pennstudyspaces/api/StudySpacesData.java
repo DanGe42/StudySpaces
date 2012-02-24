@@ -12,6 +12,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,8 +23,11 @@ import java.io.IOException;
  */
 public class StudySpacesData {
     private static final String TAG = StudySpacesData.class.getSimpleName();
+    
+    private Map<String, Building> buildings;
 
-    private StudySpacesData() {
+    private StudySpacesData (Map<String, Building> buildings) {
+        this.buildings = buildings;
     }
     
     public static StudySpacesData sendRequest (StudySpacesApiRequest request)
