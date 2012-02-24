@@ -99,6 +99,7 @@ public class StudySpacesApiRequest {
                 date < 0);
     }
     
+    @Override
     public String toString() {
         final int INITIAL_CAPACITY = 70;
         StringBuilder builder = new StringBuilder(INITIAL_CAPACITY);
@@ -134,6 +135,10 @@ public class StudySpacesApiRequest {
     }
     
     public String createRequest() {
-        return API_URL + this.toString();
+        if (validate())
+            return API_URL + this.toString();
+        else
+            throw new IllegalStateException("There is something wrong with" +
+                    "this API request: " + this.toString());
     }
 }

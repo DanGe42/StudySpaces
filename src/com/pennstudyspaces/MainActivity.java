@@ -3,12 +3,20 @@ package com.pennstudyspaces;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import com.pennstudyspaces.api.StudySpacesApiRequest;
+import com.pennstudyspaces.api.StudySpacesData;
 
-public class MainActivity extends Activity {
+import java.io.IOException;
+
+public class MainActivity extends Activity
+{
+    private static final String TAG = MainActivity.class.getSimpleName();
+
 	public static final int ACTIVITY_OptionsActivity = 1;
-	
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -32,5 +40,20 @@ public class MainActivity extends Activity {
     	Intent i = new Intent(this, OptionsActivity.class);
     	
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
+    }
+    
+    public void testJson (View v) {
+        StudySpacesApiRequest req = new StudySpacesApiRequest("json");
+        req.setNumberOfPeople(2);
+        req.setDate(2012, 2, 24);
+        req.setStartTime(15, 30);
+        req.setEndTime(16, 30);
+        Log.d(TAG, "API request created: " + req.toString());
+
+        try {
+            StudySpacesData.sendRequest(req);
+        } catch (IOException e) {
+            Log.d(TAG, "Something went wrong", e);
+        }
     }
 }

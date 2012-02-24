@@ -18,6 +18,8 @@ public final class R {
         public static final int num_people=0x7f040005;
         public static final int private_check=0x7f040009;
         public static final int projector_check=0x7f04000c;
+        public static final int back=0x7f040006;
+        public static final int json_test=0x7f040005;
         public static final int reserved_button=0x7f040000;
         public static final int search_box=0x7f040002;
         public static final int sort_options=0x7f040001;
