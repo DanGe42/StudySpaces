@@ -141,4 +141,8 @@ public class StudySpacesApiRequest {
             throw new IllegalStateException("There is something wrong with" +
                     "this API request: " + this.toString());
     }
+    
+    public static String createRequestForDump() {
+        return API_URL + "showall=1&" + FORMAT + "=json";
+    }
 }

@@ -16,6 +16,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +33,36 @@ public class StudySpacesData {
 
     private StudySpacesData (Map<String, Building> buildings) {
         this.buildings = buildings;
+    }
+    
+    public List<BuildingRoomPair> getRoomTypes() {
+        List<BuildingRoomPair> roomTypeList = new ArrayList<BuildingRoomPair>();
+        for (Map.Entry<String, Building> buildingEntry : buildings.entrySet()) {
+            Building b = buildingEntry.getValue();
+            for (Map.Entry<String, RoomKind> roomKindEntry : b.getRoomKinds().entrySet()) {
+                roomTypeList.add(new BuildingRoomPair(b, roomKindEntry.getValue()));
+            }
+        }
+
+        return roomTypeList;
+    }
+    
+    public static class BuildingRoomPair {
+        private Building building;
+        private RoomKind roomKind;
+        
+        private BuildingRoomPair (Building b, RoomKind r) {
+            building = b;
+            roomKind = r;
+        }
+
+        public Building getBuilding() {
+            return building;
+        }
+
+        public RoomKind getRoomKind() {
+            return roomKind;
+        }
     }
     
     public static StudySpacesData sendRequest (StudySpacesApiRequest request)
