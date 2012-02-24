@@ -14,6 +14,11 @@ public class OptionsActivity extends Activity {
         setContentView(R.layout.options);
 	}
 	
+	public void submitOptions(View view) {
+		
+		finish();
+	}
+	
 	public void backToMain(View view) {
 		Intent i = new Intent();
 		

@@ -3,13 +3,131 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <Button
-        android:id="@+id/back"
+        
+    <!-- Number of people fields -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:onClick="backToMain"
+        android:text="Number of People" 
         />
+    
+    <EditText
+        android:id="@+id/num_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/num_people_hint"
+        />   
+
+    <!-- Time fields -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From" 
+        />
+
+    <EditText
+        android:id="@+id/from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/from_hint"
+        />    
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To" 
+        />
+
+    <EditText
+        android:id="@+id/to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/from_hint"
+        />
+    
+    <!-- Date fields -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date" 
+        />
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/date_hint"
+        />    
+    
+    <!-- Room Option Checkboxes -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Room Options"          
+        />
+    
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+	    <CheckBox
+	        android:id="@+id/private_check"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Private"  
+	        />
+	    
+	    <CheckBox
+	        android:id="@+id/whiteboard_check"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Whiteboard"  
+	        />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    
+	    <CheckBox
+	        android:id="@+id/computer_check"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Computer"  
+	        />
+	    
+	    <CheckBox
+	        android:id="@+id/projector_check"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Projector"  
+	        />    
+    </LinearLayout>
+    
+    <!-- Submit & Back button controls -->
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:onClick="submitOptions"
+            />
+        	    
+	    <Button
+	        android:id="@+id/back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Back"
+	        android:onClick="backToMain"
+	        />
+	    
+	</LinearLayout>
 
 </LinearLayout>
