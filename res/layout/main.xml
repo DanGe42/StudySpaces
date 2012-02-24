@@ -47,6 +47,7 @@
         android:text="No data"
         android:layout_weight="1"
         />
+    
     <Button
         android:id="@+id/json_test"
         android:layout_width="fill_parent"

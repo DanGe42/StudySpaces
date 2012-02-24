@@ -11,8 +11,7 @@ import com.pennstudyspaces.api.StudySpacesData;
 
 import java.io.IOException;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
 	public static final int ACTIVITY_OptionsActivity = 1;
