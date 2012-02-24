@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StudySpaces</string>
+    <string name="search_hint">Search</string>
+    <string name="num_people_hint">1 to 15</string>
+    <string name="from_hint">HH:MM</string>
+    <string name="date_hint">MM/DD/YY</string>
 </resources>
