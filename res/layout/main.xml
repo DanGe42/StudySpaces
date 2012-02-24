@@ -3,18 +3,43 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-    <TextView
+    > 
+
+    <!-- Opens a window that displays current reservations? -->
+    <Button 
+        android:id="@+id/reserved_button"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:text="Current Reservations"
+        android:onClick="seeReservations"
+        />
+    
+    <!--  Opens a window for configuring sort options -->
+    <Button 
+        android:id="@+id/sort_options"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:text="Sorting Options"
+        android:onClick="sortOptions"
+        />
+    
+    <!-- Text box for searching the listView -->
+    <EditText
+        android:id="@+id/search_box"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Perhaps a search box can go here."
-        />
+        android:text="Search"
+        />   
+    
+    <!-- ListView for containing viewable spaces -->
     <ListView
         android:id="@+id/spaces_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         />
+    
+    <!-- This TextView displays when the ListView is empty -->
     <TextView
         android:id="@+id/spaces_list_empty"
         android:layout_width="fill_parent"
@@ -30,5 +55,6 @@
         android:layout_weight="0"
         android:onClick="testJson"
         />
+    
 </LinearLayout>
 
