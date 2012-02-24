@@ -50,8 +50,10 @@ public class MainActivity extends Activity {
         Log.d(TAG, "API request created: " + req.toString());
 
         try {
-            // TODO: This call is blocking. Wrap this with an AsyncTask
-            StudySpacesData.sendRequest(req);
+            
+            StudySpacesData mydata = new StudySpacesData();
+            mydata.sendRequest(req);
+            //StudySpacesData.sendRequest(req);
         } catch (IOException e) {
             Log.d(TAG, "Something went wrong", e);
         }
