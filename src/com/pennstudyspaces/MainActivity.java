@@ -1,6 +1,7 @@
 package com.pennstudyspaces;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -99,12 +100,21 @@ public class MainActivity extends Activity {
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
             extends AsyncTask<StudySpacesApiRequest, Void, StudySpacesData> {
-        
         Context ctx;
+        ProgressDialog dialog;
+
         public SendRequestTask(Context ctx) {
+            super();
             this.ctx = ctx;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(ctx, "", "Refreshing...", true, true);
+        }
+
+        @Override
         protected StudySpacesData doInBackground(StudySpacesApiRequest... req) {
             // we don't need to publish progress updates, unless we want to implement some kind of timeout
             // publishProgress();
@@ -119,6 +129,8 @@ public class MainActivity extends Activity {
         }
 
         protected void onPostExecute(StudySpacesData result) {
+            dialog.dismiss();
+            dialog = null;
             spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
         }
     }
