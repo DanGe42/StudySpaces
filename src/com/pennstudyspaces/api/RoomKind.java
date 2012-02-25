@@ -26,6 +26,7 @@ public class RoomKind {
     private int occupancy;
     private String comments;
     
+    //Room ID and associated room
     private Map<Integer, Room> rooms;
 
     RoomKind (Privacy privacy, Reservation reserve,

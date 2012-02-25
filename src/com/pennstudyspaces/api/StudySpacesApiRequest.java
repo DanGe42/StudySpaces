@@ -56,6 +56,10 @@ public class StudySpacesApiRequest {
         this.all = all;
     }
 
+    public void setAll(boolean change) {
+    	all = change;
+    }
+    
     public void setNumberOfPeople (int numPeople) {
         if (numPeople < 1)
             throw new IllegalArgumentException("Number of people < 1");
