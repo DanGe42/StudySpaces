@@ -22,24 +22,24 @@
         />
 
     <TextView
-        android:id="@+id/item_first_room"
+        android:id="@+id/item_num_rooms"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_building_name"
         android:layout_alignParentLeft="true"
         />
-    <TextView
+    <!-- <TextView
         android:id="@+id/item_other_rooms"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/item_first_room"
-        />
+        /> -->
     <TextView
         android:id="@+id/item_amenities"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@id/item_first_room"
+        android:layout_alignBaseline="@id/item_num_rooms"
         />
 
 </RelativeLayout>
