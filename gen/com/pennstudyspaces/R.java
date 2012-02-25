@@ -25,6 +25,9 @@ public final class R {
         public static final int projector_check=0x7f040010;
         public static final int refresh_button=0x7f040000;
         public static final int search_button=0x7f040001;
+        public static final int sorted_back_button=0x7f040013;
+        public static final int sorted_spaces_list=0x7f040014;
+        public static final int sorted_spaces_list_empty=0x7f040015;
         public static final int spaces_list=0x7f040002;
         public static final int spaces_list_empty=0x7f040003;
         public static final int submit=0x7f040011;
@@ -35,6 +38,7 @@ public final class R {
         public static final int main=0x7f020000;
         public static final int main_item=0x7f020001;
         public static final int options=0x7f020002;
+        public static final int sorted_display=0x7f020003;
     }
     public static final class string {
         public static final int app_name=0x7f030000;

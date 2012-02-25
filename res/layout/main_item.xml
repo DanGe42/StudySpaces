@@ -12,6 +12,7 @@
         android:textStyle="bold"
         android:textColor="#FF2211"
         />
+    
     <TextView
         android:id="@+id/item_room_kind"
         android:layout_height="wrap_content"

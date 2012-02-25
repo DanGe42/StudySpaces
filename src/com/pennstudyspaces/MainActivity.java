@@ -21,8 +21,7 @@ public class MainActivity extends Activity {
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -33,12 +32,7 @@ public class MainActivity extends Activity {
         
     }
     
-    //onClick methods for various buttons
-    public void seeReservations(View view) {
-    	
-    }
-    
-    public void sortOptions(View view) {
+    public void search(View view) {
     	Intent i = new Intent(this, OptionsActivity.class);
     	
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);

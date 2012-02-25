@@ -42,7 +42,6 @@ public class OptionsActivity extends Activity {
 		
 		
 		// Intent i = new Intent(this, SortedDisplayActivity.class);
-    	
     	// startActivityForResult(i, OptionsActivity.ACTIVITY_SortedDisplayActivity);
 		
 	}
