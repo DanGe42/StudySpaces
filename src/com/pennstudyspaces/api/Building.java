@@ -9,12 +9,12 @@ import java.util.Map;
  * Time: 11:05 PM
  * To change this template use File | Settings | File Templates.
  */
-class Building {
+public class Building {
     private double latitude, longitude;
     private String name;
     private Map<String, RoomKind> roomkinds;
     
-    public Building (String name, double latitude, double longitude,
+    Building (String name, double latitude, double longitude,
                      Map<String, RoomKind> roomkinds) {
         this.name      = name;
         this.latitude  = latitude;

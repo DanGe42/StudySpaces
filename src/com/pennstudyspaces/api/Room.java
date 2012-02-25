@@ -10,7 +10,7 @@ import java.util.Map;
  * Time: 11:34 PM
  * To change this template use File | Settings | File Templates.
  */
-class Room {
+public class Room {
     private String name;
     private int id;
     

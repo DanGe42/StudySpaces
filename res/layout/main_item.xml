@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <TextView
+        android:id="@+id/item_building_name"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold"
+        android:textColor="#FF2211"
+        />
+    <TextView
+        android:id="@+id/item_room_kind"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@id/item_building_name"
+        />
+
+    <TextView
+        android:id="@+id/item_first_room"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/item_building_name"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:id="@+id/item_other_rooms"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/item_first_room"
+        />
+    <TextView
+        android:id="@+id/item_amenities"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@id/item_first_room"
+        />
+
+</RelativeLayout>

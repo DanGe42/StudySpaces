@@ -9,7 +9,7 @@ import java.util.Map;
  * Time: 11:22 PM
  * To change this template use File | Settings | File Templates.
  */
-class RoomKind {
+public class RoomKind {
     public enum Privacy {
         COMMON,
         PRIVATE
@@ -28,7 +28,7 @@ class RoomKind {
     
     private Map<Integer, Room> rooms;
 
-    public RoomKind (Privacy privacy, Reservation reserve,
+    RoomKind (Privacy privacy, Reservation reserve,
                      boolean computer, boolean whiteboard, boolean projector,
                      String name, int occupancy, String comments,
                      Map<Integer, Room> rooms) {
@@ -43,7 +43,7 @@ class RoomKind {
         this.rooms = rooms;
     }
 
-    public static RoomKind createRoomKind (String privacy, String reserve,
+    static RoomKind createRoomKind (String privacy, String reserve,
                      boolean computer, boolean whiteboard, boolean projector,
                      String name, int occupancy, String comments,
                      Map<Integer, Room> rooms) {
