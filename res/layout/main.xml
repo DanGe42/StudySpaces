@@ -3,40 +3,75 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    > 
+    >
 
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        
+        <Button
+            android:id="@+id/refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/text_refresh_button"
+            android:onClick="refresh"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            />
+        
+        <Button
+            android:id="@+id/search_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/text_search_button"
+            android:onClick="search"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            />
+    
+    </RelativeLayout>
+
+    <!-- Maybe later... -->
     <!-- Opens a window that displays current reservations? -->
+    <!--
     <Button 
         android:id="@+id/reserved_button"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
         android:text="Current Reservations"
         android:onClick="seeReservations"
-        />
+        /> -->
     
     <!--  Opens a window for configuring sort options -->
+    <!-- I think this is better as a user preference -->
+    <!--
     <Button 
         android:id="@+id/sort_options"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
         android:text="Sorting Options"
         android:onClick="sortOptions"
-        />
-    
+        /> -->
+
+    <!-- This should be moved to OptionsActivity -->
     <!-- Text box for searching the listView -->
-    <EditText
+    <!-- <EditText
         android:id="@+id/search_box"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_hint"
         />   
-    
+    -->
+
     <!-- ListView for containing viewable spaces -->
     <ListView
         android:id="@+id/spaces_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
         />
     
     <!-- This TextView displays when the ListView is empty -->
@@ -45,17 +80,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:text="No data"
-        android:layout_weight="1"
         />
     
-    <Button
-        android:id="@+id/json_test"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Test!"
-        android:layout_weight="0"
-        android:onClick="testJson"
-        />
+
     
 </LinearLayout>
 

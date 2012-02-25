@@ -41,9 +41,9 @@ public class OptionsActivity extends Activity {
 		computer = ((CheckBox)findViewById(R.id.computer_check)).isChecked();
 		
 		
-		Intent i = new Intent(this, SortedDisplayActivity.class);
+		// Intent i = new Intent(this, SortedDisplayActivity.class);
     	
-    	startActivityForResult(i, OptionsActivity.ACTIVITY_SortedDisplayActivity);
+    	// startActivityForResult(i, OptionsActivity.ACTIVITY_SortedDisplayActivity);
 		
 	}
 	

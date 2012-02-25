@@ -34,11 +34,7 @@ public class StudySpacesData {
     
     private Map<String, Building> buildings;
     
-    public StudySpacesData () {
-    	// we can make a studyspaces data with no data as long as we
-    	// make a request to populate the buildings field after we instantiate this
-    }
-    public StudySpacesData (Map<String, Building> buildings) {
+    private StudySpacesData (Map<String, Building> buildings) {
         this.buildings = buildings;
     }
     
@@ -72,53 +68,26 @@ public class StudySpacesData {
         }
     }
     
-    public int sendRequest (StudySpacesApiRequest request)
+    public static StudySpacesData sendRequest (StudySpacesApiRequest request)
             throws ClientProtocolException, IOException {
-    	if(request != null){
-    		new SendRequestTask(this).execute(request);
-    		return 0;
-    	}
-    	else {
-    		return -1;
-    	}
+        return new StudySpacesData(getJSON(request));
+    }
+
+    public static StudySpacesData sendRequest (String request)
+            throws ClientProtocolException, IOException {
+        return new StudySpacesData(getJSON(request));
+    }
+
+    private static Map<String, Building> getJSON (StudySpacesApiRequest request)
+            throws IOException{
+        return getJSON(request.createRequest());
     }
     
-    // Performs a getJSON request in the background, so we don't block on the UI
-    public class SendRequestTask extends AsyncTask<StudySpacesApiRequest, Integer, Map<String, Building>> {
-    	StudySpacesData callingContext;
-    	public SendRequestTask(StudySpacesData context) {
-    		callingContext = context;
-    	}
-    	
-        protected Map<String, Building> doInBackground(StudySpacesApiRequest... req) {
-            // we don't need to publish progress updates, unless we want to implement some kind of timeout
-            // publishProgress();
-        	Map<String, Building> response;
-        	try {
-        		response = getJSON(req[0]);
-        		return response;
-        	}
-        	catch (Exception e) {
-        		return null;
-        	}
-        }
-
-        protected void onProgressUpdate(Integer... progress) {
-            // do something on progress update
-        	// we don't need anything here yet
-        }
-
-        protected void onPostExecute(Map<String, Building> result) {
-            // when the request finally finishes, do something cool
-        	callingContext.buildings = result;
-        }
-    }
-
     /* This call is blocking */
-    private static Map<String, Building> getJSON (StudySpacesApiRequest request)
+    private static Map<String, Building> getJSON (String request)
             throws IOException {
-        Log.i(TAG, "Sending request: " + request.createRequest());
-        HttpUriRequest get = new HttpGet(request.createRequest());
+        Log.i(TAG, "Sending request: " + request);
+        HttpUriRequest get = new HttpGet(request);
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
         // throws ClientProtocolException or IOException

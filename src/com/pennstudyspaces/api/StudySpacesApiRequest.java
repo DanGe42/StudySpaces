@@ -31,16 +31,29 @@ public class StudySpacesApiRequest {
     private int start_hr, start_min, end_hr, end_min;
     private long date;
     private String format;
+    
+    private boolean all;
 
-    public StudySpacesApiRequest(String format) {
+    /**
+     * Creates an API request.
+     * 
+     * @param format    The data format (e.g. "json")
+     * @param all       If true, this will create an API request that gets a
+     *                  data dump; as a result, all setter methods will have
+     *                  no effect on this request.
+     */
+    public StudySpacesApiRequest(String format, boolean all) {
         if (!format.equals("json"))
             throw new IllegalArgumentException("Unsupported format");
+
         this.format = format;
         
         numPeople = -1;
         priv = wboard = comp = proj = false;
         start_hr = start_min = end_hr = end_min = -1;
         date = -1;
+
+        this.all = all;
     }
 
     public void setNumberOfPeople (int numPeople) {
@@ -91,16 +104,20 @@ public class StudySpacesApiRequest {
     public boolean validate() {
         // These fields are required (if they're not, the request won't make
         // any sense at all.
-        return !(numPeople < 1 ||
+        return all || (!all && !(numPeople < 1 ||
                 start_hr < 0 || start_hr >= 24 ||
                 start_min < 0 || start_min >= 60 ||
                 end_hr < 0 || end_hr >= 24 ||
                 end_min < 0 || end_min >= 60 ||
-                date < 0);
+                date < 0));
     }
     
     @Override
     public String toString() {
+        if (this.all) {
+            return "showall=1&" + FORMAT + "=" + this.format;
+        }
+
         final int INITIAL_CAPACITY = 70;
         StringBuilder builder = new StringBuilder(INITIAL_CAPACITY);
         
@@ -140,9 +157,5 @@ public class StudySpacesApiRequest {
         else
             throw new IllegalStateException("There is something wrong with" +
                     "this API request: " + this.toString());
-    }
-    
-    public static String createRequestForDump() {
-        return API_URL + "showall=1&" + FORMAT + "=json";
     }
 }

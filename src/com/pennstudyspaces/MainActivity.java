@@ -1,7 +1,9 @@
 package com.pennstudyspaces;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import com.pennstudyspaces.api.StudySpacesApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -41,21 +44,41 @@ public class MainActivity extends Activity {
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
     }
     
-    public void testJson (View v) {
-        StudySpacesApiRequest req = new StudySpacesApiRequest("json");
-        req.setNumberOfPeople(2);
+    public void refresh (View v) {
+        StudySpacesApiRequest req = new StudySpacesApiRequest("json", true);
+        /*req.setNumberOfPeople(2);
         req.setDate(2012, 2, 28);
         req.setStartTime(15, 30);
-        req.setEndTime(16, 30);
+        req.setEndTime(16, 30);*/
         Log.d(TAG, "API request created: " + req.toString());
 
-        try {
-            
-            StudySpacesData mydata = new StudySpacesData();
-            mydata.sendRequest(req);
-            //StudySpacesData.sendRequest(req);
-        } catch (IOException e) {
-            Log.d(TAG, "Something went wrong", e);
+        (new SendRequestTask(this)).execute(req);
+    }
+
+    // Performs a getJSON request in the background, so we don't block on the UI
+    class SendRequestTask 
+            extends AsyncTask<StudySpacesApiRequest, Void, StudySpacesData> {
+        
+        Context ctx;
+        public SendRequestTask(Context ctx) {
+            this.ctx = ctx;
+        }
+
+        protected StudySpacesData doInBackground(StudySpacesApiRequest... req) {
+            // we don't need to publish progress updates, unless we want to implement some kind of timeout
+            // publishProgress();
+            try {
+                StudySpacesData data = StudySpacesData.sendRequest(req[0]);
+                return data;
+            }
+            catch (IOException e) {
+                Log.e(TAG, "Something bad happened", e);
+                return null;
+            }
+        }
+
+        protected void onPostExecute(StudySpacesData result) {
+            // TODO: unimplemented
         }
     }
 }
