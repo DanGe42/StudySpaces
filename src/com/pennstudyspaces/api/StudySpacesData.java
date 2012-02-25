@@ -38,6 +38,7 @@ public class StudySpacesData {
         this.buildings = buildings;
     }
     
+    /*
     public List<BuildingRoomPair> getRoomTypes() {
         List<BuildingRoomPair> roomTypeList = new ArrayList<BuildingRoomPair>();
         for (Map.Entry<String, Building> buildingEntry : buildings.entrySet()) {
@@ -48,6 +49,15 @@ public class StudySpacesData {
         }
 
         return roomTypeList;
+    }*/
+    
+    public List<Building> getBuildings() {
+        List<Building> buildingList = new ArrayList<Building>();
+        for (String name : buildings.keySet()) {
+            buildingList.add(buildings.get(name));
+        }
+
+        return buildingList;
     }
     
     public static class BuildingRoomPair {

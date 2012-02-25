@@ -18,6 +18,8 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
 	public static final int ACTIVITY_OptionsActivity = 1;
+    
+    private ListView spacesList;
 
     /** Called when the activity is first created. */
     @Override
@@ -25,11 +27,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        ListView spacesList = (ListView) findViewById(R.id.spaces_list);
+        spacesList = (ListView) findViewById(R.id.spaces_list);
         
         // Display the below TextView instead if the spaces list is empty
         spacesList.setEmptyView(findViewById(R.id.spaces_list_empty));
-        
     }
     
     public void search(View view) {
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
         }
 
         protected void onPostExecute(StudySpacesData result) {
-            // TODO: unimplemented
+            spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
         }
     }
 }

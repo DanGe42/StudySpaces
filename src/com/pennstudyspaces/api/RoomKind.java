@@ -67,15 +67,15 @@ public class RoomKind {
                 occupancy, comments, rooms);
     }
 
-    public boolean isComputer() {
+    public boolean hasComputer() {
         return computer;
     }
 
-    public boolean isWhiteboard() {
+    public boolean hasWhiteboard() {
         return whiteboard;
     }
 
-    public boolean isProjector() {
+    public boolean hasProjector() {
         return projector;
     }
 
