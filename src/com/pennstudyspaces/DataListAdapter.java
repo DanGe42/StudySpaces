@@ -1,17 +1,18 @@
 package com.pennstudyspaces;
 
-import android.content.Context;
-import android.widget.SimpleAdapter;
-import com.pennstudyspaces.api.Building;
-import com.pennstudyspaces.api.Room;
-import com.pennstudyspaces.api.RoomKind;
-import com.pennstudyspaces.api.StudySpacesData;
-import static com.pennstudyspaces.api.StudySpacesData.BuildingRoomPair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SimpleAdapter;
+
+import com.pennstudyspaces.api.Building;
+import com.pennstudyspaces.api.RoomKind;
+import com.pennstudyspaces.api.StudySpacesData;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,7 +37,16 @@ public class DataListAdapter extends SimpleAdapter {
     private DataListAdapter (Context ctx, List<? extends Map<String, ?>> data) {
         super (ctx, data, R.layout.main_item, FROM, TO);
     }
-
+    
+    // overriding this lets us pass information into the view
+    // for now we're passing in the room's ability to be reserved
+    /*@Override
+    public View getView (int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+        view.setTag(1);
+        return view;
+    }*/
+    
     public static DataListAdapter createAdapter (Context ctx,
                                                  StudySpacesData data) {
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
@@ -69,6 +79,8 @@ public class DataListAdapter extends SimpleAdapter {
             result.append("p");
         if (kind.hasWhiteboard())
             result.append("w");
+        if (kind.getReserve() == RoomKind.Reservation.EXTERNAL)
+            result.append("R");
         
         return result.toString();
     }
