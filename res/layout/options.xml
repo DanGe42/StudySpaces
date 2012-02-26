@@ -19,32 +19,36 @@
         />
 
     <!-- Time fields -->
-    <TextView
+    <LinearLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="From" 
-        />
-
-    <EditText
-        android:id="@+id/from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/from_hint"
-        />    
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To" 
-        />
-
-    <EditText
-        android:id="@+id/to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/from_hint"
-        />
-    
+        android:orientation="horizontal">
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="From" 
+	        />
+	
+	    <EditText
+	        android:id="@+id/from"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/from_hint"
+	        />    
+	
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="To" 
+	        />
+	
+	    <EditText
+	        android:id="@+id/to"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/from_hint"
+	        />
+    </LinearLayout>
     <!-- Date fields -->
     <TextView
         android:layout_width="wrap_content"

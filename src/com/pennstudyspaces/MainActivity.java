@@ -1,19 +1,24 @@
 package com.pennstudyspaces;
 
+import java.io.IOException;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.pennstudyspaces.api.StudySpacesApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -21,6 +26,8 @@ public class MainActivity extends Activity {
 	public static final int ACTIVITY_OptionsActivity = 1;
     
     private ListView spacesList;
+    
+    private static final int ITEM_SELECT_DIALOG = 1;
 
     /** Called when the activity is first created. */
     @Override
@@ -32,6 +39,20 @@ public class MainActivity extends Activity {
         
         // Display the below TextView instead if the spaces list is empty
         spacesList.setEmptyView(findViewById(R.id.spaces_list_empty));
+        
+        // Listener that displays a dialog when a study space is clicked on
+        spacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+        	@Override
+        	public void onItemClick(AdapterView<?> parentView, View childView,
+        			int position, long id) {
+        		// Get the building name of the place that was just clicked on
+        		Bundle bldginfo = new Bundle();
+        		String buildingname = ((TextView) childView.findViewById(R.id.item_building_name)).getText().toString();
+        		bldginfo.putString("building", buildingname );
+        		removeDialog(ITEM_SELECT_DIALOG);
+        		showDialog(ITEM_SELECT_DIALOG, bldginfo);
+        	}  
+        }); 
         
         //Populate list of StudySpaces
         StudySpacesApiRequest req = new StudySpacesApiRequest("json", true);
@@ -95,6 +116,34 @@ public class MainActivity extends Activity {
     	        
     			break;
     	}
+    }
+    
+    protected Dialog onCreateDialog(int id, Bundle b) {
+    	if (id == ITEM_SELECT_DIALOG) {
+    		String building = b.getString("building");
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    	if(building != null) builder.setMessage(building);
+	    	builder
+	    	.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+	    		public void onClick(DialogInterface dialog, int id) {
+	    			// TODO implement sharing
+	    			dialog.cancel();
+	    		}
+	    	})
+	    	.setNeutralButton("Reserve", new DialogInterface.OnClickListener() {
+	    		public void onClick(DialogInterface dialog, int id) {
+	    			// TODO implement reservations
+	    			dialog.cancel();
+	    		}
+	    	})
+	    	.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+	    		public void onClick(DialogInterface dialog, int id) {
+	    			dialog.cancel();
+	    		}
+	    	});
+    		return builder.create();
+    	}
+		return null;
     }
     
     // Performs a getJSON request in the background, so we don't block on the UI
