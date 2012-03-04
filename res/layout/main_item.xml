@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:textStyle="bold"
-        android:textColor="#FF2211"
+        android:textColor="#22EEFF"
         />
     
     <TextView
@@ -41,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@id/item_num_rooms"
+        android:textColor="#00FF77"
         />
 
 </RelativeLayout>

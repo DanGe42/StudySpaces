@@ -67,6 +67,16 @@
         />   
     -->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available Spaces"
+        android:textColor="#11BBEE"
+        android:textSize="20sp"
+        android:textStyle="bold" 
+        android:paddingBottom="10dp"
+        />
+
     <!-- ListView for containing viewable spaces -->
     <ListView
         android:id="@+id/spaces_list"
@@ -81,8 +91,6 @@
         android:layout_height="fill_parent"
         android:text="No data"
         />
-    
-
     
 </LinearLayout>
 

@@ -1,5 +1,8 @@
 package com.pennstudyspaces;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import com.pennstudyspaces.MainActivity.SendRequestTask;
 import com.pennstudyspaces.api.StudySpacesApiRequest;
 
@@ -37,21 +40,46 @@ public class OptionsActivity extends Activity {
 		//Start & End Time fields
 		String fromTime,toTime,date;
 		fromTime = ((EditText)findViewById(R.id.from)).getText().toString();
-		int fromTimeHour = Integer.parseInt(fromTime.substring(0, fromTime.indexOf(":")));
-		int fromTimeMin = Integer.parseInt(fromTime.substring(fromTime.indexOf(":")+1,fromTime.length()));
+		
+		int fromTimeHour,fromTimeMin;
+		if(fromTime.equals("")) {
+			fromTimeHour = 0;
+			fromTimeMin = 0;
+		}
+		else {
+			fromTimeHour = Integer.parseInt(fromTime.substring(0, fromTime.indexOf(":")));
+			fromTimeMin = Integer.parseInt(fromTime.substring(fromTime.indexOf(":")+1,fromTime.length()));
+		}
 		
 		toTime = ((EditText)findViewById(R.id.to)).getText().toString();
-		int toTimeHour = Integer.parseInt(toTime.substring(0, toTime.indexOf(":")));
-		int toTimeMin = Integer.parseInt(toTime.substring(toTime.indexOf(":")+1,toTime.length()));
+		int toTimeHour, toTimeMin;
+		if(toTime.equals("")) {
+			toTimeHour = 23;
+			toTimeMin = 59;
+		}
+		else {
+			toTimeHour = Integer.parseInt(toTime.substring(0, toTime.indexOf(":")));
+			toTimeMin = Integer.parseInt(toTime.substring(toTime.indexOf(":")+1,toTime.length()));
+		}
 		
 		//Date Field
 		date = ((EditText)findViewById(R.id.date)).getText().toString();
-		int slashIndex = date.indexOf("/");
-		int secondSlash = date.indexOf("/", slashIndex+1);
-		
-		int month = Integer.parseInt(date.substring(0,slashIndex));
-		int day = Integer.parseInt(date.substring(slashIndex+1,secondSlash));
-		int year = Integer.parseInt(date.substring(secondSlash+1,date.length()));
+		int month,day,year;
+		if(date.equals("")) {
+			Calendar temp = new GregorianCalendar();
+			month = temp.get(Calendar.MONTH);
+			day = temp.get(Calendar.MONTH);
+			year = temp.get(Calendar.YEAR);
+		}
+		else {
+			int slashIndex = date.indexOf("/");
+			int secondSlash = date.indexOf("/", slashIndex+1);
+			
+			month = Integer.parseInt(date.substring(0,slashIndex));
+			day = Integer.parseInt(date.substring(slashIndex+1,secondSlash));
+			year = Integer.parseInt(date.substring(secondSlash+1,date.length()));
+		}
+
 		
 		//Amenities Fields
 		boolean priv,wboard,computer,projector;

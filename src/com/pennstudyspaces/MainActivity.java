@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
     	super.onActivityResult(requestCode, resultCode, intent);
     	
-    	if(resultCode == RESULT_CANCELED) {
+    	if(resultCode == RESULT_CANCELED || intent.getExtras().isEmpty()) {
     		return;
     	}
     	
