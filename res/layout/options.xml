@@ -3,7 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-        
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Settings"
+        android:textColor="#11BBEE"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp" 
+        />
+    
     <!-- Number of people fields -->
     <TextView
         android:layout_width="wrap_content"
@@ -19,37 +29,62 @@
         />
 
     <!-- Time fields -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="From" 
-        />
-
-    <EditText
-        android:id="@+id/from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/from_hint"
-        />    
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To" 
-        />
-
-    <EditText
-        android:id="@+id/to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/from_hint"
-        />
     
+    <LinearLayout     
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+        
+	    <RelativeLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	        
+		    <TextView
+		        android:id="@+id/fromLabel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="From"
+		        />
+		
+		    <EditText
+		        android:id="@+id/from"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/fromLabel"
+		        android:hint="@string/from_hint"
+		        />    
+		</RelativeLayout>
+		
+		<RelativeLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+		    
+		    <TextView
+		        android:id="@+id/toLabel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="To" 
+		        />
+		
+		    <EditText
+		        android:id="@+id/to"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+                android:layout_below="@id/toLabel"		        
+		        android:hint="@string/from_hint"
+		        />
+	    </RelativeLayout>
+    </LinearLayout>
+	
     <!-- Date fields -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date" 
+        android:paddingTop="10dp"
         />
 
     <EditText
@@ -63,7 +98,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Room Options"          
+        android:text="Room Options"
+        android:paddingTop="10dp"          
         />
     
     <LinearLayout 
@@ -111,7 +147,8 @@
     <LinearLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
         <Button
             android:id="@+id/submit"
