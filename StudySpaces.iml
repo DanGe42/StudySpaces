@@ -32,6 +32,7 @@
     <orderEntry type="jdk" jdkName="Android 2.3.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="gson-2.1" level="project" />
+    <orderEntry type="library" name="jackson-all-1.9.5" level="project" />
   </component>
 </module>
 
