@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:background="#EEEEEE">
     <TextView
         android:id="@+id/item_building_name"
         android:layout_height="wrap_content"
@@ -10,10 +11,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:textStyle="bold"
-        android:textColor="#22EEFF"
+        android:textColor="#11DDEE"
         />
     
     <TextView
+        style="@style/PlainText"        
         android:id="@+id/item_room_kind"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -23,6 +25,7 @@
         />
 
     <TextView
+        style="@style/PlainText"        
         android:id="@+id/item_num_rooms"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -41,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@id/item_num_rooms"
-        android:textColor="#00FF77"
+        android:textColor="#00DD00"
         />
 
 </RelativeLayout>

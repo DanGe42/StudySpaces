@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#EEEEEE">
 
     <TextView
+        style="@style/ColorTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search Settings"
-        android:textColor="#11BBEE"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingBottom="10dp" 
+
         />
     
     <!-- Number of people fields -->
     <TextView
+        style="@style/PlainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Number of People" 
@@ -23,6 +23,7 @@
     
     <EditText
         android:id="@+id/num_people"
+        style="@style/TextField"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/num_people_hint"
@@ -43,6 +44,7 @@
 	        
 		    <TextView
 		        android:id="@+id/fromLabel"
+		        style="@style/PlainText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="From"
@@ -50,6 +52,7 @@
 		
 		    <EditText
 		        android:id="@+id/from"
+		        style="@style/TextField"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_below="@id/fromLabel"
@@ -64,6 +67,7 @@
 		    
 		    <TextView
 		        android:id="@+id/toLabel"
+		        style="@style/PlainText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="To" 
@@ -71,6 +75,7 @@
 		
 		    <EditText
 		        android:id="@+id/to"
+                style="@style/TextField"		        
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
                 android:layout_below="@id/toLabel"		        
@@ -81,6 +86,7 @@
 	
     <!-- Date fields -->
     <TextView
+        style="@style/PlainText"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date" 
@@ -88,7 +94,8 @@
         />
 
     <EditText
-        android:id="@+id/date"
+        android:id="@+id/date"        
+        style="@style/TextField"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/date_hint"
@@ -96,6 +103,7 @@
     
     <!-- Room Option Checkboxes -->
     <TextView
+        style="@style/PlainText"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Room Options"
@@ -108,14 +116,15 @@
         android:orientation="horizontal">
         
 	    <CheckBox
+	        style="@style/CheckboxText"
 	        android:id="@+id/private_check"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="Private  "  
-	        
 	        />
 	    
 	    <CheckBox
+	        style="@style/CheckboxText"
 	        android:id="@+id/whiteboard_check"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -129,6 +138,7 @@
         android:orientation="horizontal">
     
 	    <CheckBox
+            style="@style/CheckboxText"	        
 	        android:id="@+id/computer_check"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -136,6 +146,7 @@
 	        />
 	    
 	    <CheckBox
+            style="@style/CheckboxText"	        
 	        android:id="@+id/projector_check"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"

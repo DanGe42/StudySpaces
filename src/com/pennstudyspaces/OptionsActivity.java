@@ -99,20 +99,25 @@ public class OptionsActivity extends Activity {
 			int secondSlash = date.indexOf("/", slashIndex+1);
 			
 			month = Integer.parseInt(date.substring(0,slashIndex));
-			if(month > 12)
+			if(month > 12) {
 				month = 12;
-			else if(month < 1)
+			}
+			else if(month < 1) {
 				month = 1;
+			}
 			
 			day = Integer.parseInt(date.substring(slashIndex+1,secondSlash));
-			if(day < 1)
+			if(day < 1) {
 				day = 1;
-			else if(day > 31)
+			}
+			else if(day > 31) {
 				day = 31;
+			}
 			
 			year = Integer.parseInt(date.substring(secondSlash+1,date.length()));
-			if(year < 2011)
+			if(year < 2011) {
 				year = 2011;
+			}
 		}
 
 		
