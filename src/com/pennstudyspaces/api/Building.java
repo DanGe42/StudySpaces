@@ -1,40 +1,56 @@
 package com.pennstudyspaces.api;
 
+import org.codehaus.jackson.annotate.JsonSetter;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Daniel Ge
- * Date: 2/23/12
- * Time: 11:05 PM
+ * Date: 3/7/12
+ * Time: 10:36 PM
  * To change this template use File | Settings | File Templates.
  */
 public class Building {
-    private double latitude, longitude;
     private String name;
-    private Map<String, RoomKind> roomkinds;
-    
-    Building (String name, double latitude, double longitude,
-                     Map<String, RoomKind> roomkinds) {
-        this.name      = name;
-        this.latitude  = latitude;
-        this.longitude = longitude;
-        this.roomkinds = roomkinds;
-    }
-    
-    public String getName () {
+    private double latitude, longitude;
+    private ArrayList<RoomKind> roomkinds;
+
+    public String getName() {
         return name;
     }
-    
-    public double getLatitude () {
+
+    public double getLatitude() {
         return latitude;
     }
-    
-    public double getLongitude () {
+
+    public double getLongitude() {
         return longitude;
     }
-    
-    public Map<String, RoomKind> getRoomKinds () {
+
+    public ArrayList<RoomKind> getRoomKinds() {
         return roomkinds;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setRoomkinds(ArrayList<RoomKind> roomkinds) {
+        this.roomkinds = roomkinds;
     }
 }
