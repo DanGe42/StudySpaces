@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
 
 import com.pennstudyspaces.api.Building;
@@ -55,12 +53,11 @@ public class DataListAdapter extends SimpleAdapter {
             Map<String, String> map = new HashMap<String, String>();
             map.put(BUILDING, building.getName());
             
-            Map<String, RoomKind> roomKindMap = building.getRoomKinds();
-            for (String rkEntry : roomKindMap.keySet()) {
-                map.put(ROOMKIND, rkEntry);
-                RoomKind rk = roomKindMap.get(rkEntry);
-                map.put(AMENITIES, processAmenities(rk));
-                map.put(NUM_ROOMS, String.valueOf(rk.getRooms().size()));
+            ArrayList<RoomKind> roomKinds = building.getRoomKinds();
+            for (RoomKind rkEntry : roomKinds) {
+                map.put(ROOMKIND, rkEntry.getName());
+                map.put(AMENITIES, processAmenities(rkEntry));
+                map.put(NUM_ROOMS, String.valueOf(rkEntry.getRooms().size()));
             }
 
             entries.add(map);
@@ -79,7 +76,7 @@ public class DataListAdapter extends SimpleAdapter {
             result.append("p");
         if (kind.hasWhiteboard())
             result.append("w");
-        if (kind.getReserve() == RoomKind.Reservation.EXTERNAL)
+        if (kind.getReserveType() == RoomKind.Reserve.EXTERNAL)
             result.append("R");
         
         return result.toString();

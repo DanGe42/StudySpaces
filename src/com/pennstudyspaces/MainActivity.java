@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.pennstudyspaces.api.StudySpacesApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
-import com.pennstudyspaces.api.apiv2.StudySpacesDatav2;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -159,7 +158,7 @@ public class MainActivity extends Activity {
     
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
-            extends AsyncTask<StudySpacesApiRequest, Void, StudySpacesDatav2> {
+            extends AsyncTask<StudySpacesApiRequest, Void, StudySpacesData> {
         Context ctx;
         ProgressDialog dialog;
 
@@ -175,11 +174,11 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected StudySpacesDatav2 doInBackground(StudySpacesApiRequest... req) {
+        protected StudySpacesData doInBackground(StudySpacesApiRequest... req) {
             // we don't need to publish progress updates, unless we want to implement some kind of timeout
             // publishProgress();
             try {
-                StudySpacesDatav2 data = StudySpacesDatav2.sendRequest(req[0]);
+                StudySpacesData data = StudySpacesData.sendRequest(req[0]);
                 return data;
             }
             catch (IOException e) {
@@ -188,10 +187,10 @@ public class MainActivity extends Activity {
             }
         }
 
-        protected void onPostExecute(StudySpacesDatav2 result) {
+        protected void onPostExecute(StudySpacesData result) {
             dialog.dismiss();
             dialog = null;
-            // spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+            spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
         }
     }
 }
