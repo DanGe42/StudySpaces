@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#EEEEEE"
+    >
+
+    <Button 
+        android:id="@+id/mapTestButton"
+        android:text="Test Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testButton"
+        />
+    
+	<com.google.android.maps.MapView
+	    android:id="@+id/mapview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:enabled="true"
+	    android:clickable="true"
+	    android:apiKey="087u3OT9u1EVM5ui9PlnrCKPM7oLUrqF9ff7sRA"
+	    />
+
+</LinearLayout>
