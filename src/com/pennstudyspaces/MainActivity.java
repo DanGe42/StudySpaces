@@ -76,6 +76,10 @@ public class MainActivity extends Activity {
 
         (new SendRequestTask(this)).execute(req);
     }
+    
+    public void mapTest (View v) {
+        startActivity(new Intent(this, MapTestActivity.class));
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
     	super.onActivityResult(requestCode, resultCode, intent);
