@@ -1,0 +1,14 @@
+Keystore:
+studyspaces.keystore
+
+Alias:
+study_spaces-key
+
+For Key & Keystore:
+studyspaces
+
+MD5 Fingerprint:
+92:27:CC:0F:F9:A5:DB:6C:40:71:2C:75:76:6C:79:74
+
+Android Maps API Key:
+087u3OT9u1EVM5ui9PlnrCKPM7oLUrqF9ff7sRA
