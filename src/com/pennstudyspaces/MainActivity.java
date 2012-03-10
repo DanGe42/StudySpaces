@@ -76,6 +76,12 @@ public class MainActivity extends Activity {
 
         (new SendRequestTask(this)).execute(req);
     }
+    
+    //Test button for opening a mapView
+    //Will be inserted into on-click dialogs later on
+    public void mapTest (View v) {
+        startActivity(new Intent(this, SpacesMapActivity.class));
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
     	super.onActivityResult(requestCode, resultCode, intent);
