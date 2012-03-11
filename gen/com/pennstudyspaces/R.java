@@ -26,9 +26,10 @@ public final class R {
         public static final int item_building_name=0x7f060005;
         public static final int item_num_rooms=0x7f060007;
         public static final int item_room_kind=0x7f060006;
+        public static final int mapBackButton=0x7f060016;
         public static final int mapTestButton=0x7f060015;
         public static final int map_test_button=0x7f060001;
-        public static final int mapview=0x7f060016;
+        public static final int mapview=0x7f060017;
         public static final int num_people=0x7f060009;
         public static final int private_check=0x7f06000f;
         public static final int projector_check=0x7f060012;

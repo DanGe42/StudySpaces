@@ -18,14 +18,13 @@ import com.google.android.maps.OverlayItem;
  */
 public class SpacesMapActivity extends MapActivity {
 	
-	MapView mapView;
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spaces_map);
         
-        mapView = (MapView) findViewById(R.id.mapview);
+        MapView mapView = (MapView) findViewById(R.id.mapview);
+        mapView.setBuiltInZoomControls(true);
     }
 
     @Override
@@ -34,9 +33,10 @@ public class SpacesMapActivity extends MapActivity {
     }
     
     public void testButton(View view) {
-    	GeoPoint point = new GeoPoint(19240000,-99120000);
-    	OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
-    		
     	
+    }
+    
+    public void backButton(View view) {
+    	finish();
     }
 }
