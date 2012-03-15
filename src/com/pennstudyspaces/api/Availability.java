@@ -13,26 +13,37 @@ import java.util.Iterator;
  */
 public class Availability {
     private Date date;
-    private int startTime, endTime;
     private Range general;
     private ArrayList<Range> openTimes;
 
     public Availability (Date date, ArrayList schedule) {
         this.date = date;
 
-        general = new Range((ArrayList) schedule.get(0));
+        this.general = new Range((ArrayList) schedule.get(0));
 
         ArrayList open = (ArrayList) schedule.get(1);
         if (open != null) {
             this.openTimes = new ArrayList<Range>();
             Iterator iter = open.iterator();
             while (iter.hasNext()) {
-                openTimes.add(new Range((ArrayList) iter.next()));
+                this.openTimes.add(new Range((ArrayList) iter.next()));
             }
         }
         else
-            openTimes = null;
+            this.openTimes = null;
 
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Range getGeneral() {
+        return general;
+    }
+
+    public ArrayList<Range> getOpenTimes() {
+        return openTimes;
     }
 
     public static class Range {
