@@ -28,3 +28,9 @@ DB:98:09:D3:2C:2D:07:F6:94:72:71:22:53:68:6B:08
 
 Android Maps API Key:
 087u3OT9u1EWqk-cH8s6iv7H13_8M9VW5aq9wWA
+
+-------------------------------------
+Dan's Debug key
+
+API Key:
+0uXfPvWbr_go9PoVsddxDGKO5EWZJFQ11k9yJag
