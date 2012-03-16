@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">StudySpaces</string>
     
-    <!-- Search-related strings for OptionsActivity-->
+    <!-- Search-related strings for SearchActivity-->
     <string name="search_hint">Search</string>
     <string name="num_people_hint">1 to 15</string>
     <string name="from_hint">HH:MM</string>

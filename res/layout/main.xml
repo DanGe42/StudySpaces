@@ -67,7 +67,7 @@
         android:onClick="sortOptions"
         /> -->
 
-    <!-- This should be moved to OptionsActivity -->
+    <!-- This should be moved to SearchActivity -->
     <!-- Text box for searching the listView -->
     <!-- <EditText
         android:id="@+id/search_box"

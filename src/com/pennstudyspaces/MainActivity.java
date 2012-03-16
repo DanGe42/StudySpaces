@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
     }
     
     public void search(View view) {
-    	Intent i = new Intent(this, OptionsActivity.class);
+    	Intent i = new Intent(this, SearchActivity.class);
     	
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
     }
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
     //Test button for opening a mapView
     //Will be inserted into on-click dialogs later on
     public void mapTest (View v) {
-        startActivity(new Intent(this, SpacesMapActivity.class));
+        startActivity(new Intent(this, RoomDetailsActivity.class));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

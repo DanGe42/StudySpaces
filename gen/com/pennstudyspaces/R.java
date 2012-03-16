@@ -26,14 +26,13 @@ public final class R {
         public static final int item_building_name=0x7f060005;
         public static final int item_num_rooms=0x7f060007;
         public static final int item_room_kind=0x7f060006;
-        public static final int mapBackButton=0x7f060017;
-        public static final int mapTestButton=0x7f060016;
-        public static final int map_layout=0x7f060015;
+        public static final int map_container=0x7f060016;
         public static final int map_test_button=0x7f060001;
         public static final int num_people=0x7f060009;
         public static final int private_check=0x7f06000f;
         public static final int projector_check=0x7f060012;
         public static final int refresh_button=0x7f060000;
+        public static final int roomTitle=0x7f060015;
         public static final int search_button=0x7f060002;
         public static final int spaces_list=0x7f060003;
         public static final int spaces_list_empty=0x7f060004;
@@ -46,14 +45,14 @@ public final class R {
         public static final int main=0x7f030000;
         public static final int main_item=0x7f030001;
         public static final int options=0x7f030002;
-        public static final int spaces_map=0x7f030003;
+        public static final int room_details=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int date_hint=0x7f040004;
         public static final int from_hint=0x7f040003;
         public static final int num_people_hint=0x7f040002;
-        /**  Search-related strings for OptionsActivity
+        /**  Search-related strings for SearchActivity
          */
         public static final int search_hint=0x7f040001;
         /**  MainActivity strings 

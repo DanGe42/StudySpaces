@@ -1,34 +1,25 @@
 package com.pennstudyspaces;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
-import com.google.android.maps.OverlayItem;
 
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 3/9/12
- * Time: 11:45 PM
- * To change this template use File | Settings | File Templates.
- */
-public class SpacesMapActivity extends MapActivity {
-	private static final String TAG = SpacesMapActivity.class.getSimpleName();
+
+public class RoomDetailsActivity extends MapActivity {
+	private static final String TAG = RoomDetailsActivity.class.getSimpleName();
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spaces_map);
+        setContentView(R.layout.room_details);
         
         Properties properties = new Properties();
         try {
@@ -39,10 +30,10 @@ public class SpacesMapActivity extends MapActivity {
             mapView.setEnabled(true);
             mapView.setClickable(true);
 
-            LinearLayout ll = (LinearLayout) findViewById(R.id.map_layout);
-            ll.addView(mapView, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.FILL_PARENT,
-                    LinearLayout.LayoutParams.FILL_PARENT));
+            FrameLayout ll = (FrameLayout) findViewById(R.id.map_container);
+            ll.addView(mapView, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.FILL_PARENT,
+                    FrameLayout.LayoutParams.FILL_PARENT));
 
         } catch (IOException e) {
             Log.e(TAG, "Make a GoogleMaps.properties file with this format:\n" +
@@ -57,11 +48,15 @@ public class SpacesMapActivity extends MapActivity {
         return false;
     }
     
-    public void testButton(View view) {
+    public void share(View view) {
     	
     }
     
-    public void backButton(View view) {
+    public void back(View view) {
     	finish();
+    }
+    
+    public void reserve(View view) {
+
     }
 }

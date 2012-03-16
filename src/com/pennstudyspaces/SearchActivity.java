@@ -3,19 +3,15 @@ package com.pennstudyspaces;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import com.pennstudyspaces.MainActivity.SendRequestTask;
-import com.pennstudyspaces.api.StudySpacesApiRequest;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class OptionsActivity extends Activity {
-	private static final String TAG = OptionsActivity.class.getSimpleName();
+public class SearchActivity extends Activity {
+	private static final String TAG = SearchActivity.class.getSimpleName();
 	
 	public static final int ACTIVITY_SortedDisplayActivity = 1;
 	
