@@ -26,7 +26,7 @@ public final class R {
         public static final int item_building_name=0x7f060005;
         public static final int item_num_rooms=0x7f060007;
         public static final int item_room_kind=0x7f060006;
-        public static final int map_container=0x7f060016;
+        public static final int map_container=0x7f06001c;
         public static final int map_test_button=0x7f060001;
         public static final int num_people=0x7f060009;
         public static final int private_check=0x7f06000f;
@@ -37,6 +37,12 @@ public final class R {
         public static final int spaces_list=0x7f060003;
         public static final int spaces_list_empty=0x7f060004;
         public static final int submit=0x7f060013;
+        public static final int text_building=0x7f060016;
+        public static final int text_computer=0x7f060019;
+        public static final int text_occupancy=0x7f060017;
+        public static final int text_privacy=0x7f06001b;
+        public static final int text_projector=0x7f060018;
+        public static final int text_whiteboard=0x7f06001a;
         public static final int to=0x7f06000d;
         public static final int toLabel=0x7f06000c;
         public static final int whiteboard_check=0x7f060010;
@@ -58,7 +64,16 @@ public final class R {
         /**  MainActivity strings 
          */
         public static final int text_refresh_button=0x7f040005;
+        public static final int text_reserve_button=0x7f04000d;
         public static final int text_search_button=0x7f040006;
+        /**  RoomDetailsActivity strings 
+         */
+        public static final int title_building=0x7f040007;
+        public static final int title_computer=0x7f04000a;
+        public static final int title_occupancy=0x7f040008;
+        public static final int title_privacy=0x7f04000c;
+        public static final int title_projector=0x7f040009;
+        public static final int title_whiteboard=0x7f04000b;
     }
     public static final class style {
         public static final int CheckboxText=0x7f050003;

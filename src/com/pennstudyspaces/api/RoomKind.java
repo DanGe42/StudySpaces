@@ -71,16 +71,16 @@ public class RoomKind {
     }
 
     @JsonSetter("max_occupancy")
-    public void setCapacity(int capacity) {
+    private void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
     @JsonSetter("reserve_type")
-    public void setReserveType(String reserveType) {
+    private void setReserveType(String reserveType) {
         if ("N".equals(reserveType))
             this.reserveType = Reserve.NONE;
         else if ("E".equals(reserveType))
@@ -88,7 +88,7 @@ public class RoomKind {
         else throw new IllegalArgumentException("Invalid reserve type");
     }
 
-    public void setPrivacy(String privacy) {
+    private void setPrivacy(String privacy) {
         if ("S".equals(privacy))
             this.privacy = Privacy.COMMON;
         else if ("P".equals(privacy))
@@ -96,26 +96,26 @@ public class RoomKind {
         else throw new IllegalArgumentException("Invalid privacy type");
     }
 
-    public void setComments(String comments) {
+    private void setComments(String comments) {
         this.comments = comments;
     }
 
     @JsonSetter("has_big_screen")
-    public void setProjector(boolean hasProjector) {
+    private void setProjector(boolean hasProjector) {
         this.hasProjector = hasProjector;
     }
 
     @JsonSetter("has_computer")
-    public void setComputer(boolean hasComputer) {
+    private void setComputer(boolean hasComputer) {
         this.hasComputer = hasComputer;
     }
 
     @JsonSetter("has_whiteboard")
-    public void setWhiteboard(boolean hasWhiteboard) {
+    private void setWhiteboard(boolean hasWhiteboard) {
         this.hasWhiteboard = hasWhiteboard;
     }
 
-    public void setRooms(ArrayList<Room> rooms) {
+    private void setRooms(ArrayList<Room> rooms) {
         this.rooms = rooms;
     }
 }

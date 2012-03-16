@@ -1,6 +1,7 @@
 package com.pennstudyspaces;
 
 import android.app.Application;
+import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
 
 /**
@@ -14,6 +15,7 @@ public class StudySpacesApplication extends Application {
     private static final String TAG = StudySpacesApplication.class.getSimpleName();
 
     private StudySpacesData ssData;
+    private ApiRequest request;
 
     @Override
     public void onCreate() {
@@ -28,6 +30,13 @@ public class StudySpacesApplication extends Application {
     }
 
     public StudySpacesData getData() {
+        if (this.request == null) {
+
+        }
         return null;
+    }
+
+    public void makeRequest() {
+
     }
 }

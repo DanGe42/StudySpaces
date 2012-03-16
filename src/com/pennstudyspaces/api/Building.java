@@ -38,19 +38,19 @@ public class Building {
         return roomkinds;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
-    public void setLatitude(double latitude) {
+    private void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude) {
+    private void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public void setRoomkinds(ArrayList<RoomKind> roomkinds) {
+    private void setRoomkinds(ArrayList<RoomKind> roomkinds) {
         this.roomkinds = roomkinds;
     }
 }

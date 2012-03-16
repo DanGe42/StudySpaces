@@ -12,13 +12,7 @@ import com.pennstudyspaces.api.Building;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 2/24/12
- * Time: 8:57 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class DataListAdapter extends SimpleAdapter {
     public static final String BUILDING    = "building",
                                ROOMKIND    = "roomkind",

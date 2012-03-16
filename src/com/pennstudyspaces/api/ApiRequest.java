@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Time: 2:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public class StudySpacesApiRequest {
+public class ApiRequest {
 
     /* Parameters that go into the API GET request */
     private static final String NUM_PEOPLE = "capacity",
@@ -42,7 +42,7 @@ public class StudySpacesApiRequest {
      *                  data dump; as a result, all setter methods will have
      *                  no effect on this request.
      */
-    public StudySpacesApiRequest(String format, boolean all) {
+    public ApiRequest(String format, boolean all) {
         if (!format.equals("json"))
             throw new IllegalArgumentException("Unsupported format");
 

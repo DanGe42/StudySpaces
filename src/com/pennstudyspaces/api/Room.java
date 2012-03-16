@@ -32,15 +32,15 @@ public class Room {
         return availabilities;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
-    public void setAvailabilities(Map<String, Object> availabilities)
+    private void setAvailabilities(Map<String, Object> availabilities)
             throws ParseException {
         this.availabilities = new ArrayList<Availability>();
 

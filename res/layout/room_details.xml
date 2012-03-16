@@ -45,7 +45,86 @@
 
     </LinearLayout>
 
+    <TableLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:stretchColumns="1"
+        >
 
+        <TableRow>
+            <TextView
+                android:text="@string/title_building"
+                android:padding="3dip"
+                />
+
+            <TextView
+                android:id="@+id/text_building"
+                android:padding="3dip"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/title_occupancy"
+                android:padding="3dip"
+                />
+
+            <TextView
+                android:id="@+id/text_occupancy"
+                android:padding="3dip"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/title_projector"
+                android:padding="3dip"
+                />
+            
+            <TextView
+                android:id="@+id/text_projector"
+                android:padding="3dip"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/title_computer"
+                android:padding="3dip"
+                />
+
+            <TextView
+                android:id="@+id/text_computer"
+                android:padding="3dip"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/title_whiteboard"
+                android:padding="3dip"
+                />
+
+            <TextView
+                android:id="@+id/text_whiteboard"
+                android:padding="3dip"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/title_privacy"
+                android:padding="3dip"
+                />
+
+            <TextView
+                android:id="@+id/text_privacy"
+                android:padding="3dip"
+                />
+        </TableRow>
+    </TableLayout>
+
+    <!-- A one-child container for the MapView -->
     <FrameLayout
         android:id="@+id/map_container"
         android:layout_height="fill_parent"
@@ -59,18 +138,7 @@
         android:layout_weight="0"
         android:enabled="false"
         android:onClick="reserve"
+        android:text="@string/text_reserve_button"
         />
-    
-    <!-- android:apiKey="087u3OT9u1EVM5ui9PlnrCKPM7oLUrqF9ff7sRA" -->
-    <!-- android:apiKey="087u3OT9u1EWqk-cH8s6iv7H13_8M9VW5aq9wWA"-->
-    <!-- Dan's key 0uXfPvWbr_go9PoVsddxDGKO5EWZJFQ11k9yJag -->
-	<!--<com.google.android.maps.MapView
-	    android:id="@+id/mapview"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:enabled="true"
-	    android:clickable="true"
-        android:apiKey="0uXfPvWbr_go9PoVsddxDGKO5EWZJFQ11k9yJag"
-	    /> -->
 
 </LinearLayout>

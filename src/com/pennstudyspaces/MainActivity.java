@@ -18,7 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.pennstudyspaces.api.StudySpacesApiRequest;
+import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
 
 public class MainActivity extends Activity {
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
         }); 
         
         // Populate list of StudySpaces
-        StudySpacesApiRequest req = new StudySpacesApiRequest("json", true);
+        ApiRequest req = new ApiRequest("json", true);
         Log.d(TAG, "API request created: " + req.toString());
         (new SendRequestTask(this)).execute(req);
     }
@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
     }
     
     public void refresh (View v) {
-        StudySpacesApiRequest req = new StudySpacesApiRequest("json", true);
+        ApiRequest req = new ApiRequest("json", true);
         
         Log.d(TAG, "API request created: " + req.toString());
 
@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
     			boolean projector = boolArray[2];
     			boolean computer = boolArray[3];
     			
-    	        StudySpacesApiRequest req = new StudySpacesApiRequest("json", false);
+    	        ApiRequest req = new ApiRequest("json", false);
     	        req.setNumberOfPeople(numPeople);
     	        req.setStartTime(fromTimeHour, fromTimeMin);
     	        req.setEndTime(toTimeHour, toTimeMin);
@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
     
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
-            extends AsyncTask<StudySpacesApiRequest, Void, StudySpacesData> {
+            extends AsyncTask<ApiRequest, Void, StudySpacesData> {
         Context ctx;
         ProgressDialog dialog;
 
@@ -180,11 +180,12 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected StudySpacesData doInBackground(StudySpacesApiRequest... req) {
+        protected StudySpacesData doInBackground(ApiRequest... req) {
             // we don't need to publish progress updates, unless we want to implement some kind of timeout
             // publishProgress();
             try {
-                StudySpacesData data = StudySpacesData.sendRequest(req[0]);
+                StudySpacesData data = new StudySpacesData(req[0]);
+                data.pullData();
                 return data;
             }
             catch (IOException e) {
