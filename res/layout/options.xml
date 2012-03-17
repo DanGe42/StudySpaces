@@ -10,10 +10,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:paddingTop="9dp"
-        android:paddingBottom="9dp"
         android:background="#333">
-    
+                    
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:onClick="backToMain"
+            android:layout_weight="0"
+            />
+        
 	    <TextView
 	        style="@style/ColorTitle"
 	        android:layout_width="wrap_content"
@@ -24,6 +31,15 @@
             android:ellipsize="end"
 	        android:text="Search Settings"
 	        />
+	    
+        <Button
+	        android:id="@+id/submit"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Submit"
+	        android:onClick="submitOptions"
+	        android:layout_weight="0"
+	        />
     
     </LinearLayout>
     
@@ -32,7 +48,9 @@
         style="@style/PlainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of People" 
+        android:text="Number of People"
+        android:paddingTop="10dp"
+        android:textStyle="bold"        
         />
     
     <EditText
@@ -44,7 +62,6 @@
         />
 
     <!-- Time fields -->
-    
     <LinearLayout     
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +79,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="From"
+                android:textStyle="bold"		        
 		        />
 		
 		    <EditText
@@ -84,7 +102,8 @@
 		        style="@style/PlainText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="To" 
+		        android:text="To"
+                android:textStyle="bold"
 		        />
 		
 		    <EditText
@@ -105,6 +124,7 @@
         android:layout_height="wrap_content"
         android:text="Date" 
         android:paddingTop="10dp"
+        android:textStyle="bold"        
         />
 
     <EditText
@@ -121,7 +141,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Room Options"
-        android:paddingTop="10dp"          
+        android:paddingTop="10dp"   
+        android:textStyle="bold"       
         />
     
     <LinearLayout 
@@ -167,30 +188,5 @@
 	        android:text="Projector"  
 	        />    
     </LinearLayout>
-    
-    <!-- Submit & Back button controls -->
-    <LinearLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:onClick="submitOptions"
-            />
-        	    
-	    <Button
-	        android:id="@+id/back"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Back"
-	        android:onClick="backToMain"
-	        />
-	    
-	</LinearLayout>
 
 </LinearLayout>
