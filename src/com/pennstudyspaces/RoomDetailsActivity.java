@@ -1,6 +1,7 @@
 package com.pennstudyspaces;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -118,7 +119,7 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void share(View view) {
-    	
+
     }
     
     public void back(View view) {
@@ -129,6 +130,9 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void reserve(View view) {
+        String url = "http://pennstudyspaces.com/deeplink?date=2012-02-25&time_from=2330&time_to=30&room=189";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
+        startActivity(browserIntent);
     }
 }

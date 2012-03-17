@@ -29,8 +29,6 @@ public class MainActivity extends Activity {
     private StudySpacesApplication app;
     private ListView spacesList;
     
-    private static final int ITEM_SELECT_DIALOG = 1;
-
     public static final int ACTIVITY_OptionsActivity = 1;
     
     // Intent constants for RoomDetailsActivity
@@ -153,48 +151,6 @@ public class MainActivity extends Activity {
     	        
     			break;
     	}
-    }
-    
-    protected Dialog onCreateDialog(int id, Bundle b) {
-    	if (id == ITEM_SELECT_DIALOG) {
-    		String building = b.getString("building");
-    		final String amenities = b.getString("amenities");
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	
-	    	if(building != null) { 
-	    		builder.setMessage(building);
-	    	}
-	    	
-	    	builder.setPositiveButton("Info", new DialogInterface.OnClickListener() {
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			roomDetails();
-	    		}
-	    	});
-	    	
-	    	builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			dialog.cancel();
-	    		}
-	    	});
-	    	
-	    	if(amenities.contains("R")) {
-		    	builder.setNeutralButton("Reserve", new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			// TODO we need to be able to pass in more info into these views
-		    			// namely the room number and a more elegant way to see if it's reservable
-		    			// this is some dummy hardcoded reservation for a GSR
-		    			String url = "http://pennstudyspaces.com/deeplink?date=2012-02-25&time_from=2330&time_to=30&room=189";
-		    			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		    			
-		    			dialog.cancel();
-		    			startActivity(browserIntent);
-		    		}
-		    	});
-	    	}
-	    	
-    		return builder.create();
-    	}
-		return null;
     }
     
     // Performs a getJSON request in the background, so we don't block on the UI
