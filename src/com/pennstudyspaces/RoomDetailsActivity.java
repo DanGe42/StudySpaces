@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
@@ -32,6 +33,7 @@ import java.util.Properties;
 public class RoomDetailsActivity extends MapActivity {
 	private static final String TAG = RoomDetailsActivity.class.getSimpleName();
 	private MapView mapView;
+	private MapController mapController;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class RoomDetailsActivity extends MapActivity {
             mapView.setEnabled(true);
             mapView.setClickable(true);
 
+            mapController = mapView.getController();
+            
             FrameLayout ll = (FrameLayout) findViewById(R.id.map_container);
             ll.addView(mapView, new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.FILL_PARENT,
@@ -128,6 +132,10 @@ public class RoomDetailsActivity extends MapActivity {
         OverlayItem overlayItem = new OverlayItem(point, room, building);
         itemizedOverlay.addOverlay(overlayItem);
         mapOverlays.add(itemizedOverlay);
+        
+        //Set center for view
+        mapController.setCenter(point);
+        mapController.setZoom(16);
         
         //User Location
         LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
