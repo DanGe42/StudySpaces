@@ -7,13 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 3/7/12
- * Time: 4:41 PM
- * To change this template use File | Settings | File Templates.
- */
 public class JsonData {
     private static final String TAG = JsonData.class.getSimpleName();
 

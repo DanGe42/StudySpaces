@@ -8,7 +8,6 @@ import java.util.Map;
 import android.content.Context;
 import android.widget.SimpleAdapter;
 
-import com.pennstudyspaces.api.Building;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
 

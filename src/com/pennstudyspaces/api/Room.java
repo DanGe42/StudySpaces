@@ -5,16 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 3/7/12
- * Time: 10:40 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Room {
     private String name;
     private int id;

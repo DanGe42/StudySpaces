@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
-import com.pennstudyspaces.api.RoomKind;
 import static com.pennstudyspaces.api.RoomKind.Privacy;
 import static com.pennstudyspaces.api.RoomKind.Reserve;
 
