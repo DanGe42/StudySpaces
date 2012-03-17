@@ -78,8 +78,7 @@ public class MainActivity extends Activity {
     }
     
     //Test button for opening a mapView
-    //Will be inserted into on-click dialogs later on
-    public void mapTest (View v) {
+    public void roomDetails() {
         startActivity(new Intent(this, RoomDetailsActivity.class));
     }
 
@@ -132,18 +131,23 @@ public class MainActivity extends Activity {
     		String building = b.getString("building");
     		final String amenities = b.getString("amenities");
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	if(building != null) builder.setMessage(building);
-	    	builder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+	    	
+	    	if(building != null) { 
+	    		builder.setMessage(building);
+	    	}
+	    	
+	    	builder.setPositiveButton("Info", new DialogInterface.OnClickListener() {
 	    		public void onClick(DialogInterface dialog, int id) {
-	    			// TODO implement sharing
-	    			dialog.cancel();
+	    			roomDetails();
 	    		}
-	    	})
-	    	.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+	    	});
+	    	
+	    	builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
 	    		public void onClick(DialogInterface dialog, int id) {
 	    			dialog.cancel();
 	    		}
 	    	});
+	    	
 	    	if(amenities.contains("R")) {
 		    	builder.setNeutralButton("Reserve", new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface dialog, int id) {
@@ -152,11 +156,13 @@ public class MainActivity extends Activity {
 		    			// this is some dummy hardcoded reservation for a GSR
 		    			String url = "http://pennstudyspaces.com/deeplink?date=2012-02-25&time_from=2330&time_to=30&room=189";
 		    			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		    			
 		    			dialog.cancel();
 		    			startActivity(browserIntent);
 		    		}
 		    	});
 	    	}
+	    	
     		return builder.create();
     	}
 		return null;

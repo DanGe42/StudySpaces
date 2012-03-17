@@ -6,83 +6,53 @@
     android:background="#EEEEEE"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_weight="0"
+        android:background="#333">        
+                
+        <Button
+            android:id="@+id/search_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/text_search_button"
+            android:onClick="search"          
+            android:layout_weight="0"
+            />
+        
+	    <TextView
+	        style="@style/ColorTitle"        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+	        android:text="Available Spaces"
+	        />
         
         <Button
             android:id="@+id/refresh_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:text="@string/text_refresh_button"
             android:onClick="refresh"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
+            android:layout_weight="0"
             />
         
+        <!--
         <Button
             android:id="@+id/map_test_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/refresh_button"
             android:onClick="mapTest"
-            android:text="Click Me!!!"
-            />
-        
-        <Button
-            android:id="@+id/search_button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/text_search_button"
-            android:onClick="search"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            />
+            android:text="Click Me!!!"            
+            /> -->
     
-    </RelativeLayout>
-
-    <!-- Maybe later... -->
-    <!-- Opens a window that displays current reservations? -->
-    <!--
-    <Button 
-        android:id="@+id/reserved_button"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content"
-        android:text="Current Reservations"
-        android:onClick="seeReservations"
-        /> -->
-    
-    <!--  Opens a window for configuring sort options -->
-    <!-- I think this is better as a user preference -->
-    <!--
-    <Button 
-        android:id="@+id/sort_options"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content"
-        android:text="Sorting Options"
-        android:onClick="sortOptions"
-        /> -->
-
-    <!-- This should be moved to SearchActivity -->
-    <!-- Text box for searching the listView -->
-    <!-- <EditText
-        android:id="@+id/search_box"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/search_hint"
-        />   
-    -->
-
-    <TextView
-        style="@style/ColorTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Available Spaces"
-        />
+    </LinearLayout>
 
     <!-- ListView for containing viewable spaces -->
     <ListView

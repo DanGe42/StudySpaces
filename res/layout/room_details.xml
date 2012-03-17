@@ -24,6 +24,7 @@
             />
 
         <TextView
+            style="@style/ColorTitle"
             android:id="@+id/roomTitle"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -31,8 +32,7 @@
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
-            android:textSize="24sp"
-            android:text="Test"
+            android:text="Room Info"
             />
 
         <Button
@@ -53,11 +53,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_building"
                 android:padding="3dip"
                 />
 
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_building"
                 android:padding="3dip"
                 />
@@ -65,11 +67,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_occupancy"
                 android:padding="3dip"
                 />
 
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_occupancy"
                 android:padding="3dip"
                 />
@@ -77,11 +81,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_projector"
                 android:padding="3dip"
                 />
             
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_projector"
                 android:padding="3dip"
                 />
@@ -89,11 +95,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_computer"
                 android:padding="3dip"
                 />
 
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_computer"
                 android:padding="3dip"
                 />
@@ -101,11 +109,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_whiteboard"
                 android:padding="3dip"
                 />
 
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_whiteboard"
                 android:padding="3dip"
                 />
@@ -113,11 +123,13 @@
 
         <TableRow>
             <TextView
+                style="@style/PlainText"                
                 android:text="@string/title_privacy"
                 android:padding="3dip"
                 />
 
             <TextView
+                style="@style/PlainText"                
                 android:id="@+id/text_privacy"
                 android:padding="3dip"
                 />
@@ -133,6 +145,7 @@
         />
 
     <Button
+        style="@style/PlainText"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_weight="0"
