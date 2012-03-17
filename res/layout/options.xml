@@ -45,12 +45,11 @@
     
     <!-- Number of people fields -->
     <TextView
-        style="@style/PlainText"
+        style="@style/smallTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Number of People"
         android:paddingTop="10dp"
-        android:textStyle="bold"        
         />
     
     <EditText
@@ -75,11 +74,10 @@
 	        
 		    <TextView
 		        android:id="@+id/fromLabel"
-		        style="@style/PlainText"
+		        style="@style/smallTitle"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="From"
-                android:textStyle="bold"		        
+		        android:text="From"		        
 		        />
 		
 		    <EditText
@@ -99,11 +97,10 @@
 		    
 		    <TextView
 		        android:id="@+id/toLabel"
-		        style="@style/PlainText"
+		        style="@style/smallTitle"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="To"
-                android:textStyle="bold"
 		        />
 		
 		    <EditText
@@ -119,12 +116,11 @@
 	
     <!-- Date fields -->
     <TextView
-        style="@style/PlainText"        
+        style="@style/smallTitle"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date" 
-        android:paddingTop="10dp"
-        android:textStyle="bold"        
+        android:paddingTop="10dp"        
         />
 
     <EditText
@@ -137,12 +133,11 @@
     
     <!-- Room Option Checkboxes -->
     <TextView
-        style="@style/PlainText"        
+        style="@style/smallTitle"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Room Options"
-        android:paddingTop="10dp"   
-        android:textStyle="bold"       
+        android:paddingTop="10dp"          
         />
     
     <LinearLayout 

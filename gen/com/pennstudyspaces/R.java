@@ -81,5 +81,6 @@ public final class R {
         public static final int RoomDetailText=0x7f050004;
         public static final int RoomDetailValue=0x7f050005;
         public static final int TextField=0x7f050002;
+        public static final int smallTitle=0x7f050006;
     }
 }
