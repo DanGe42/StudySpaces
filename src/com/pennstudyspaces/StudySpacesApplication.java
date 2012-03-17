@@ -4,6 +4,8 @@ import android.app.Application;
 import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.StudySpacesData;
 
+import java.io.IOException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Daniel Ge
@@ -15,7 +17,6 @@ public class StudySpacesApplication extends Application {
     private static final String TAG = StudySpacesApplication.class.getSimpleName();
 
     private StudySpacesData ssData;
-    private ApiRequest request;
 
     @Override
     public void onCreate() {
@@ -30,13 +31,24 @@ public class StudySpacesApplication extends Application {
     }
 
     public StudySpacesData getData() {
-        if (this.request == null) {
-
+        if (this.ssData == null) {
+            this.ssData = new StudySpacesData(new ApiRequest(true));
+            return this.ssData;
         }
-        return null;
+        else {
+            return this.ssData;
+        }
+    }
+    
+    public void updateData() throws IOException {
+        getData().pullData();
     }
 
-    public void makeRequest() {
-
+    /**
+     * This method is currently a HACK!!
+     * @param data
+     */
+    public void setData (StudySpacesData data) {
+        this.ssData = data;
     }
 }

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="@string/text_refresh_button"
-            android:onClick="refresh"
+            android:onClick="refreshButton"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             />

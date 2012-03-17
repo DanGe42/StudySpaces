@@ -33,6 +33,10 @@ public class ApiRequest {
     private String format;
     
     private boolean all;
+    
+    public ApiRequest(boolean all) {
+        this("json", all);
+    }
 
     /**
      * Creates an API request.

@@ -19,6 +19,7 @@ public class Room {
     private String name;
     private int id;
     private ArrayList<Availability> availabilities;
+    private RoomKind parent;
 
     public String getName() {
         return name;
@@ -30,6 +31,10 @@ public class Room {
 
     public ArrayList<Availability> getAvailabilities() {
         return availabilities;
+    }
+
+    public RoomKind getParentRoomKind() {
+        return this.parent;
     }
 
     private void setName(String name) {
@@ -50,5 +55,9 @@ public class Room {
             this.availabilities.add(new Availability(
                     date, (ArrayList) availabilities.get(d)));
         }
+    }
+    
+    void setParentRoomKind(RoomKind parent) {
+        this.parent = parent;
     }
 }

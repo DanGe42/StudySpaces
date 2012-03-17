@@ -3,28 +3,32 @@ package com.pennstudyspaces.api;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 3/16/12
- * Time: 5:13 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class StudySpacesData {
     private ApiRequest request;
-    private Building[] data;
+    private Building[] buildingData;
+    private RoomKind[] roomKindsData;
     
     public StudySpacesData (ApiRequest request) {
         if (request == null)
             throw new IllegalArgumentException("Request cannot be null");
         this.request = request;
-        this.data = null;
+        this.buildingData = null;
+        this.roomKindsData = null;
     }
     
     public void pullData() throws IOException {
         JsonData jsonData = JsonData.sendRequest(request);
         
-        this.data = jsonData.getBuildings().toArray(new Building[1]);
+        this.buildingData = jsonData.getBuildings().toArray(new Building[1]);
+
+        ArrayList<RoomKind> roomKinds =
+                new ArrayList<RoomKind>(getBuildings().length * 5);
+        for (Building building : this.buildingData) {
+            roomKinds.addAll(building.getRoomKinds());
+        }
+        
+        this.roomKindsData = roomKinds.toArray(new RoomKind[1]);
     }
     
     public ApiRequest getApiRequest() {
@@ -32,6 +36,10 @@ public class StudySpacesData {
     }
     
     public Building[] getBuildings() {
-        return this.data;
+        return this.buildingData;
+    }
+    
+    public RoomKind[] getRoomKinds() {
+        return this.roomKindsData;
     }
 }

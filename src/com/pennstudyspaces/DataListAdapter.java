@@ -26,8 +26,12 @@ public class DataListAdapter extends SimpleAdapter {
     static final int[] TO = {R.id.item_building_name, R.id.item_room_kind,
                              R.id.item_num_rooms, R.id.item_amenities};
 
-    private DataListAdapter (Context ctx, List<? extends Map<String, ?>> data) {
+    private RoomKind[] roomKinds;
+    
+    private DataListAdapter (Context ctx, List<? extends Map<String, ?>> data,
+                             RoomKind[] roomKinds) {
         super (ctx, data, R.layout.main_item, FROM, TO);
+        this.roomKinds = roomKinds;
     }
     
     // overriding this lets us pass information into the view
@@ -43,25 +47,26 @@ public class DataListAdapter extends SimpleAdapter {
                                                  StudySpacesData data) {
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
         
-        for (Building building : data.getBuildings()) {
+        for (RoomKind roomKind : data.getRoomKinds()) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put(BUILDING, building.getName());
-            
-            ArrayList<RoomKind> roomKinds = building.getRoomKinds();
-            for (RoomKind rkEntry : roomKinds) {
-                map.put(ROOMKIND, rkEntry.getName());
-                map.put(AMENITIES, processAmenities(rkEntry));
-                map.put(NUM_ROOMS, String.valueOf(rkEntry.getRooms().size()));
-            }
+            map.put(BUILDING, roomKind.getParentBuilding().getName());
+            map.put(ROOMKIND, roomKind.getName());
+            map.put(AMENITIES, processAmenities(roomKind));
+            map.put(NUM_ROOMS, String.valueOf(roomKind.getRooms().size()));
 
             entries.add(map);
         }
-        
-        return new DataListAdapter (ctx, entries);
+
+        return new DataListAdapter (ctx, entries, data.getRoomKinds());
+    }
+
+    @Override
+    public Object getItem (int position) {
+        return this.roomKinds[position];
     }
     
     private static String processAmenities (RoomKind kind) {
-        StringBuilder result = new StringBuilder(4);
+        StringBuilder result = new StringBuilder(5);
         if (kind.getPrivacy() == RoomKind.Privacy.PRIVATE)
             result.append("P");
         if (kind.hasComputer())

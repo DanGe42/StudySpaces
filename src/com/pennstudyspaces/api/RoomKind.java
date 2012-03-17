@@ -24,6 +24,7 @@ public class RoomKind {
     private Reserve reserveType;
     private int capacity;
     private ArrayList<Room> rooms;
+    private Building parent;
 
     public enum Privacy {
         COMMON,
@@ -68,6 +69,10 @@ public class RoomKind {
 
     public ArrayList<Room> getRooms() {
         return rooms;
+    }
+    
+    public Building getParentBuilding() {
+        return this.parent;
     }
 
     @JsonSetter("max_occupancy")
@@ -117,5 +122,13 @@ public class RoomKind {
 
     private void setRooms(ArrayList<Room> rooms) {
         this.rooms = rooms;
+        
+        for (Room room : rooms) {
+            room.setParentRoomKind(this);
+        }
+    }
+    
+    void setParentBuilding(Building parent) {
+        this.parent = parent;
     }
 }

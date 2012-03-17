@@ -1,5 +1,6 @@
 package com.pennstudyspaces;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,11 @@ public class RoomDetailsActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.room_details);
         
+        initMap();
+        initData();
+    }
+    
+    private void initMap() {
         Properties properties = new Properties();
         try {
             properties.load(
@@ -41,6 +47,15 @@ public class RoomDetailsActivity extends MapActivity {
             Toast.makeText(this, "Could not load properties file. Check logcat.",
                     Toast.LENGTH_LONG).show();
         }
+    }
+    
+    private void initData() {
+        Intent intent = getIntent();
+
+    }
+
+    private void setLocationOnMap(double latitude, double longitude) {
+        
     }
 
     @Override

@@ -52,5 +52,9 @@ public class Building {
 
     private void setRoomkinds(ArrayList<RoomKind> roomkinds) {
         this.roomkinds = roomkinds;
+        
+        for (RoomKind kind : roomkinds) {
+            kind.setParentBuilding(this);
+        }
     }
 }
