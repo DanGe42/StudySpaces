@@ -2,21 +2,8 @@ package com.pennstudyspaces.api;
 
 import org.codehaus.jackson.annotate.JsonSetter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Daniel Ge
- * Date: 3/7/12
- * Time: 10:39 PM
- * To change this template use File | Settings | File Templates.
- */
 public class RoomKind {
     private boolean hasProjector, hasComputer, hasWhiteboard;
     private String name, comments;
@@ -24,6 +11,7 @@ public class RoomKind {
     private Reserve reserveType;
     private int capacity;
     private ArrayList<Room> rooms;
+    private Building parent;
 
     public enum Privacy {
         COMMON,
@@ -68,6 +56,10 @@ public class RoomKind {
 
     public ArrayList<Room> getRooms() {
         return rooms;
+    }
+    
+    public Building getParentBuilding() {
+        return this.parent;
     }
 
     @JsonSetter("max_occupancy")
@@ -117,5 +109,13 @@ public class RoomKind {
 
     private void setRooms(ArrayList<Room> rooms) {
         this.rooms = rooms;
+        
+        for (Room room : rooms) {
+            room.setParentRoomKind(this);
+        }
+    }
+    
+    void setParentBuilding(Building parent) {
+        this.parent = parent;
     }
 }

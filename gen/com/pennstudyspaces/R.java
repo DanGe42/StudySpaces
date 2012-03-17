@@ -31,6 +31,7 @@ public final class R {
         public static final int private_check=0x7f060010;
         public static final int projector_check=0x7f060013;
         public static final int refresh_button=0x7f060001;
+        public static final int reserveButton=0x7f06001c;
         public static final int roomTitle=0x7f060014;
         public static final int search_button=0x7f060000;
         public static final int spaces_list=0x7f060002;

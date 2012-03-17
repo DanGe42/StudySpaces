@@ -3,32 +3,40 @@ package com.pennstudyspaces;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.SimpleAdapter;
 
 import com.pennstudyspaces.api.ApiRequest;
+import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-	public static final int ACTIVITY_OptionsActivity = 1;
-    
+    private StudySpacesApplication app;
     private ListView spacesList;
     
-    private static final int ITEM_SELECT_DIALOG = 1;
+    public static final int ACTIVITY_OptionsActivity = 1;
+    
+    // Intent constants for RoomDetailsActivity
+    public static final String BUILDING   = "building",
+                               LONGITUDE  = "longitude",
+                               LATITUDE   = "latitude",
+                               NAME       = "name",
+                               PROJECTOR  = "projector",
+                               COMPUTER   = "computer",
+                               PRIVACY    = "privacy",
+                               WHITEBOARD = "whiteboard",
+                               CAPACITY   = "capacity",
+                               RESERVE    = "reserve";
 
     /** Called when the activity is first created. */
     @Override
@@ -36,6 +44,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        app = (StudySpacesApplication) getApplication();
         spacesList = (ListView) findViewById(R.id.spaces_list);
         
         // Display the below TextView instead if the spaces list is empty
@@ -47,20 +56,30 @@ public class MainActivity extends Activity {
         	public void onItemClick(AdapterView<?> parentView, View childView,
         			int position, long id) {
         		// Get the building name of the place that was just clicked on
-        		Bundle bldginfo = new Bundle();
-        		String buildingname = ((TextView) childView.findViewById(R.id.item_building_name)).getText().toString();
-        		String amenities = ((TextView) childView.findViewById(R.id.item_amenities)).getText().toString();
-        		bldginfo.putString("building", buildingname);
-        		bldginfo.putString("amenities", amenities);
-        		removeDialog(ITEM_SELECT_DIALOG);
-        		showDialog(ITEM_SELECT_DIALOG, bldginfo);
-        	}  
-        }); 
+                Intent intent = new Intent(getApplicationContext(),
+                                           RoomDetailsActivity.class);
+                SimpleAdapter adapter = (SimpleAdapter) parentView.getAdapter();
+                RoomKind kind = (RoomKind) adapter.getItem(position);
+                
+                // Stuff some information into the Intent
+                intent.putExtra(BUILDING  , kind.getParentBuilding().getName());
+                intent.putExtra(LONGITUDE , kind.getParentBuilding().getLongitude());
+                intent.putExtra(LATITUDE  , kind.getParentBuilding().getLatitude());
+                
+                intent.putExtra(PROJECTOR , kind.hasProjector());
+                intent.putExtra(COMPUTER  , kind.hasComputer());
+                intent.putExtra(NAME      , kind.getName());
+                intent.putExtra(PRIVACY   , kind.getPrivacy());
+                intent.putExtra(WHITEBOARD, kind.hasWhiteboard());
+                intent.putExtra(CAPACITY  , kind.getCapacity());
+                intent.putExtra(RESERVE   , kind.getReserveType());
+                
+                startActivity(intent);
+        	}
+        });
         
         // Populate list of StudySpaces
-        ApiRequest req = new ApiRequest("json", true);
-        Log.d(TAG, "API request created: " + req.toString());
-        (new SendRequestTask(this)).execute(req);
+        refresh();
     }
     
     public void search(View view) {
@@ -69,12 +88,16 @@ public class MainActivity extends Activity {
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
     }
     
-    public void refresh (View v) {
+    public void refreshButton (View v) {
+        refresh();
+    }
+    
+    public void refresh() {
         ApiRequest req = new ApiRequest("json", true);
-        
+
         Log.d(TAG, "API request created: " + req.toString());
 
-        (new SendRequestTask(this)).execute(req);
+        (new SendRequestTask(this)).execute();
     }
     
     //Test button for opening a mapView
@@ -91,7 +114,6 @@ public class MainActivity extends Activity {
     	
     	switch(requestCode) {
     		case ACTIVITY_OptionsActivity:
-    			
     			int[] intArray = (int[])intent.getExtras().get("INT_ARRAY");
     			boolean[] boolArray = (boolean[])intent.getExtras().get("BOOL_ARRAY");
     			
@@ -119,58 +141,16 @@ public class MainActivity extends Activity {
     	        req.setProjector(projector);
     	        req.setComputer(computer);
     	        
-    	        Log.d(TAG, "API request created: " + req.toString());
-    	        (new SendRequestTask(this)).execute(req);
+                app.setData(new StudySpacesData(req));
+                refresh();
     	        
     			break;
     	}
     }
     
-    protected Dialog onCreateDialog(int id, Bundle b) {
-    	if (id == ITEM_SELECT_DIALOG) {
-    		String building = b.getString("building");
-    		final String amenities = b.getString("amenities");
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	
-	    	if(building != null) { 
-	    		builder.setMessage(building);
-	    	}
-	    	
-	    	builder.setPositiveButton("Info", new DialogInterface.OnClickListener() {
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			roomDetails();
-	    		}
-	    	});
-	    	
-	    	builder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-	    		public void onClick(DialogInterface dialog, int id) {
-	    			dialog.cancel();
-	    		}
-	    	});
-	    	
-	    	if(amenities.contains("R")) {
-		    	builder.setNeutralButton("Reserve", new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			// TODO we need to be able to pass in more info into these views
-		    			// namely the room number and a more elegant way to see if it's reservable
-		    			// this is some dummy hardcoded reservation for a GSR
-		    			String url = "http://pennstudyspaces.com/deeplink?date=2012-02-25&time_from=2330&time_to=30&room=189";
-		    			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		    			
-		    			dialog.cancel();
-		    			startActivity(browserIntent);
-		    		}
-		    	});
-	    	}
-	    	
-    		return builder.create();
-    	}
-		return null;
-    }
-    
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
-            extends AsyncTask<ApiRequest, Void, StudySpacesData> {
+            extends AsyncTask<Void, Void, StudySpacesData> {
         Context ctx;
         ProgressDialog dialog;
 
@@ -186,13 +166,12 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected StudySpacesData doInBackground(ApiRequest... req) {
-            // we don't need to publish progress updates, unless we want to implement some kind of timeout
-            // publishProgress();
+        protected StudySpacesData doInBackground(Void... req) {
+            // we don't need to publish progress updates, unless we want to
+            // implement some kind of timeout publishProgress();
             try {
-                StudySpacesData data = new StudySpacesData(req[0]);
-                data.pullData();
-                return data;
+                app.updateData();
+                return app.getData();
             }
             catch (IOException e) {
                 Log.e(TAG, "Something bad happened", e);

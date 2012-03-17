@@ -133,6 +133,7 @@
         />
 
     <Button
+        android:id="@+id/reserveButton"
         style="@style/PlainText"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
