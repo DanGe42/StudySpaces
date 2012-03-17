@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
         		// Get the building name of the place that was just clicked on
                 Intent intent = new Intent(getApplicationContext(),
                                            RoomDetailsActivity.class);
+                
                 SimpleAdapter adapter = (SimpleAdapter) parentView.getAdapter();
                 RoomKind kind = (RoomKind) adapter.getItem(position);
                 
