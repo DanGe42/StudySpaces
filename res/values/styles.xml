@@ -7,8 +7,7 @@
     <style name="ColorTitle">
         <item name="android:textColor">#0099CC</item>
         <item name="android:textSize">20sp</item> 
-        <item name="android:textStyle">bold</item> 
-        <item name="android:paddingBottom">10dp</item>  
+        <item name="android:textStyle">bold</item>   
     </style>
     
     <style name="TextField">

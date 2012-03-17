@@ -5,13 +5,27 @@
     android:orientation="vertical"
     android:background="#EEEEEE">
 
-    <TextView
-        style="@style/ColorTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Search Settings"
-
-        />
+        android:layout_weight="0"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:background="#333">
+    
+	    <TextView
+	        style="@style/ColorTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+	        android:text="Search Settings"
+	        />
+    
+    </LinearLayout>
     
     <!-- Number of people fields -->
     <TextView

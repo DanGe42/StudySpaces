@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
@@ -63,15 +65,51 @@ public class RoomDetailsActivity extends MapActivity {
         boolean projector  = extras.getBoolean(MainActivity.PROJECTOR);
         boolean computer   = extras.getBoolean(MainActivity.COMPUTER);
         boolean whiteboard = extras.getBoolean(MainActivity.WHITEBOARD);
-        String name        = extras.getString(MainActivity.NAME);
+        String roomName    = extras.getString(MainActivity.NAME);
         int capacity       = extras.getInt(MainActivity.CAPACITY);
 
-        Privacy privacy = (Privacy) extras.getSerializable(MainActivity.PRIVACY);
-        Reserve reserve = (Reserve) extras.getSerializable(MainActivity.RESERVE);
+        boolean privacy =
+                ((Privacy) extras.getSerializable(MainActivity.PRIVACY) ==
+                        Privacy.PRIVATE);
+        boolean reserve =
+                ((Reserve) extras.getSerializable(MainActivity.RESERVE) ==
+                        Reserve.EXTERNAL);
+
+
+        TextView titleText     = (TextView) findViewById(R.id.roomTitle);
+        titleText.setText(roomName);
+
+        TextView buildingText  = (TextView) findViewById(R.id.text_building);
+        buildingText.setText(building);
+
+        TextView capacityText  = (TextView) findViewById(R.id.text_occupancy);
+        capacityText.setText(String.valueOf(capacity));
+
+        TextView projectorText = (TextView) findViewById(R.id.text_projector);
+        projectorText.setText(boolToString(projector));
+
+        TextView computerText  = (TextView) findViewById(R.id.text_computer);
+        computerText.setText(boolToString(computer));
+
+        TextView wbText        = (TextView) findViewById(R.id.text_whiteboard);
+        wbText.setText(boolToString(whiteboard));
+
+        TextView privacyText   = (TextView) findViewById(R.id.text_privacy);
+        privacyText.setText(boolToString(privacy));
+
+
+        Button reserveButton = (Button) findViewById(R.id.reserveButton);
+        reserveButton.setEnabled(reserve);
+
+        setLocationOnMap(latitude, longitude);
     }
 
     private void setLocationOnMap(double latitude, double longitude) {
 
+    }
+    
+    private String boolToString(boolean b) {
+        return b ? "yes" : "no";
     }
 
     @Override
@@ -84,7 +122,10 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void back(View view) {
-    	finish();
+    	Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+              .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
     
     public void reserve(View view) {
