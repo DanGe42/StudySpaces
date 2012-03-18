@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
     public void refresh() {
         ApiRequest req = new ApiRequest("json", true);
 
-        Log.d(TAG, "API request created: " + req.toString());
+        Log.d(TAG, "API request created: " + app.getData().getApiRequest().toString());
 
         (new SendRequestTask(this)).execute();
     }
@@ -215,6 +215,7 @@ public class MainActivity extends Activity {
             dialog.dismiss();
             dialog = null;
             spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+            
         }
     }
 }

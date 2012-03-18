@@ -104,8 +104,9 @@ public class RoomDetailsActivity extends MapActivity {
         
         // Note: the textview here isn't grabbed in one line because  
         // it was causing some strange class cast exception
-        View ptext   = findViewById(R.id.text_privacy);
-        TextView privacyText = (TextView) ptext;
+        
+        //View ptext   = ;
+        TextView privacyText = (TextView) findViewById(R.id.text_privacy);
         privacyText.setText(boolToString(privacy));
         
         ImageView projectorText = (ImageView) findViewById(R.id.text_projector);
@@ -192,5 +193,23 @@ public class RoomDetailsActivity extends MapActivity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
         startActivity(browserIntent);
+    }
+    public void amenityTooltip(View view) {
+    	Context context = getApplicationContext();
+    	CharSequence text = "";
+    	switch (view.getId()){
+	    	case R.id.text_computer:
+	    		text = "This room has a computer.";
+	        	break;
+	    	case R.id.text_projector:
+	    		text = "This room has a projector.";
+	        	break;
+	    	case R.id.text_whiteboard:
+	    		text = "This room has a whiteboard or a chalkboard.";
+	        	break;
+    	}
+    	
+    	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+    	toast.show();
     }
 }
