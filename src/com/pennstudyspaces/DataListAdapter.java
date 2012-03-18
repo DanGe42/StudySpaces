@@ -73,7 +73,14 @@ public class DataListAdapter extends SimpleAdapter {
             map.put(BUILDING, roomKind.getParentBuilding().getName());
             map.put(ROOMKIND, roomKind.getName());
             map.put(AMENITIES, processAmenities(roomKind));
-            map.put(NUM_ROOMS, String.valueOf(roomKind.getRooms().size()));
+            String roomstr = roomKind.getRooms().get(0).getName();
+            int numrooms = roomKind.getRooms().size();
+            if((numrooms-1) > 0) {
+            	map.put(NUM_ROOMS, roomstr+" (and "+(numrooms-1)+" others)");
+            }
+            else {
+            	map.put(NUM_ROOMS, roomstr);
+            }
 
             entries.add(map);
         }
