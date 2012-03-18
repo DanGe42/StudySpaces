@@ -1,6 +1,8 @@
 package com.pennstudyspaces;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,6 +28,7 @@ public class MainActivity extends Activity {
 
     private StudySpacesApplication app;
     private ListView spacesList;
+    private String reserveString;
     
     public static final int ACTIVITY_OptionsActivity = 1;
     
@@ -42,7 +45,9 @@ public class MainActivity extends Activity {
                                WHITEBOARD = "whiteboard",
                                CAPACITY   = "capacity",
                                RESERVE    = "reserve",
-                               COMMENT    = "comment";
+                               COMMENT    = "comment",
+    						   RESLINK 	  = "reservelink",
+    						   ROOMNUM 	  = "roomnum";
 
     /** Called when the activity is first created. */
     @Override
@@ -64,6 +69,7 @@ public class MainActivity extends Activity {
         		// Get the building name of the place that was just clicked on
                 Intent intent = new Intent(getApplicationContext(),
                                            RoomDetailsActivity.class);
+                
                 SimpleAdapter adapter = (SimpleAdapter) parentView.getAdapter();
                 RoomKind kind = (RoomKind) adapter.getItem(position);
                 
@@ -80,12 +86,35 @@ public class MainActivity extends Activity {
                 intent.putExtra(CAPACITY  , kind.getCapacity());
                 intent.putExtra(RESERVE   , kind.getReserveType());
                 intent.putExtra(COMMENT   , kind.getComments());
-                
+
+                intent.putExtra(RESLINK   , reserveString);
+                intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
                 startActivity(intent);
         	}
         });
         
         // Populate list of StudySpaces
+        // Performs a default search using the current time
+        Calendar now = Calendar.getInstance();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int month = now.get(Calendar.MONTH);
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        int year = now.get(Calendar.YEAR);
+        String date = String.format("date=%d-%d-%d", year,month,day);
+		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
+		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
+		reserveString = date+"&"+fromTime+"&"+toTime;
+        ApiRequest req = new ApiRequest("json", false);
+        req.setNumberOfPeople(1);
+        req.setStartTime((hour+1)%23, 0);
+        req.setEndTime((hour+2)%23, 0);
+        req.setDate(year, month, day);
+        req.setPrivate(false);
+        req.setWhiteboard(false);
+        req.setProjector(false);
+        req.setComputer(false);
+        
+        app.setData(new StudySpacesData(req));
         refresh();
     }
     
@@ -102,7 +131,7 @@ public class MainActivity extends Activity {
     public void refresh() {
         ApiRequest req = new ApiRequest("json", true);
 
-        Log.d(TAG, "API request created: " + req.toString());
+        Log.d(TAG, "API request created: " + app.getData().getApiRequest().toString());
 
         (new SendRequestTask(this)).execute();
     }
@@ -154,6 +183,10 @@ public class MainActivity extends Activity {
     			int month = intArray[5];
     			int day = intArray[6];
     			int year = intArray[7];
+    			String date = String.format("date=%d-%d-%d", year,month,day);
+    			String fromTime = String.format("time_from=%02d%02d", fromTimeHour, fromTimeMin);
+    			String toTime = String.format("time_to=%02d%02d", toTimeHour, toTimeMin);
+    			reserveString = date+"&"+fromTime+"&"+toTime;
     			
     			boolean priv = boolArray[0];
     			boolean wboard = boolArray[1];
@@ -211,13 +244,14 @@ public class MainActivity extends Activity {
         protected void onPostExecute(StudySpacesData result) {
             dialog.dismiss();
             dialog = null;
-            
+
             if (result == null) {
                 showDialog(DIALOG_BAD_CONNECTION);
             }
             else {
                 spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
             }
+
         }
     }
 }

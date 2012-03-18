@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_marginRight="3dip"
             android:textStyle="bold"
-            android:textColor="#11DDEE"
+            android:textColor="#11CCFF"
             />
 
         <TextView
@@ -43,13 +43,58 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             />
-
+		<LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        >
+	            <ImageView
+	                android:id="@+id/item_proj"
+	                android:src="@drawable/ic_action_projector"
+	                android:contentDescription="@string/title_projector"
+	                android:scaleType="fitXY"
+	                android:layout_height="16dp"
+	                android:layout_width="16dp"
+	                android:layout_margin="1dp"
+	                />
+	
+	            <ImageView
+	                android:id="@+id/item_comp"
+	                android:src="@drawable/ic_action_monitor"
+	                android:contentDescription="@string/title_computer"
+	                android:scaleType="fitXY"               
+	                android:layout_height="16dp"
+	                android:layout_width="16dp"
+	                android:layout_margin="1dp"
+	                />
+	
+	            <ImageView
+	                android:id="@+id/item_board"
+	                android:src="@drawable/ic_action_chalkboard"
+	                android:contentDescription="@string/title_whiteboard"
+	                android:scaleType="fitXY"               
+	                android:layout_height="16dp"
+	                android:layout_width="16dp"
+	                android:layout_margin="1dp"
+	                />
+	            <ImageView
+	                android:id="@+id/item_private"
+	                android:src="@drawable/ic_action_eye"
+	                android:contentDescription="@string/title_whiteboard"
+	                android:scaleType="fitXY"               
+	                android:layout_height="16dp"
+	                android:layout_width="16dp"
+	                android:layout_margin="1dp"
+	                />
+		</LinearLayout>
         <TextView
             android:id="@+id/item_amenities"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="right"
-            android:textColor="#00DD00"
+            android:visibility="gone"
+            android:textColor="#DD1111"
             />
 
     </LinearLayout>

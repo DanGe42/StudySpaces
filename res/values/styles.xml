@@ -15,7 +15,7 @@
     </style>
     
     <style name="CheckboxText">
-        <item name="android:textColor">#777777</item>
+        <item name="android:textColor">#666666</item>
     </style>
     
     <style name="RoomDetailText">
@@ -28,4 +28,10 @@
         <item name="android:textColor">#333333</item>
         <item name="android:padding">3dip</item>
     </style>
+    
+    <style name="smallTitle">
+        <item name="android:textColor">#333333</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
 </resources>
