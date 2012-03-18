@@ -12,6 +12,7 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,22 +101,26 @@ public class RoomDetailsActivity extends MapActivity {
 
         TextView capacityText  = (TextView) findViewById(R.id.text_occupancy);
         capacityText.setText(String.valueOf(capacity));
-
-        TextView projectorText = (TextView) findViewById(R.id.text_projector);
-        projectorText.setText(boolToString(projector));
-
-        TextView computerText  = (TextView) findViewById(R.id.text_computer);
-        computerText.setText(boolToString(computer));
-
-        TextView wbText        = (TextView) findViewById(R.id.text_whiteboard);
-        wbText.setText(boolToString(whiteboard));
-
-        TextView privacyText   = (TextView) findViewById(R.id.text_privacy);
+        
+        // Note: the textview here isn't grabbed in one line because  
+        // it was causing some strange class cast exception
+        View ptext   = findViewById(R.id.text_privacy);
+        TextView privacyText = (TextView) ptext;
         privacyText.setText(boolToString(privacy));
+        
+        ImageView projectorText = (ImageView) findViewById(R.id.text_projector);
+        projectorText.setVisibility(projector ? View.VISIBLE : View.GONE);
+
+        ImageView computerText  = (ImageView) findViewById(R.id.text_computer);
+        computerText.setVisibility(computer ? View.VISIBLE : View.GONE);
+
+        ImageView wbText        = (ImageView) findViewById(R.id.text_whiteboard);
+        wbText.setVisibility(whiteboard ? View.VISIBLE : View.GONE);
 
 
         Button reserveButton = (Button) findViewById(R.id.reserveButton);
         reserveButton.setEnabled(reserve);
+        reserveButton.setVisibility(reserve ? View.VISIBLE : View.GONE);
 
         setLocationOnMap(latitude, longitude,roomName,building);
     }
@@ -180,7 +185,10 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void reserve(View view) {
-        String url = "http://pennstudyspaces.com/deeplink?date=2012-02-25&time_from=2330&time_to=30&room=189";
+    	Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        int roomnum = extras.getInt(MainActivity.ROOMNUM);
+        String url = "http://pennstudyspaces.com/deeplink?"+extras.getString(MainActivity.RESLINK)+"&room="+roomnum;
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
         startActivity(browserIntent);

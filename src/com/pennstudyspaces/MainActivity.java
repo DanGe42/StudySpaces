@@ -1,6 +1,8 @@
 package com.pennstudyspaces;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -23,6 +25,7 @@ public class MainActivity extends Activity {
 
     private StudySpacesApplication app;
     private ListView spacesList;
+    private String reserveString;
     
     public static final int ACTIVITY_OptionsActivity = 1;
     
@@ -36,7 +39,9 @@ public class MainActivity extends Activity {
                                PRIVACY    = "privacy",
                                WHITEBOARD = "whiteboard",
                                CAPACITY   = "capacity",
-                               RESERVE    = "reserve";
+                               RESERVE    = "reserve",
+    						   RESLINK 	  = "reservelink",
+    						   ROOMNUM 	  = "roomnum";
 
     /** Called when the activity is first created. */
     @Override
@@ -74,12 +79,34 @@ public class MainActivity extends Activity {
                 intent.putExtra(WHITEBOARD, kind.hasWhiteboard());
                 intent.putExtra(CAPACITY  , kind.getCapacity());
                 intent.putExtra(RESERVE   , kind.getReserveType());
-                
+                intent.putExtra(RESLINK   , reserveString);
+                intent.putExtra(ROOMNUM, kind.getRooms().get(0).getId());
                 startActivity(intent);
         	}
         });
         
         // Populate list of StudySpaces
+        // Performs a default search using the current time
+        Calendar now = Calendar.getInstance();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int month = now.get(Calendar.MONTH);
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        int year = now.get(Calendar.YEAR);
+        String date = String.format("date=%d-%d-%d", year,month,day);
+		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
+		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
+		reserveString = date+"&"+fromTime+"&"+toTime;
+        ApiRequest req = new ApiRequest("json", false);
+        req.setNumberOfPeople(1);
+        req.setStartTime((hour+1)%23, 0);
+        req.setEndTime((hour+2)%23, 0);
+        req.setDate(year, month, day);
+        req.setPrivate(false);
+        req.setWhiteboard(false);
+        req.setProjector(false);
+        req.setComputer(false);
+        
+        app.setData(new StudySpacesData(req));
         refresh();
     }
     
@@ -126,6 +153,10 @@ public class MainActivity extends Activity {
     			int month = intArray[5];
     			int day = intArray[6];
     			int year = intArray[7];
+    			String date = String.format("date=%d-%d-%d", year,month,day);
+    			String fromTime = String.format("time_from=%02d%02d", fromTimeHour, fromTimeMin);
+    			String toTime = String.format("time_to=%02d%02d", toTimeHour, toTimeMin);
+    			reserveString = date+"&"+fromTime+"&"+toTime;
     			
     			boolean priv = boolArray[0];
     			boolean wboard = boolArray[1];

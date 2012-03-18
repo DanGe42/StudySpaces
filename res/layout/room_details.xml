@@ -74,43 +74,6 @@
                 android:id="@+id/text_occupancy"
                 />
         </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_projector"
-                />
-            
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_projector"
-                />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_computer"
-                />
-
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_computer"
-                />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_whiteboard"
-                />
-
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_whiteboard"
-                />
-        </TableRow>
-
         <TableRow>
             <TextView
                 style="@style/RoomDetailText"                
@@ -122,7 +85,44 @@
                 android:id="@+id/text_privacy"
                 />
         </TableRow>
-    </TableLayout>
+        </TableLayout>
+		<LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        >
+	            <ImageView
+	                android:id="@+id/text_projector"
+	                android:src="@drawable/ic_action_projector"
+	                android:contentDescription="@string/title_projector"
+	                android:scaleType="fitXY"
+	                android:layout_height="30dp"
+	                android:layout_width="30dp"
+	                android:layout_margin="10dp"
+	                />
+	
+	            <ImageView
+	                android:id="@+id/text_computer"
+	                android:src="@drawable/ic_action_monitor"
+	                android:contentDescription="@string/title_computer"
+	                android:scaleType="fitXY"               
+	                android:layout_height="30dp"
+	                android:layout_width="30dp"
+	                android:layout_margin="10dp"
+	                />
+	
+	            <ImageView
+	                android:id="@+id/text_whiteboard"
+	                android:src="@drawable/ic_action_chalkboard"
+	                android:contentDescription="@string/title_whiteboard"
+	                android:scaleType="fitXY"               
+	                android:layout_height="30dp"
+	                android:layout_width="30dp"
+	                android:layout_margin="10dp"
+	                />
+		</LinearLayout>
+        
+    
 
     <!-- A one-child container for the MapView -->
     <FrameLayout
