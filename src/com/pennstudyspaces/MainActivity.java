@@ -3,8 +3,11 @@ package com.pennstudyspaces;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +29,8 @@ public class MainActivity extends Activity {
     
     public static final int ACTIVITY_OptionsActivity = 1;
     
+    public static final int DIALOG_BAD_CONNECTION = 1;
+    
     // Intent constants for RoomDetailsActivity
     public static final String BUILDING   = "building",
                                LONGITUDE  = "longitude",
@@ -36,7 +41,8 @@ public class MainActivity extends Activity {
                                PRIVACY    = "privacy",
                                WHITEBOARD = "whiteboard",
                                CAPACITY   = "capacity",
-                               RESERVE    = "reserve";
+                               RESERVE    = "reserve",
+                               COMMENT    = "comment";
 
     /** Called when the activity is first created. */
     @Override
@@ -73,6 +79,7 @@ public class MainActivity extends Activity {
                 intent.putExtra(WHITEBOARD, kind.hasWhiteboard());
                 intent.putExtra(CAPACITY  , kind.getCapacity());
                 intent.putExtra(RESERVE   , kind.getReserveType());
+                intent.putExtra(COMMENT   , kind.getComments());
                 
                 startActivity(intent);
         	}
@@ -103,6 +110,28 @@ public class MainActivity extends Activity {
     //Test button for opening a mapView
     public void roomDetails() {
         startActivity(new Intent(this, RoomDetailsActivity.class));
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder;
+
+        switch (id) {
+            case DIALOG_BAD_CONNECTION:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Error")
+                       .setMessage("Could not connect to Penn StudySpaces. Please" +
+                               " check your connection and touch Refresh.")
+                       .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                       });
+                return builder.create();
+        }
+
+        return null;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -182,7 +211,13 @@ public class MainActivity extends Activity {
         protected void onPostExecute(StudySpacesData result) {
             dialog.dismiss();
             dialog = null;
-            spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+            
+            if (result == null) {
+                showDialog(DIALOG_BAD_CONNECTION);
+            }
+            else {
+                spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+            }
         }
     }
 }
