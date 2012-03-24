@@ -49,17 +49,16 @@ public class DataListAdapter extends SimpleAdapter {
 		TextView amenities = (TextView) v.findViewById(R.id.item_amenities);
 		String amentext = amenities.getText().toString();
 		
-		ImageView proj = (ImageView) v.findViewById(R.id.item_proj);
-		ImageView comp = (ImageView) v.findViewById(R.id.item_comp);
-		ImageView board = (ImageView) v.findViewById(R.id.item_board);
-		ImageView priv = (ImageView) v.findViewById(R.id.item_private);
-		proj.setVisibility(amentext.contains("p") ? View.VISIBLE : View.GONE);
-		comp.setVisibility(amentext.contains("c") ? View.VISIBLE : View.GONE);
-		board.setVisibility(amentext.contains("w") ? View.VISIBLE : View.GONE);
-		priv.setVisibility(amentext.contains("P") ? View.VISIBLE : View.GONE);
-		//textView.setText();
-		// Change the icon for Windows and iPhone
-		
+		ImageView proj   = (ImageView) v.findViewById(R.id.item_proj);
+		ImageView comp   = (ImageView) v.findViewById(R.id.item_comp);
+		ImageView board  = (ImageView) v.findViewById(R.id.item_board);
+		ImageView priv   = (ImageView) v.findViewById(R.id.item_private);
+		ImageView reserv = (ImageView) v.findViewById(R.id.item_reservable);
+		proj.setVisibility(  amentext.contains("p") ? View.VISIBLE : View.GONE);
+		comp.setVisibility(  amentext.contains("c") ? View.VISIBLE : View.GONE);
+		board.setVisibility( amentext.contains("w") ? View.VISIBLE : View.GONE);
+		priv.setVisibility(  amentext.contains("P") ? View.VISIBLE : View.GONE);
+		reserv.setVisibility(amentext.contains("R") ? View.VISIBLE : View.GONE);		
     	 
 		return v;
     }

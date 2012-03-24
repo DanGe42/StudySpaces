@@ -87,6 +87,15 @@
 	                android:layout_width="16dp"
 	                android:layout_margin="1dp"
 	                />
+	            <ImageView
+	                android:id="@+id/item_reservable"
+	                android:src="@drawable/ic_action_reservable"
+	                android:contentDescription="@string/title_privacy"
+	                android:scaleType="fitXY"               
+	                android:layout_height="16dp"
+	                android:layout_width="16dp"
+	                android:layout_margin="1dp"
+	                />
 		</LinearLayout>
         <TextView
             android:id="@+id/item_amenities"
