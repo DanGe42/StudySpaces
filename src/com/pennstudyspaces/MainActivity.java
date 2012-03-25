@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
         int day = now.get(Calendar.DAY_OF_MONTH);
         int year = now.get(Calendar.YEAR);
         
-        String date = String.format("date=%d-%d-%d", year,month,day);
+        String date = String.format("date=%d-%d-%d", year,(month+1),day);
 		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
 		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
 		reserveString = date+"&"+fromTime+"&"+toTime;

@@ -119,23 +119,6 @@ public class SearchActivity extends Activity {
 		fromTimeHour = fromPos;
 		toTimeHour = toPos;
 		
-		/*
-		fromTime = fromSpinner.getItemAtPosition(fromPos).toString();
-		int fromColonPos = fromTime.indexOf(":");
-		fromTimeHour = Integer.parseInt(fromTime.substring(0, fromColonPos));
-		
-		toTime = toSpinner.getItemAtPosition(toPos).toString();
-		int toColonPos = toTime.indexOf(":");
-		toTimeHour = Integer.parseInt(toTime.substring(0, toColonPos));
-		
-		//toTime is always after fromTime, so we only need to check
-		//if fromTime is PM
-		if(fromPos > 11) {
-			fromTimeHour += 12;
-			toTimeHour += 12;
-		}
-		*/
-		
 		//Amenities Fields
 		priv = ((CheckBox)findViewById(R.id.private_check)).isChecked();
 		wboard = ((CheckBox)findViewById(R.id.whiteboard_check)).isChecked();
