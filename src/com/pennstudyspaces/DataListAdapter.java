@@ -74,6 +74,10 @@ public class DataListAdapter extends SimpleAdapter {
         icon.setVisibility(amentext.contains(find) ? View.VISIBLE : View.GONE);
     }
     
+    public void setRoomArray(RoomKind[] input) {
+    	roomKinds = input;
+    }
+    
     public static DataListAdapter createAdapter (Context ctx,
                                                  StudySpacesData data) {
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
@@ -115,31 +119,38 @@ public class DataListAdapter extends SimpleAdapter {
             double distance = distFrom(latitude, longitude, klat, klon);
             distances[i] = distance;
         }
+        
         for ( int i = 0; i < kinds.length ; i++) {
             // find min dist, use that index as the first element, update its value
             double min = Double.MAX_VALUE;
             int indx = 0;
+            
             for( int j = 0; j < distances.length; j++) {
                 if (distances[j] < min) {       // if we find a smaller distance
                     min = distances[j];         // treat that as the new min
                     indx = j;                   // and remember it's index
                 }
             }
+            
             sortedkinds[i] = kinds[indx];       // add the min distance kind to the list
-            distances[indx] = Double.MAX_VALUE; // set it's distance to infinity so we don't count it again
-        }  
+            distances[indx] = Double.MAX_VALUE; // set its distance to infinity so we don't count it again
+        }
+        
         Log.e("createSortedAdapter","the first roomkind is "+sortedkinds[0].getParentBuilding().getName());
         for (RoomKind roomKind : sortedkinds) {
             
             Building parent = roomKind.getParentBuilding();
             double klat = parent.getLatitude();
             double klon = parent.getLongitude();
+            
             String humanDistance = String.format("(%.2fmi)",distFrom(latitude, longitude, klat, klon));
+            
             Map<String, String> map = new HashMap<String, String>();
             map.put(BUILDING, roomKind.getParentBuilding().getName());
             map.put(DISTANCE, humanDistance);
             map.put(ROOMKIND, roomKind.getName());
             map.put(AMENITIES, processAmenities(roomKind));
+            
             String roomstr = roomKind.getRooms().get(0).getName();
             int numrooms = roomKind.getRooms().size();
             if((numrooms-1) > 0) {
@@ -152,7 +163,7 @@ public class DataListAdapter extends SimpleAdapter {
             entries.add(map);
         }
         
-        return new DataListAdapter (ctx, entries, data.getRoomKinds());
+        return new DataListAdapter (ctx, entries, sortedkinds);
     }
     
     // taken from http://stackoverflow.com/questions/120283/working-with-latitude-longitude-values-in-java

@@ -88,7 +88,10 @@ public class SearchActivity extends Activity {
 		toSpinner.setAdapter(adapter);
 		fromSpinner.setAdapter(adapter);
 		
-		toSpinner.setSelection(1);
+		//Set default time to 9 - 10AM, seeing as no one really wants to
+		//reserve a room at midnight.
+		fromSpinner.setSelection(9);
+		toSpinner.setSelection(10);
 	}
 	
 	public void submitOptions(View view) {
@@ -100,7 +103,7 @@ public class SearchActivity extends Activity {
 		}
 		
 		//Start & End Time fields
-		String fromTime,toTime;
+		//String fromTime,toTime;
 		int fromPos = fromSpinner.getSelectedItemPosition();
 		int toPos = toSpinner.getSelectedItemPosition();
 		if(toPos <= fromPos) {
@@ -109,8 +112,14 @@ public class SearchActivity extends Activity {
 				toPos = 23;
 				fromPos = 22;
 			}
-		}		
+		}
 		
+		//Since the spinner indices correspond exactly to the hours, we don't
+		//need to do any parsing
+		fromTimeHour = fromPos;
+		toTimeHour = toPos;
+		
+		/*
 		fromTime = fromSpinner.getItemAtPosition(fromPos).toString();
 		int fromColonPos = fromTime.indexOf(":");
 		fromTimeHour = Integer.parseInt(fromTime.substring(0, fromColonPos));
@@ -125,6 +134,7 @@ public class SearchActivity extends Activity {
 			fromTimeHour += 12;
 			toTimeHour += 12;
 		}
+		*/
 		
 		//Amenities Fields
 		priv = ((CheckBox)findViewById(R.id.private_check)).isChecked();
