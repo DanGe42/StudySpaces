@@ -96,14 +96,17 @@ public class MainActivity extends Activity {
         // Populate list of StudySpaces
         // Performs a default search using the current time
         Calendar now = Calendar.getInstance();
+        
         int hour = now.get(Calendar.HOUR_OF_DAY);
         int month = now.get(Calendar.MONTH);
         int day = now.get(Calendar.DAY_OF_MONTH);
         int year = now.get(Calendar.YEAR);
+        
         String date = String.format("date=%d-%d-%d", year,month,day);
 		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
 		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
 		reserveString = date+"&"+fromTime+"&"+toTime;
+		
         ApiRequest req = new ApiRequest("json", false);
         req.setNumberOfPeople(1);
         req.setStartTime((hour+1)%23, 0);
@@ -176,13 +179,16 @@ public class MainActivity extends Activity {
     			boolean[] boolArray = (boolean[])intent.getExtras().get("BOOL_ARRAY");
     			
     			int numPeople = intArray[0];
+    			
     			int fromTimeHour = intArray[1];
     			int fromTimeMin = intArray[2];
     			int toTimeHour = intArray[3];
     			int toTimeMin = intArray[4];
+    			
     			int month = intArray[5];
     			int day = intArray[6];
     			int year = intArray[7];
+    			
     			String date = String.format("date=%d-%d-%d", year,month,day);
     			String fromTime = String.format("time_from=%02d%02d", fromTimeHour, fromTimeMin);
     			String toTime = String.format("time_to=%02d%02d", toTimeHour, toTimeMin);
@@ -195,9 +201,12 @@ public class MainActivity extends Activity {
     			
     	        ApiRequest req = new ApiRequest("json", false);
     	        req.setNumberOfPeople(numPeople);
+    	        
     	        req.setStartTime(fromTimeHour, fromTimeMin);
     	        req.setEndTime(toTimeHour, toTimeMin);
+    	        
     	        req.setDate(year, month, day);
+    	        
     	        req.setPrivate(priv);
     	        req.setWhiteboard(wboard);
     	        req.setProjector(projector);

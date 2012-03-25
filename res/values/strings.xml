@@ -5,7 +5,7 @@
     <!-- Search-related strings for SearchActivity-->
     <string name="search_hint">Search</string>
     <string name="num_people_hint">1 to 15</string>
-    <string name="from_hint">HH:MM</string>
+    <string name="from_hint">Select a time</string>
     <string name="date_hint">MM/DD/YYYY</string>
     
     <!-- MainActivity strings -->
@@ -21,4 +21,33 @@
     <string name="title_privacy">Private:</string>
     
     <string name="text_reserve_button">Reserve</string>
+    
+    <string-array name="time_array">
+        <!-- 12 AM is considered 0 in 24 hour time -->
+        <item>12:00 AM</item>        
+        <item>1:00 AM</item>
+        <item>2:00 AM</item>
+        <item>3:00 AM</item>
+        <item>4:00 AM</item>
+        <item>5:00 AM</item>
+        <item>6:00 AM</item>
+        <item>7:00 AM</item>
+        <item>8:00 AM</item>
+        <item>9:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>1:00 PM</item>
+        <item>2:00 PM</item>
+        <item>3:00 PM</item>
+        <item>4:00 PM</item>
+        <item>5:00 PM</item>
+        <item>6:00 PM</item>
+        <item>7:00 PM</item>
+        <item>8:00 PM</item>
+        <item>9:00 PM</item>
+        <item>10:00 PM</item>
+        <item>11:00 PM</item>             
+    </string-array>
+    
 </resources>

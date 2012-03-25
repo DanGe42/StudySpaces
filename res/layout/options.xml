@@ -80,9 +80,8 @@
 		        android:text="From"		        
 		        />
 		
-		    <EditText
-		        android:id="@+id/from"
-		        style="@style/TextField"
+		    <Spinner
+		        android:id="@+id/fromTime"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_below="@id/fromLabel"
@@ -103,9 +102,8 @@
 		        android:text="To"
 		        />
 		
-		    <EditText
-		        android:id="@+id/to"
-                style="@style/TextField"		        
+		    <Spinner
+		        android:id="@+id/toTime"		        
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
                 android:layout_below="@id/toLabel"		        
@@ -123,13 +121,27 @@
         android:paddingTop="10dp"        
         />
 
-    <EditText
-        android:id="@+id/date"        
-        style="@style/TextField"        
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/date_hint"
-        />    
+        android:orientation="horizontal" >
+		
+	    <Button
+	        android:id="@+id/dateButton"                
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Pick Date"
+	        />
+	    
+	    <TextView
+            style="@style/PlainText"
+            android:id="@+id/dateDisplay"        
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Date Set" 
+	        />
+	    
+    </LinearLayout>
     
     <!-- Room Option Checkboxes -->
     <TextView
