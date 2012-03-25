@@ -11,6 +11,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
 import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
@@ -29,6 +33,7 @@ public class MainActivity extends Activity {
     private StudySpacesApplication app;
     private ListView spacesList;
     private String reserveString;
+    private LocationManager locManager;
     
     public static final int ACTIVITY_OptionsActivity = 1;
     
@@ -54,7 +59,9 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        
+        locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        
         app = (StudySpacesApplication) getApplication();
         spacesList = (ListView) findViewById(R.id.spaces_list);
         
@@ -258,7 +265,22 @@ public class MainActivity extends Activity {
                 showDialog(DIALOG_BAD_CONNECTION);
             }
             else {
-                spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+                Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(location == null) {
+                    location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                if(location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    spacesList.setAdapter(DataListAdapter.createSortedAdapter(ctx, result, latitude, longitude));
+                }
+                else {
+                    // Set yourself at Huntsman (if you location isn't working)
+                    spacesList.setAdapter(DataListAdapter.createSortedAdapter(ctx, result, 39.953278,-75.19846));
+                    
+                    // default (when no location)
+                    //spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
+                }
             }
 
         }

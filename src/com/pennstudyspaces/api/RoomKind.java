@@ -1,8 +1,8 @@
 package com.pennstudyspaces.api;
 
-import org.codehaus.jackson.annotate.JsonSetter;
-
 import java.util.ArrayList;
+
+import org.codehaus.jackson.annotate.JsonSetter;
 
 public class RoomKind {
     private boolean hasProjector, hasComputer, hasWhiteboard;
@@ -118,4 +118,6 @@ public class RoomKind {
     void setParentBuilding(Building parent) {
         this.parent = parent;
     }
+
+
 }
