@@ -35,6 +35,8 @@ public class RoomDetailsActivity extends MapActivity {
 	private static final String TAG = RoomDetailsActivity.class.getSimpleName();
 	private MapView mapView;
 	private MapController mapController;
+    
+    private String reserveLink;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,7 @@ public class RoomDetailsActivity extends MapActivity {
         boolean whiteboard = extras.getBoolean(MainActivity.WHITEBOARD);
         String roomName    = extras.getString(MainActivity.NAME);
         int capacity       = extras.getInt(MainActivity.CAPACITY);
+        int roomId         = extras.getInt(MainActivity.ROOMNUM);
 
         boolean privacy =
                 ((Privacy) extras.getSerializable(MainActivity.PRIVACY) ==
@@ -92,6 +95,11 @@ public class RoomDetailsActivity extends MapActivity {
                 ((Reserve) extras.getSerializable(MainActivity.RESERVE) ==
                         Reserve.EXTERNAL);
 
+        String reslink = extras.getString(MainActivity.RESLINK);
+        
+        
+        this.reserveLink = "http://pennstudyspaces.com/deeplink?" + reslink +
+                "&room=" + roomId;
 
         TextView titleText     = (TextView) findViewById(R.id.roomTitle);
         titleText.setText(roomName);
@@ -102,10 +110,6 @@ public class RoomDetailsActivity extends MapActivity {
         TextView capacityText  = (TextView) findViewById(R.id.text_occupancy);
         capacityText.setText(String.valueOf(capacity));
         
-        // Note: the textview here isn't grabbed in one line because  
-        // it was causing some strange class cast exception
-        
-        //View ptext   = ;
         TextView privacyText = (TextView) findViewById(R.id.text_privacy);
         privacyText.setText(boolToString(privacy));
         
@@ -186,11 +190,8 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void reserve(View view) {
-    	Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        int roomnum = extras.getInt(MainActivity.ROOMNUM);
-        String url = "http://pennstudyspaces.com/deeplink?"+extras.getString(MainActivity.RESLINK)+"&room="+roomnum;
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(reserveLink));
 
         startActivity(browserIntent);
     }

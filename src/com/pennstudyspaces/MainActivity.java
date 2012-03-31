@@ -2,7 +2,6 @@ package com.pennstudyspaces;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,9 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 import com.pennstudyspaces.api.ApiRequest;
+import com.pennstudyspaces.api.ParamsRequest;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
 
@@ -114,10 +115,10 @@ public class MainActivity extends Activity {
 		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
 		reserveString = date+"&"+fromTime+"&"+toTime;
 		
-        ApiRequest req = new ApiRequest("json", false);
+        ParamsRequest req = new ParamsRequest("json");
         req.setNumberOfPeople(1);
-        req.setStartTime((hour+1)%23, 0);
-        req.setEndTime((hour+2)%23, 0);
+        req.setStartTime((hour + 1) % 23, 0);
+        req.setEndTime((hour + 2) % 23, 0);
         req.setDate(year, month, day);
         req.setPrivate(false);
         req.setWhiteboard(false);
@@ -139,8 +140,6 @@ public class MainActivity extends Activity {
     }
     
     public void refresh() {
-        ApiRequest req = new ApiRequest("json", true);
-
         Log.d(TAG, "API request created: " + app.getData().getApiRequest().toString());
 
         (new SendRequestTask(this)).execute();
@@ -206,7 +205,7 @@ public class MainActivity extends Activity {
     			boolean projector = boolArray[2];
     			boolean computer = boolArray[3];
     			
-    	        ApiRequest req = new ApiRequest("json", false);
+    	        ParamsRequest req = new ParamsRequest("json");
     	        req.setNumberOfPeople(numPeople);
     	        
     	        req.setStartTime(fromTimeHour, fromTimeMin);
