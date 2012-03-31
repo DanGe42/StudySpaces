@@ -1,9 +1,6 @@
 package com.pennstudyspaces;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import android.content.Context;
 import android.util.Log;
@@ -33,6 +30,8 @@ public class DataListAdapter extends SimpleAdapter {
                              R.id.item_num_rooms, R.id.item_amenities, R.id.item_dist};
 
     private RoomKind[] roomKinds;
+
+    private static Comparator<RoomKind> alphaSort = new AlphaComparator();
     
     private DataListAdapter (Context ctx, List<? extends Map<String, ?>> data,
                              RoomKind[] roomKinds) {
@@ -78,39 +77,31 @@ public class DataListAdapter extends SimpleAdapter {
     	roomKinds = input;
     }
     
-    public static DataListAdapter createAdapter (Context ctx,
-                                                 StudySpacesData data) {
-        List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
-        
-        for (RoomKind roomKind : data.getRoomKinds()) {
-            Map<String, String> map = new HashMap<String, String>();
-            map.put(BUILDING, roomKind.getParentBuilding().getName());
-            map.put(DISTANCE, "");
-            map.put(ROOMKIND, roomKind.getName());
-            map.put(AMENITIES, processAmenities(roomKind));
-            String roomstr = roomKind.getRooms().get(0).getName();
-            int numrooms = roomKind.getRooms().size();
-            if((numrooms-1) > 0) {
-            	map.put(NUM_ROOMS, roomstr+" (and "+(numrooms-1)+" others)");
-            }
-            else {
-            	map.put(NUM_ROOMS, roomstr);
-            }
+    public static DataListAdapter createDefaultAdapter(Context ctx,
+                                                       StudySpacesData data) {
+        RoomKind[] kinds = data.getRoomKinds();
 
-            entries.add(map);
-        }
-
-        return new DataListAdapter (ctx, entries, data.getRoomKinds());
+        return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
-    
-    public static DataListAdapter createSortedAdapter (Context ctx,
-            StudySpacesData data, double latitude, double longitude) {
-        
+
+    public static DataListAdapter createAlphaSortedAdapater(Context ctx,
+                                                            StudySpacesData data) {
+        RoomKind[] kinds = data.getRoomKinds();
+        Arrays.sort(kinds, alphaSort);
+
+        return new DataListAdapter (ctx, generateMapList(kinds), kinds);
+    }
+
+    public static DataListAdapter createLocationSortedAdapter(Context ctx,
+                                                              StudySpacesData data,
+                                                              double latitude,
+                                                              double longitude) {
+
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
         RoomKind kinds[]       = data.getRoomKinds();
         double distances[]     = new double[kinds.length];
         RoomKind sortedkinds[] = new RoomKind[kinds.length];
-        
+
         for ( int i = 0; i < kinds.length ; i++) {
             RoomKind kind = kinds[i];
             Building parent = kind.getParentBuilding();
@@ -119,38 +110,40 @@ public class DataListAdapter extends SimpleAdapter {
             double distance = distFrom(latitude, longitude, klat, klon);
             distances[i] = distance;
         }
-        
+
+        /* TODO: Is this a sorting algorithm? Why not use Arrays.sort? */
         for ( int i = 0; i < kinds.length ; i++) {
             // find min dist, use that index as the first element, update its value
             double min = Double.MAX_VALUE;
-            int indx = 0;
-            
+            int index = 0;
+
             for( int j = 0; j < distances.length; j++) {
                 if (distances[j] < min) {       // if we find a smaller distance
                     min = distances[j];         // treat that as the new min
-                    indx = j;                   // and remember it's index
+                    index = j;                   // and remember its index
                 }
             }
-            
-            sortedkinds[i] = kinds[indx];       // add the min distance kind to the list
-            distances[indx] = Double.MAX_VALUE; // set its distance to infinity so we don't count it again
+
+            sortedkinds[i] = kinds[index];       // add the min distance kind to the list
+            distances[index] = Double.MAX_VALUE; // set its distance to infinity so we don't count it again
         }
-        
-        Log.e("createSortedAdapter","the first roomkind is "+sortedkinds[0].getParentBuilding().getName());
+
+        Log.e("createLocationSortedAdapter","the first roomkind is " +
+                sortedkinds[0].getParentBuilding().getName());
         for (RoomKind roomKind : sortedkinds) {
-            
+
             Building parent = roomKind.getParentBuilding();
             double klat = parent.getLatitude();
             double klon = parent.getLongitude();
-            
+
             String humanDistance = String.format("(%.2fmi)",distFrom(latitude, longitude, klat, klon));
-            
+
             Map<String, String> map = new HashMap<String, String>();
             map.put(BUILDING, roomKind.getParentBuilding().getName());
             map.put(DISTANCE, humanDistance);
             map.put(ROOMKIND, roomKind.getName());
             map.put(AMENITIES, processAmenities(roomKind));
-            
+
             String roomstr = roomKind.getRooms().get(0).getName();
             int numrooms = roomKind.getRooms().size();
             if((numrooms-1) > 0) {
@@ -159,24 +152,25 @@ public class DataListAdapter extends SimpleAdapter {
             else {
                 map.put(NUM_ROOMS, roomstr);
             }
-            
+
             entries.add(map);
         }
-        
+
         return new DataListAdapter (ctx, entries, sortedkinds);
     }
-    
+
     // taken from http://stackoverflow.com/questions/120283/working-with-latitude-longitude-values-in-java
     public static double distFrom(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 3958.75;
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLon = Math.toRadians(lng2-lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLon = Math.sin(dLon / 2);
+
+        double dLat = Math.toRadians(lat2-lat1),
+               dLon = Math.toRadians(lng2-lng1);
+        double sindLat = Math.sin(dLat / 2),
+               sindLon = Math.sin(dLon / 2);
         double a = Math.pow(sindLat, 2) + Math.pow(sindLon, 2) * Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double dist = earthRadius * c;
-        
+
         return dist;
     }
 
@@ -184,7 +178,7 @@ public class DataListAdapter extends SimpleAdapter {
     public Object getItem (int position) {
         return this.roomKinds[position];
     }
-    
+
     private static String processAmenities (RoomKind kind) {
         StringBuilder result = new StringBuilder(5);
         if (kind.getPrivacy() == RoomKind.Privacy.PRIVATE)
@@ -197,7 +191,44 @@ public class DataListAdapter extends SimpleAdapter {
             result.append("w");
         if (kind.getReserveType() == RoomKind.Reserve.EXTERNAL)
             result.append("R");
-        
+
         return result.toString();
+    }
+
+    private static List<Map<String,String>> generateMapList (RoomKind[] kinds) {
+        List<Map<String,String>> entries = new ArrayList<Map<String, String>>();
+
+        for (RoomKind roomKind : kinds) {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put(BUILDING, roomKind.getParentBuilding().getName());
+            map.put(DISTANCE, "");
+            map.put(ROOMKIND, roomKind.getName());
+            map.put(AMENITIES, processAmenities(roomKind));
+
+            String roomstr = roomKind.getRooms().get(0).getName();
+            int numrooms = roomKind.getRooms().size();
+            if((numrooms-1) > 0) {
+                map.put(NUM_ROOMS, roomstr+" (and "+(numrooms-1)+" others)");
+            }
+            else {
+                map.put(NUM_ROOMS, roomstr);
+            }
+
+            entries.add(map);
+        }
+
+        return entries;
+    }
+
+    private static class AlphaComparator implements Comparator<RoomKind> {
+        @Override
+        public int compare (RoomKind r1, RoomKind r2) {
+            return r1.getName().compareTo(r2.getName());
+        }
+
+        @Override
+        public boolean equals (Object o) {
+            throw new UnsupportedOperationException("equals is not supported");
+        }
     }
 }

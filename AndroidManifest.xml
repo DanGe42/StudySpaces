@@ -25,6 +25,7 @@
         
         <activity android:name=".SearchActivity" />
         <activity android:name=".RoomDetailsActivity"/>
+        <activity android:name=".PrefsActivity"/>
 
     </application>
 

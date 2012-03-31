@@ -10,25 +10,28 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.ParamsRequest;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
 
-public class MainActivity extends Activity {
+import static android.content.SharedPreferences.*;
+
+public class MainActivity extends Activity implements OnSharedPreferenceChangeListener{
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private StudySpacesApplication app;
@@ -55,6 +58,9 @@ public class MainActivity extends Activity {
     						   RESLINK 	  = "reservelink",
     						   ROOMNUM 	  = "roomnum";
 
+    private static final int SORT_LOCATION = 1,
+                             SORT_ALPHA    = 2;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,7 @@ public class MainActivity extends Activity {
         
         app = (StudySpacesApplication) getApplication();
         spacesList = (ListView) findViewById(R.id.spaces_list);
+        app.getPrefs().registerOnSharedPreferenceChangeListener(this);
         
         // Display the below TextView instead if the spaces list is empty
         spacesList.setEmptyView(findViewById(R.id.spaces_list_empty));
@@ -145,7 +152,6 @@ public class MainActivity extends Activity {
         (new SendRequestTask(this)).execute();
     }
     
-    //Test button for opening a mapView
     public void roomDetails() {
         startActivity(new Intent(this, RoomDetailsActivity.class));
     }
@@ -224,7 +230,67 @@ public class MainActivity extends Activity {
     			break;
     	}
     }
-    
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemPrefs:
+                startActivity(new Intent(this, PrefsActivity.class));
+                break;
+        }
+
+        return true;
+    }
+
+    private void populateList(StudySpacesData data) {
+        SharedPreferences prefs = app.getPrefs();
+        int sortOption = Integer.parseInt(prefs.getString("sort", "1"));
+
+        switch (sortOption) {
+            case SORT_LOCATION:
+                Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(location == null) {
+                    location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                if(location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    spacesList.setAdapter(
+                            DataListAdapter.createLocationSortedAdapter(
+                                    this, data, latitude, longitude));
+                }
+                else {
+                    // Set yourself at Huntsman (if you location isn't working)
+                    spacesList.setAdapter(
+                            DataListAdapter.createLocationSortedAdapter(
+                                    this, data, 39.953278, -75.19846));
+
+                    // default (when no location)
+                    //spacesList.setAdapter(DataListAdapter.createDefaultAdapter(ctx, result));
+                }
+                break;
+            case SORT_ALPHA:
+                spacesList.setAdapter(
+                        DataListAdapter.createAlphaSortedAdapater(this, data));
+                break;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                          String key) {
+        if (key.equals("sort")) {
+            populateList(app.getData());
+        }
+    }
+
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
             extends AsyncTask<Void, Void, StudySpacesData> {
@@ -264,22 +330,7 @@ public class MainActivity extends Activity {
                 showDialog(DIALOG_BAD_CONNECTION);
             }
             else {
-                Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(location == null) {
-                    location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                }
-                if(location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    spacesList.setAdapter(DataListAdapter.createSortedAdapter(ctx, result, latitude, longitude));
-                }
-                else {
-                    // Set yourself at Huntsman (if you location isn't working)
-                    spacesList.setAdapter(DataListAdapter.createSortedAdapter(ctx, result, 39.953278,-75.19846));
-                    
-                    // default (when no location)
-                    //spacesList.setAdapter(DataListAdapter.createAdapter(ctx, result));
-                }
+                populateList(result);
             }
 
         }

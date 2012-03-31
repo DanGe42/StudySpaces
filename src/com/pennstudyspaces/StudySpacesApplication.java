@@ -1,6 +1,8 @@
 package com.pennstudyspaces;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import com.pennstudyspaces.api.ParamsRequest;
 import com.pennstudyspaces.api.StudySpacesData;
 
@@ -20,17 +22,25 @@ public class StudySpacesApplication extends Application {
     private StudySpacesData ssData;
     private String reserveLinkRoot;
 
+    private SharedPreferences prefs;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         this.ssData = null;
         this.reserveLinkRoot = null;
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
+    }
+
+    public SharedPreferences getPrefs() {
+        return prefs;
     }
 
     public StudySpacesData getData() {
