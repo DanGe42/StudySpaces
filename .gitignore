@@ -5,3 +5,4 @@ build.xml
 local.properties
 out/
 GoogleMaps.properties
+gen/
