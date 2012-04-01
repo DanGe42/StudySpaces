@@ -39,6 +39,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     private String reserveString;
     private LocationManager locManager;
     
+    private String roomFilter;
+    
     public static final int ACTIVITY_OptionsActivity = 1;
     
     public static final int DIALOG_BAD_CONNECTION = 1;
@@ -134,6 +136,9 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         
         app.setData(new StudySpacesData(req));
         refresh();
+        
+        //Set default filter option for rooms
+        roomFilter = "";
     }
     
     public void search(View view) {
@@ -143,6 +148,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     }
     
     public void refreshButton (View v) {
+    	roomFilter = "";
         refresh();
     }
     
@@ -189,6 +195,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     		case ACTIVITY_OptionsActivity:
     			int[] intArray = (int[])intent.getExtras().get("INT_ARRAY");
     			boolean[] boolArray = (boolean[])intent.getExtras().get("BOOL_ARRAY");
+    			roomFilter = (String)intent.getExtras().get("BUILDING NAME");
     			
     			int numPeople = intArray[0];
     			
@@ -226,7 +233,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     	        
                 app.setData(new StudySpacesData(req));
                 refresh();
-    	        
+                
     			break;
     	}
     }
@@ -264,13 +271,13 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                     double longitude = location.getLongitude();
                     spacesList.setAdapter(
                             DataListAdapter.createLocationSortedAdapter(
-                                    this, data, latitude, longitude));
+                                    this, data, latitude, longitude, roomFilter));
                 }
                 else {
                     // Set yourself at Huntsman (if you location isn't working)
                     spacesList.setAdapter(
                             DataListAdapter.createLocationSortedAdapter(
-                                    this, data, 39.953278, -75.19846));
+                                    this, data, 39.953278, -75.19846, roomFilter));
 
                     // default (when no location)
                     //spacesList.setAdapter(DataListAdapter.createDefaultAdapter(ctx, result));

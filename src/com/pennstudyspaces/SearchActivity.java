@@ -25,6 +25,7 @@ public class SearchActivity extends Activity {
 	private int fromTimeHour,fromTimeMin;
 	private int toTimeHour, toTimeMin;	
 	private int day,month,year;
+	private String buildingName;
 	
 	private TextView dateDisplay;
 	private Button dateButton;
@@ -40,6 +41,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.options);
         
 		numPeople = 1;
+		buildingName = "";
 		priv = wboard = computer = projector = false;
 		fromTimeHour = 0;
 		fromTimeMin = 0;
@@ -50,7 +52,7 @@ public class SearchActivity extends Activity {
 		day = c.get(Calendar.DAY_OF_MONTH);
 		month = c.get(Calendar.MONTH);
 		year = c.get(Calendar.YEAR);
-	
+		
 		dateButton = (Button) findViewById(R.id.dateButton);
 		dateDisplay = (TextView) findViewById(R.id.dateDisplay);
 		
@@ -96,11 +98,14 @@ public class SearchActivity extends Activity {
 	
 	public void submitOptions(View view) {
 		//Get values from various fields
-		String intBuffer = ((EditText)findViewById(R.id.num_people)).getText().toString();
+		String intBuffer = ((EditText)findViewById(R.id.num_people))
+							.getText().toString();
 		
 		if(!intBuffer.equals("")) {
 			numPeople = Integer.parseInt(intBuffer);
 		}
+		buildingName = ((EditText)findViewById(R.id.building_name_input))
+						.getText().toString();
 		
 		//Start & End Time fields
 		//String fromTime,toTime;
@@ -125,12 +130,14 @@ public class SearchActivity extends Activity {
 		projector = ((CheckBox)findViewById(R.id.projector_check)).isChecked();
 		computer = ((CheckBox)findViewById(R.id.computer_check)).isChecked();
 		
-        int[] intArray = {numPeople,fromTimeHour,fromTimeMin,toTimeHour,toTimeMin,month,day,year};
+        int[] intArray = {numPeople,fromTimeHour,fromTimeMin,
+        				  toTimeHour,toTimeMin,month,day,year};
         boolean[] boolArray = {priv,wboard,projector,computer};
 		
         Intent i = new Intent();
         i.putExtra("INT_ARRAY", intArray);
         i.putExtra("BOOL_ARRAY", boolArray);
+        i.putExtra("BUILDING NAME", buildingName);
         setResult(RESULT_OK,i);
         
 		finish();

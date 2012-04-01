@@ -195,5 +195,13 @@
 	        android:text="Projector"  
 	        />    
     </LinearLayout>
+    
+    <EditText 
+        android:id="@+id/building_name_input"
+        style="@style/TextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Search by Building Name"
+        />
 
 </LinearLayout>
