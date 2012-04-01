@@ -9,7 +9,6 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:background="#333">
                     
         <Button
@@ -20,7 +19,7 @@
             android:onClick="backToMain"
             android:layout_weight="0"
             />
-        
+
 	    <TextView
 	        style="@style/ColorTitle"
 	        android:layout_width="wrap_content"
@@ -48,159 +47,153 @@
         style="@style/smallTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of People"
+        android:text="Group size"
         android:paddingTop="10dp"
+        android:layout_marginRight="24dip"
         />
     
     <Spinner
-        android:id="@+id/num_people"        
+        android:id="@+id/num_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/num_people_hint"
         />
 
-    <!-- Time fields -->
-    <LinearLayout     
-        android:layout_width="wrap_content"
+        <!-- Time fields -->
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-        
-	    <RelativeLayout 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical">
-	        
-		    <TextView
-		        android:id="@+id/fromLabel"
-		        style="@style/smallTitle"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="From"		        
-		        />
-		
-		    <Spinner
-		        android:id="@+id/fromTime"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/fromLabel"
-		        android:hint="@string/from_hint"
-		        />    
-		</RelativeLayout>
-		
-		<RelativeLayout 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical">
-		    
-		    <TextView
-		        android:id="@+id/toLabel"
-		        style="@style/smallTitle"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="To"
-		        />
-		
-		    <Spinner
-		        android:id="@+id/toTime"		        
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-                android:layout_below="@id/toLabel"		        
-		        android:hint="@string/from_hint"
-		        />
-	    </RelativeLayout>
+        android:layout_width="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="24dip"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/smallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="24dip"
+                android:text="From"
+                />
+
+            <Spinner
+                android:id="@+id/fromTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/from_hint"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/smallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="24dip"
+                android:text="To"
+                />
+
+            <Spinner
+                android:id="@+id/toTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/from_hint"
+                />
+        </LinearLayout>
     </LinearLayout>
-	
-    <!-- Date fields -->
+
+
+
+        <!-- Date fields -->
     <TextView
-        style="@style/smallTitle"        
+        style="@style/smallTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date" 
-        android:paddingTop="10dp"        
+        android:layout_marginRight="24dip"
+        android:text="Date"
+        android:paddingTop="10dp"
         />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-		
-	    <Button
-	        android:id="@+id/dateButton"                
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Pick Date"
-	        />
-	    
-	    <TextView
-            style="@style/PlainText"
-            android:id="@+id/dateDisplay"        
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Date Set" 
-	        />
-	    
+            android:text="Pick Date"
+            />
+        <TextView
+            style="@style/PlainText"
+            android:id="@+id/dateDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Date Set"
+            />
     </LinearLayout>
-    
+
     <!-- Room Option Checkboxes -->
     <TextView
-        style="@style/smallTitle"        
+        style="@style/smallTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Room Options"
-        android:paddingTop="10dp"          
+        android:paddingTop="10dp"
         />
-    
-    <LinearLayout 
-        android:layout_width="wrap_content"
+
+    <TableLayout
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-	    <CheckBox
-	        style="@style/CheckboxText"
-	        android:id="@+id/private_check"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Private  "  
-	        />
-	    
-	    <CheckBox
-	        style="@style/CheckboxText"
-	        android:id="@+id/whiteboard_check"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Whiteboard"  
-	        />
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-    
-	    <CheckBox
-            style="@style/CheckboxText"	        
-	        android:id="@+id/computer_check"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Computer  "  
-	        />
-	    
-	    <CheckBox
-            style="@style/CheckboxText"	        
-	        android:id="@+id/projector_check"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Projector"  
-	        />    
-    </LinearLayout>
-    
-    <EditText 
-        android:id="@+id/building_name_input"
-        style="@style/TextField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Search by Building Name"
-        />
+        android:layout_width="fill_parent"
+        >
+
+        <TableRow>
+            <CheckBox
+                style="@style/CheckboxText"
+                android:id="@+id/private_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below=""
+                android:text="Private"
+                />
+
+            <CheckBox
+                style="@style/CheckboxText"
+                android:id="@+id/whiteboard_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Whiteboard"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                style="@style/CheckboxText"
+                android:id="@+id/computer_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Computer  "
+                />
+
+            <CheckBox
+                style="@style/CheckboxText"
+                android:id="@+id/projector_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Projector"
+                />
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>
