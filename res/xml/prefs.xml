@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:title="@string/titleSortPref"
-        android:summary="@string/summarySortPref"
-        android:key="sort"
-        android:defaultValue="1"
-        android:entries="@array/sortArray"
-        android:entryValues="@array/sortArrayValues" />
+    <PreferenceCategory
+        android:title="@string/titleDisplayPrefs">
+
+        <ListPreference
+            android:title="@string/titleSortPref"
+            android:summary="@string/summarySortPref"
+            android:key="sort"
+            android:defaultValue="1"
+            android:entries="@array/sortArray"
+            android:entryValues="@array/sortArrayValues" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/titleDefSearchPrefs">
+
+        <!-- TODO: Preference for group size -->
+
+        <CheckBoxPreference
+            android:title="@string/titlePrivatePref"
+            android:summary="@string/summaryPrivatePref"
+            android:key="private" />
+        <CheckBoxPreference
+            android:title="@string/titleWhiteboardPref"
+            android:summary="@string/summaryWhiteboardPref"
+            android:key="whiteboard" />
+        <CheckBoxPreference
+            android:title="@string/titleComputerPref"
+            android:summary="@string/summaryComputerPref"
+            android:key="computer" />
+        <CheckBoxPreference
+            android:title="@string/titleProjectorPref"
+            android:summary="@string/summaryProjectorPref"
+            android:key="projector" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
