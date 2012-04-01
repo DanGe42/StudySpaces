@@ -51,10 +51,9 @@
         android:paddingTop="10dp"
         android:layout_marginRight="24dip"
         />
-
-    <EditText
+    
+    <Spinner
         android:id="@+id/num_people"
-        style="@style/TextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/num_people_hint"
@@ -183,7 +182,7 @@
                 android:id="@+id/computer_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Computer  "
+                android:text="Computer"
                 />
 
             <CheckBox
@@ -196,5 +195,14 @@
         </TableRow>
 
     </TableLayout>
+
+    
+    <EditText 
+        android:id="@+id/building_name_input"
+        style="@style/TextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Search by Building Name"
+        />
 
 </LinearLayout>

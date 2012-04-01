@@ -73,10 +73,6 @@ public class DataListAdapter extends SimpleAdapter {
         icon.setVisibility(amentext.contains(find) ? View.VISIBLE : View.GONE);
     }
     
-    public void setRoomArray(RoomKind[] input) {
-    	roomKinds = input;
-    }
-    
     public static DataListAdapter createDefaultAdapter(Context ctx,
                                                        StudySpacesData data) {
         RoomKind[] kinds = data.getRoomKinds();
@@ -92,12 +88,34 @@ public class DataListAdapter extends SimpleAdapter {
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
 
+    //Removes rooms whose building names do not contain the given substring
+    private static RoomKind[] filterRooms(RoomKind[] kinds,String str) {
+    	ArrayList<RoomKind> tempList = new ArrayList<RoomKind>();
+    	str = str.toLowerCase();
+    	String name;
+    	
+    	for(RoomKind room : kinds) {
+    		name = room.getParentBuilding().getName();
+    		name = name.toLowerCase();
+    		
+    		if(name.contains(str)) {
+    			tempList.add(room);
+    		}
+    	}
+    	
+    	RoomKind[] result = new RoomKind[tempList.size()];
+    	return tempList.toArray(result);
+    }
+    
     public static DataListAdapter createLocationSortedAdapter(Context ctx,
                                                               StudySpacesData data,
                                                               double latitude,
-                                                              double longitude) {
+                                                              double longitude,
+                                                              String roomFilter) {
 
         RoomKind[] kinds = data.getRoomKinds();
+        kinds = filterRooms(kinds,roomFilter);
+        
         Arrays.sort(kinds, new LocationComparator(latitude, longitude));
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
 
@@ -196,7 +214,8 @@ public class DataListAdapter extends SimpleAdapter {
     private static class RoomAlphaComparator implements Comparator<RoomKind> {
         @Override
         public int compare (RoomKind r1, RoomKind r2) {
-            return r1.getName().compareTo(r2.getName());
+            return r1.getParentBuilding().getName()
+            		.compareTo(r2.getParentBuilding().getName());
         }
     }
 

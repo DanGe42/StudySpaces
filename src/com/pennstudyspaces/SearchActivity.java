@@ -27,7 +27,9 @@ public class SearchActivity extends Activity {
 	private int numPeople;
 	private int fromTimeHour, fromTimeMin;
 	private int toTimeHour, toTimeMin;	
-	private int day, month, year;
+	
+	private int day,month,year;
+	private String buildingName;
 	
 	private TextView dateDisplay;
 	private Button dateButton;
@@ -38,6 +40,7 @@ public class SearchActivity extends Activity {
 	
 	private Spinner toSpinner;
 	private Spinner fromSpinner;
+	private Spinner numSpinner;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,17 +49,17 @@ public class SearchActivity extends Activity {
 
         app = (StudySpacesApplication) getApplication();
 
-        expandPrefs();
-        initDateToggles();
-
 		numPeople = 1;
-
+		buildingName = "";
+		priv = wboard = computer = projector = false;
 		fromTimeHour = 0;
 		fromTimeMin  = 0;
 		toTimeHour = 23;
-		toTimeMin  = 0;
-
-		//Set up the spinner adapters
+		toTimeMin = 0;
+		
+		//Set up various input widgets
+        expandPrefs();
+        initDateToggles();
 		initSpinners();
 	}
 
@@ -93,6 +96,7 @@ public class SearchActivity extends Activity {
     private void initSpinners() {
         toSpinner   = (Spinner) findViewById(R.id.toTime);
         fromSpinner = (Spinner) findViewById(R.id.fromTime);
+        numSpinner = (Spinner) findViewById(R.id.num_people);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.time_array,
@@ -103,10 +107,18 @@ public class SearchActivity extends Activity {
         toSpinner.setAdapter(adapter);
         fromSpinner.setAdapter(adapter);
 
-        //Set default time to 9 - 10AM, seeing as no one really wants to
+        adapter = ArrayAdapter.createFromResource(
+                this, R.array.numPeopleArray,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        
+        numSpinner.setAdapter(adapter);
+        
+        //Set default time to 9a - 5p, seeing as no one really wants to
         //reserve a room at midnight.
         fromSpinner.setSelection(9);
-        toSpinner.setSelection(10);
+        toSpinner.setSelection(17);
     }
 
     private void expandPrefs() {
@@ -130,11 +142,10 @@ public class SearchActivity extends Activity {
 	
 	public void submitOptions(View view) {
 		//Get values from various fields
-		String intBuffer = ((EditText)findViewById(R.id.num_people)).getText().toString();
+		numPeople = numSpinner.getSelectedItemPosition() + 1;
 		
-		if(!intBuffer.equals("")) {
-			numPeople = Integer.parseInt(intBuffer);
-		}
+		buildingName = ((EditText)findViewById(R.id.building_name_input))
+						.getText().toString();
 		
 		//Start & End Time fields
 		//String fromTime,toTime;
@@ -159,12 +170,14 @@ public class SearchActivity extends Activity {
 		projector = projCheck.isChecked();
 		computer  = compCheck.isChecked();
 		
-        int[] intArray = {numPeople,fromTimeHour,fromTimeMin,toTimeHour,toTimeMin,month,day,year};
+        int[] intArray = {numPeople,fromTimeHour,fromTimeMin,
+        				  toTimeHour,toTimeMin,month,day,year};
         boolean[] boolArray = {priv,wboard,projector,computer};
 		
         Intent i = new Intent();
         i.putExtra("INT_ARRAY", intArray);
         i.putExtra("BOOL_ARRAY", boolArray);
+        i.putExtra("BUILDING NAME", buildingName);
         setResult(RESULT_OK,i);
         
 		finish();
