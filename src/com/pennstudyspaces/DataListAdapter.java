@@ -3,7 +3,6 @@ package com.pennstudyspaces;
 import java.util.*;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,7 +30,8 @@ public class DataListAdapter extends SimpleAdapter {
 
     private RoomKind[] roomKinds;
 
-    private static Comparator<RoomKind> alphaSort = new AlphaComparator();
+    private static Comparator<RoomKind> roomAlphaSort = new RoomAlphaComparator(),
+                                        buildingAlphaSort = new BuildingAlphaComparator();
     
     private DataListAdapter (Context ctx, List<? extends Map<String, ?>> data,
                              RoomKind[] roomKinds) {
@@ -83,7 +83,7 @@ public class DataListAdapter extends SimpleAdapter {
     public static DataListAdapter createAlphaSortedAdapater(Context ctx,
                                                             StudySpacesData data) {
         RoomKind[] kinds = data.getRoomKinds();
-        Arrays.sort(kinds, alphaSort);
+        Arrays.sort(kinds, roomAlphaSort);
 
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
@@ -206,11 +206,24 @@ public class DataListAdapter extends SimpleAdapter {
         return entries;
     }
 
-    private static class AlphaComparator implements Comparator<RoomKind> {
+    private static class RoomAlphaComparator implements Comparator<RoomKind> {
         @Override
         public int compare (RoomKind r1, RoomKind r2) {
             return r1.getParentBuilding().getName()
             		.compareTo(r2.getParentBuilding().getName());
+        }
+    }
+
+    private static class BuildingAlphaComparator implements Comparator<RoomKind> {
+        @Override
+        public int compare(RoomKind r1, RoomKind r2) {
+            Building r1parent = r1.getParentBuilding(),
+                    r2parent = r2.getParentBuilding();
+
+            if (r1parent.getName().equals(r2parent.getName()))
+                return r1.getName().compareTo(r2.getName());
+
+            return r1parent.getName().compareTo(r2parent.getName());
         }
     }
 
@@ -230,7 +243,7 @@ public class DataListAdapter extends SimpleAdapter {
             // If the building names are the same, then the locations will be
             // equivalent. Knowing this, we sort by alpha in each building
             if (r1parent.getName().equals(r2parent.getName()))
-                return r1parent.getName().compareTo(r2parent.getName());
+                return r1.getName().compareTo(r2.getName());
 
             Double dist1 = distFrom(latitude, longitude,
                     r1.getParentBuilding().getLatitude(),

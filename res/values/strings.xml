@@ -25,7 +25,20 @@
     
 
     <!-- Preferences -->
+    <string name="titleDisplayPrefs">Display</string>
     <string name="titleSortPref">Sort by...</string>
     <string name="summarySortPref">Sort the rooms list by...</string>
+
+    <string name="titleDefSearchPrefs">Default search settings</string>
+    <string name="titleCapacityPref">Group size</string>
+    <string name="summaryCapacityPref">The number of people</string>
+    <string name="titlePrivatePref">Private</string>
+    <string name="summaryPrivatePref">Search only for private rooms</string>
+    <string name="titleWhiteboardPref">Whiteboard</string>
+    <string name="summaryWhiteboardPref">Search only for rooms with whiteboards</string>
+    <string name="titleComputerPref">Computer</string>
+    <string name="summaryComputerPref">Search only for rooms with computers</string>
+    <string name="titleProjectorPref">Projector</string>
+    <string name="summaryProjectorPref">Search only for rooms with projectors</string>
 
 </resources>
