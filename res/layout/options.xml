@@ -163,8 +163,6 @@
                 android:id="@+id/private_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below=""
-                android:text="Private"
                 />
 
             <CheckBox
