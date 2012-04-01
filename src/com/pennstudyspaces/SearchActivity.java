@@ -48,9 +48,6 @@ public class SearchActivity extends Activity {
 
         app = (StudySpacesApplication) getApplication();
 
-        expandPrefs();
-        initDateToggles();
-
 		numPeople = 1;
 		buildingName = "";
 		priv = wboard = computer = projector = false;
@@ -59,36 +56,9 @@ public class SearchActivity extends Activity {
 		toTimeHour = 23;
 		toTimeMin = 0;
 		
-		Calendar c = Calendar.getInstance();
-		day = c.get(Calendar.DAY_OF_MONTH);
-		month = c.get(Calendar.MONTH);
-		year = c.get(Calendar.YEAR);
-		
-		dateButton = (Button) findViewById(R.id.dateButton);
-		dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-		
-		//Update display updates currently displayed date
-		updateDisplay();
-		
-		dateButton.setOnClickListener(new View.OnClickListener() {		
-			@Override
-			public void onClick(View v) {
-				showDialog(DATE_DIALOG_ID);
-			}
-		});
-		
-		dateListener = new DatePickerDialog.OnDateSetListener() {
-			@Override
-			public void onDateSet(DatePicker view, int inputYear, int monthOfYear,
-				int dayOfMonth) {
-					year = inputYear;
-					month = monthOfYear;
-					day = dayOfMonth;
-					updateDisplay();
-			}
-		};
-		
-		//Set up the spinner adapters
+		//Set up various input widgets
+        expandPrefs();
+        initDateToggles();
 		initSpinners();
 	}
 
@@ -135,10 +105,10 @@ public class SearchActivity extends Activity {
         toSpinner.setAdapter(adapter);
         fromSpinner.setAdapter(adapter);
 
-        //Set default time to 9 - 10AM, seeing as no one really wants to
+        //Set default time to 9a - 5p, seeing as no one really wants to
         //reserve a room at midnight.
         fromSpinner.setSelection(9);
-        toSpinner.setSelection(10);
+        toSpinner.setSelection(17);
     }
 
     private void expandPrefs() {

@@ -91,9 +91,14 @@ public class DataListAdapter extends SimpleAdapter {
     //Removes rooms whose building names do not contain the given substring
     private static RoomKind[] filterRooms(RoomKind[] kinds,String str) {
     	ArrayList<RoomKind> tempList = new ArrayList<RoomKind>();
+    	str = str.toLowerCase();
+    	String name;
     	
     	for(RoomKind room : kinds) {
-    		if(room.getParentBuilding().getName().contains(str)) {
+    		name = room.getParentBuilding().getName();
+    		name = name.toLowerCase();
+    		
+    		if(name.contains(str)) {
     			tempList.add(room);
     		}
     	}
