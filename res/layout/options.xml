@@ -52,9 +52,8 @@
         android:paddingTop="10dp"
         />
     
-    <EditText
-        android:id="@+id/num_people"
-        style="@style/TextField"        
+    <Spinner
+        android:id="@+id/num_people"        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/num_people_hint"
