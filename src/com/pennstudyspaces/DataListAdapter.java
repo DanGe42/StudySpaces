@@ -97,40 +97,13 @@ public class DataListAdapter extends SimpleAdapter {
                                                               double latitude,
                                                               double longitude) {
 
+        RoomKind[] kinds = data.getRoomKinds();
+        Arrays.sort(kinds, new LocationComparator(latitude, longitude));
         List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
-        RoomKind kinds[]       = data.getRoomKinds();
-        double distances[]     = new double[kinds.length];
-        RoomKind sortedkinds[] = new RoomKind[kinds.length];
 
-        for ( int i = 0; i < kinds.length ; i++) {
-            RoomKind kind = kinds[i];
-            Building parent = kind.getParentBuilding();
-            double klat = parent.getLatitude();
-            double klon = parent.getLongitude();
-            double distance = distFrom(latitude, longitude, klat, klon);
-            distances[i] = distance;
-        }
-
-        /* TODO: Is this a sorting algorithm? Why not use Arrays.sort? */
-        for ( int i = 0; i < kinds.length ; i++) {
-            // find min dist, use that index as the first element, update its value
-            double min = Double.MAX_VALUE;
-            int index = 0;
-
-            for( int j = 0; j < distances.length; j++) {
-                if (distances[j] < min) {       // if we find a smaller distance
-                    min = distances[j];         // treat that as the new min
-                    index = j;                   // and remember its index
-                }
-            }
-
-            sortedkinds[i] = kinds[index];       // add the min distance kind to the list
-            distances[index] = Double.MAX_VALUE; // set its distance to infinity so we don't count it again
-        }
-
-        Log.e("createLocationSortedAdapter","the first roomkind is " +
-                sortedkinds[0].getParentBuilding().getName());
-        for (RoomKind roomKind : sortedkinds) {
+        /*Log.e("createLocationSortedAdapter","the first roomkind is " +
+                sortedkinds[0].getParentBuilding().getName());*/
+        for (RoomKind roomKind : kinds) {
 
             Building parent = roomKind.getParentBuilding();
             double klat = parent.getLatitude();
@@ -156,7 +129,7 @@ public class DataListAdapter extends SimpleAdapter {
             entries.add(map);
         }
 
-        return new DataListAdapter (ctx, entries, sortedkinds);
+        return new DataListAdapter (ctx, entries, kinds);
     }
 
     // taken from http://stackoverflow.com/questions/120283/working-with-latitude-longitude-values-in-java
@@ -225,10 +198,34 @@ public class DataListAdapter extends SimpleAdapter {
         public int compare (RoomKind r1, RoomKind r2) {
             return r1.getName().compareTo(r2.getName());
         }
+    }
+
+    private static class LocationComparator implements Comparator<RoomKind> {
+        private double latitude, longitude;
+
+        private LocationComparator(double latitude, double longitude) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
 
         @Override
-        public boolean equals (Object o) {
-            throw new UnsupportedOperationException("equals is not supported");
+        public int compare(RoomKind r1, RoomKind r2) {
+            Building r1parent = r1.getParentBuilding(),
+                     r2parent = r2.getParentBuilding();
+
+            // If the building names are the same, then the locations will be
+            // equivalent. Knowing this, we sort by alpha in each building
+            if (r1parent.getName().equals(r2parent.getName()))
+                return r1parent.getName().compareTo(r2parent.getName());
+
+            Double dist1 = distFrom(latitude, longitude,
+                    r1.getParentBuilding().getLatitude(),
+                    r1.getParentBuilding().getLongitude());
+            Double dist2 = distFrom(latitude, longitude,
+                    r2.getParentBuilding().getLatitude(),
+                    r2.getParentBuilding().getLongitude());
+
+            return dist1.compareTo(dist2);
         }
     }
 }
