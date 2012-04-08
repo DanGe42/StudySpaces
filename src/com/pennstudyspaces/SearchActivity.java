@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class SearchActivity extends Activity {
 	private static final String TAG = SearchActivity.class.getSimpleName();
@@ -31,15 +33,19 @@ public class SearchActivity extends Activity {
 	private int day,month,year;
 	private String buildingName;
 	
-	private TextView dateDisplay;
+	private Button fromButton;
+	private TimePickerDialog.OnTimeSetListener fromListener;
+	private Button toButton;
+	private TimePickerDialog.OnTimeSetListener toListener;
+	
 	private Button dateButton;
 	private DatePickerDialog.OnDateSetListener dateListener;
     private CheckBox privCheck, wboardCheck, compCheck, projCheck;
 
 	public final static int DATE_DIALOG_ID = 0;
+	public final static int TO_TIME_DIALOG_ID = 1;
+	public final static int FROM_TIME_DIALOG_ID = 2;
 	
-	private Spinner toSpinner;
-	private Spinner fromSpinner;
 	private Spinner numSpinner;
 	
 	@Override
@@ -52,15 +58,50 @@ public class SearchActivity extends Activity {
 		numPeople = 1;
 		buildingName = "";
 		priv = wboard = computer = projector = false;
-		fromTimeHour = 0;
+		fromTimeHour = 9;
 		fromTimeMin  = 0;
-		toTimeHour = 23;
+		toTimeHour = 17;
 		toTimeMin = 0;
 		
 		//Set up various input widgets
         expandPrefs();
+        initTimePickers();
         initDateToggles();
 		initSpinners();
+	}
+	
+	private void initTimePickers() {
+		fromButton = (Button) findViewById(R.id.fromTime);
+		toButton = (Button) findViewById(R.id.toTime);
+		
+		fromButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(FROM_TIME_DIALOG_ID);	
+			}
+		});
+		toButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(TO_TIME_DIALOG_ID);	
+			}
+		});
+		fromListener = new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				fromTimeHour = hourOfDay;
+				fromTimeMin = minute;
+				updateDisplay();
+			}
+		};
+		toListener = new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				toTimeHour = hourOfDay;
+				toTimeMin = minute;
+				updateDisplay();
+			}
+		};
 	}
 
     private void initDateToggles() {
@@ -82,43 +123,47 @@ public class SearchActivity extends Activity {
             public void onDateSet(DatePicker view, int inputYear, int monthOfYear,
                                   int dayOfMonth) {
                 year = inputYear;
-                month = monthOfYear;
+                //months in the DatePicker are 0-indexed
+                month = monthOfYear + 1;
                 day = dayOfMonth;
+                clipDate();
+                
                 updateDisplay();
             }
         };
-
-        //Update display updates currently displayed date
-        dateDisplay = (TextView) findViewById(R.id.dateDisplay);
+        
         updateDisplay();
+    }
+    
+    private void clipDate() {
+        Calendar c = Calendar.getInstance();
+        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = c.get(Calendar.MONTH);
+        int currentYear = c.get(Calendar.YEAR);
+        
+        if(year < currentYear) {
+        	year = currentYear;
+        }
+        if(month < currentMonth) {
+        	month = currentMonth;
+        	day = currentDay;
+        }
+        
+        if(year == currentYear && month == currentMonth && day < currentDay) {
+        	day = currentDay;
+        }
     }
 
     private void initSpinners() {
-        toSpinner   = (Spinner) findViewById(R.id.toTime);
-        fromSpinner = (Spinner) findViewById(R.id.fromTime);
         numSpinner = (Spinner) findViewById(R.id.num_people);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.time_array,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item);
-
-        toSpinner.setAdapter(adapter);
-        fromSpinner.setAdapter(adapter);
-
-        adapter = ArrayAdapter.createFromResource(
                 this, R.array.numPeopleArray,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         
         numSpinner.setAdapter(adapter);
-        
-        //Set default time to 9a - 5p, seeing as no one really wants to
-        //reserve a room at midnight.
-        fromSpinner.setSelection(9);
-        toSpinner.setSelection(17);
     }
 
     private void expandPrefs() {
@@ -148,21 +193,9 @@ public class SearchActivity extends Activity {
 						.getText().toString();
 		
 		//Start & End Time fields
-		//String fromTime,toTime;
-		int fromPos = fromSpinner.getSelectedItemPosition();
-		int toPos = toSpinner.getSelectedItemPosition();
-		if(toPos <= fromPos) {
-			toPos = fromPos + 1;
-			if(toPos > 23) {
-				toPos = 23;
-				fromPos = 22;
-			}
+		if(toTimeHour < fromTimeHour) {
+			toTimeHour = fromTimeHour + 1;
 		}
-		
-		//Since the spinner indices correspond exactly to the hours, we don't
-		//need to do any parsing
-		fromTimeHour = fromPos;
-		toTimeHour = toPos;
 		
 		//Amenities Fields
 		priv      = privCheck.isChecked();
@@ -188,11 +221,30 @@ public class SearchActivity extends Activity {
 		finish();
 	}
 	
+	private String pad(int c) {
+	    if (c >= 10)
+	        return String.valueOf(c);
+	    else
+	        return "0" + String.valueOf(c);
+	}
+	
+	private int formatHour(int hour) {
+		return (hour - 12 > 0) ? hour - 12 : hour;
+	}
+	
 	//Relevant methods for Date Picker
 	private void updateDisplay() {
 		//Months are zero based, so need to add 1
-		String date ="  " + (month + 1) + "/" + day + "/" + year;
-		dateDisplay.setText(date);
+		String date = month + "/" + day + "/" + year;
+		dateButton.setText(date);
+		
+		String am_pm = (fromTimeHour - 12 >= 0) ? "PM" : "AM";
+		String time = formatHour(fromTimeHour) + ":" + pad(fromTimeMin) + " " + am_pm;
+		fromButton.setText(time);
+		
+		am_pm = (toTimeHour - 12 >= 0) ? "PM" : "AM";
+		time = formatHour(toTimeHour) + ":" + pad(toTimeMin) + " " + am_pm;
+		toButton.setText(time);
 	}
 	
 	@Override
@@ -200,7 +252,12 @@ public class SearchActivity extends Activity {
 		switch(id) {
 		case DATE_DIALOG_ID:
 			return new DatePickerDialog(this,dateListener,year,month,day);
-
+		case TO_TIME_DIALOG_ID:
+			return new TimePickerDialog(this,
+					toListener,toTimeHour,toTimeMin,false);
+		case FROM_TIME_DIALOG_ID:
+			return new TimePickerDialog(this,
+					fromListener,fromTimeHour,fromTimeMin,false);			
 		default:
 			return null;
 		}

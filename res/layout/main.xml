@@ -47,6 +47,8 @@
         android:id="@+id/spaces_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:divider="#AAA"
+        android:dividerHeight="2dp"
         />
     
     <!-- This TextView displays when the ListView is empty -->

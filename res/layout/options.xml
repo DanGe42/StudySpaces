@@ -52,23 +52,58 @@
             android:layout_width="wrap_content"
             android:orientation="vertical">
 
-            <!-- Number of people fields -->
-            <TextView
-                style="@style/smallTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
                 android:layout_height="wrap_content"
-                android:text="Group size"
-                android:paddingTop="10dp"
-                android:layout_marginRight="24dip"
-                />
-
-            <Spinner
-                android:id="@+id/num_people"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/num_people_hint"
-                />
+                android:orientation="horizontal">
+                
+				<LinearLayout
+                    android:layout_height="fill_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="18dip"
+                    android:orientation="vertical">
+                    
+		            <!-- Number of people fields -->
+		            <TextView
+		                style="@style/smallTitle"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text="Group Size"
+		                android:paddingTop="10dp"
+		                />
+		
+		            <Spinner
+		                android:id="@+id/num_people"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:hint="@string/num_people_hint"
+		                />
+	            </LinearLayout>
 
+               	<LinearLayout
+                    android:layout_height="fill_parent"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                    
+					<!-- Date fields -->
+		            <TextView
+		                style="@style/smallTitle"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginRight="24dip"
+		                android:text="Date"
+		                android:paddingTop="10dp"
+		                />
+		
+		            <Button
+		                android:id="@+id/dateButton"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:text=""
+		                />
+	            </LinearLayout>
+	            
+			</LinearLayout>
             <!-- Time fields -->
             <LinearLayout
                 android:layout_height="wrap_content"
@@ -90,11 +125,11 @@
                         android:text="From"
                         />
 
-                    <Spinner
+                    <Button
                         android:id="@+id/fromTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/from_hint"
+                        android:text="12:OO AM"
                         />
                 </LinearLayout>
 
@@ -112,45 +147,13 @@
                         android:text="To"
                         />
 
-                    <Spinner
+                    <Button
                         android:id="@+id/toTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/from_hint"
+                        android:text="11:00 PM"
                         />
                 </LinearLayout>
-            </LinearLayout>
-
-
-
-            <!-- Date fields -->
-            <TextView
-                style="@style/smallTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="24dip"
-                android:text="Date"
-                android:paddingTop="10dp"
-                />
-
-            <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/dateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pick Date"
-                    />
-                <TextView
-                    style="@style/PlainText"
-                    android:id="@+id/dateDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No Date Set"
-                    />
             </LinearLayout>
 
             <!-- Room Option Checkboxes -->
