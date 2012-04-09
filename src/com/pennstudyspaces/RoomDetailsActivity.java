@@ -153,9 +153,8 @@ public class RoomDetailsActivity extends MapActivity {
         if(location == null) {
         	location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
-        
-        if(location != null) {
-	        latitude = location.getLatitude();
+        else {
+		latitude = location.getLatitude();
 	        longitude = location.getLongitude();
 
 	        drawable = this.getResources().getDrawable(R.drawable.maps_marker_blue);
