@@ -185,6 +185,7 @@ public class SearchActivity extends Activity {
         projCheck.setChecked(projector);
     }
 	
+	/** Called when the Submit button is pressed */
 	public void submitOptions(View view) {
 		//Get values from various fields
 		numPeople = numSpinner.getSelectedItemPosition() + 1;
