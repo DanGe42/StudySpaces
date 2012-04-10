@@ -73,6 +73,9 @@ public class DataListAdapter extends SimpleAdapter {
         icon.setVisibility(amentext.contains(find) ? View.VISIBLE : View.GONE);
     }
     
+    /**
+     * Creates a default SimpleAdapter using the provided data.
+     */
     public static DataListAdapter createDefaultAdapter(Context ctx,
                                                        StudySpacesData data) {
         RoomKind[] kinds = data.getRoomKinds();
@@ -80,6 +83,10 @@ public class DataListAdapter extends SimpleAdapter {
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
 
+    /**
+     * Creates a SimpleAdapter that sorts all data in alphabetical order by the name
+     * of each RoomKind entry.
+     */
     public static DataListAdapter createAlphaSortedAdapater(Context ctx,
                                                             StudySpacesData data) {
         RoomKind[] kinds = data.getRoomKinds();
@@ -88,7 +95,7 @@ public class DataListAdapter extends SimpleAdapter {
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
 
-    //Removes rooms whose building names do not contain the given substring
+    /* Removes rooms whose building names do not contain the given substring */
     private static RoomKind[] filterRooms(RoomKind[] kinds,String str) {
     	ArrayList<RoomKind> tempList = new ArrayList<RoomKind>();
     	str = str.toLowerCase();
@@ -107,6 +114,9 @@ public class DataListAdapter extends SimpleAdapter {
     	return tempList.toArray(result);
     }
     
+    /**
+     * Creates a SimpleAdapter sorted by proximity to the user's current location
+     */
     public static DataListAdapter createLocationSortedAdapter(Context ctx,
                                                               StudySpacesData data,
                                                               double latitude,
@@ -186,6 +196,8 @@ public class DataListAdapter extends SimpleAdapter {
         return result.toString();
     }
 
+    /* Generates a List of Map entries that maps each View binding constant to
+     * a value from the provided data. */
     private static List<Map<String,String>> generateMapList (RoomKind[] kinds) {
         List<Map<String,String>> entries = new ArrayList<Map<String, String>>();
 
@@ -210,7 +222,10 @@ public class DataListAdapter extends SimpleAdapter {
 
         return entries;
     }
-
+    
+    
+    /* Various comparators for sorting our data list. */
+    
     private static class RoomAlphaComparator implements Comparator<RoomKind> {
         @Override
         public int compare (RoomKind r1, RoomKind r2) {
