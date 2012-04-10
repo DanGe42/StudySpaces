@@ -130,6 +130,7 @@ public class RoomDetailsActivity extends MapActivity {
         setLocationOnMap(latitude, longitude,roomName,building);
     }
 
+    /* Put a specified location on the Google Map */
     private void setLocationOnMap(double latitude, double longitude, 
     		String room, String building) {
         
