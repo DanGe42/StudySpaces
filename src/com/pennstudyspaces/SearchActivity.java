@@ -99,7 +99,7 @@ public class SearchActivity extends Activity {
         toTimeMin  = defaultEnd.get(Calendar.MINUTE);
 
         day   = defaultStart.get(Calendar.DAY_OF_MONTH);
-        month = defaultStart.get(Calendar.MONTH);
+        month = defaultStart.get(Calendar.MONTH)+1;
         year  = defaultStart.get(Calendar.YEAR);
     }
 
@@ -168,7 +168,7 @@ public class SearchActivity extends Activity {
     private void clipDate() {
         Calendar c = Calendar.getInstance();
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
-        int currentMonth = c.get(Calendar.MONTH);
+        int currentMonth = c.get(Calendar.MONTH)+1;
         int currentYear = c.get(Calendar.YEAR);
 
         if(year < currentYear) {
@@ -347,7 +347,8 @@ public class SearchActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
 		case DATE_DIALOG_ID:
-			return new DatePickerDialog(this,dateListener,year,month,day);
+			//Months are 0-indexed, so we need to set month back by one
+			return new DatePickerDialog(this,dateListener,year,month-1,day);
 		case TO_TIME_DIALOG_ID:
 			return new TimePickerDialog(this,
 					toListener,toTimeHour,toTimeMin,false);
