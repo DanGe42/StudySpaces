@@ -48,8 +48,6 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     // some parameters that will go into the reservation string
     private String reserveString;
 
-    private SendRequestTask requestTask;
-
     private String roomFilter;
     
     public static final int ACTIVITY_OptionsActivity = 1;
@@ -139,7 +137,6 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         reserveString = deserializeIntent(getIntent());
 
         currentRequest = intentToRequest(getIntent());
-        requestTask = new SendRequestTask(this);
         refresh();
         
         //Set default filter option for rooms
@@ -227,7 +224,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     public void refresh() {
         Log.d(TAG, "API request created: " + currentRequest.toString());
 
-        requestTask.execute(currentRequest);
+        (new SendRequestTask(this)).execute(currentRequest);
     }
 
     @Override
