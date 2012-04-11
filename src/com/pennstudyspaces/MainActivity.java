@@ -68,7 +68,6 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                                CAPACITY   = "capacity",
                                RESERVE    = "reserve",
                                COMMENT    = "comment",
-    						   RESLINK 	  = "reservelink",
     						   ROOMNUM 	  = "roomnum",
     						   FRHOUR     = "fromhour",
     						   FRMIN      = "fromtmin",
@@ -123,22 +122,21 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 intent.putExtra(RESERVE   , kind.getReserveType());
                 intent.putExtra(COMMENT   , kind.getComments());
 
-                intent.putExtra(RESLINK   , reserveString);
                 intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
-                intent.putExtra(FRHOUR    , dateRange.get("fromHour"));
-                intent.putExtra(FRMIN     , dateRange.get("fromMin"));
-                intent.putExtra(TOHOUR    , dateRange.get("toHour"));
-                intent.putExtra(TOMIN     , dateRange.get("toMin"));
-                intent.putExtra(MONTH     , dateRange.get("month"));
-                intent.putExtra(DAY       , dateRange.get("day"));
-                intent.putExtra(YEAR      , dateRange.get("year"));
+                intent.putExtra(FRHOUR    , dateRange.get(FRHOUR));
+                intent.putExtra(FRMIN     , dateRange.get(FRMIN));
+                intent.putExtra(TOHOUR    , dateRange.get(TOHOUR));
+                intent.putExtra(TOMIN     , dateRange.get(TOMIN));
+                intent.putExtra(MONTH     , dateRange.get(MONTH));
+                intent.putExtra(DAY       , dateRange.get(DAY));
+                intent.putExtra(YEAR      , dateRange.get(YEAR));
                 startActivity(intent);
         	}
         });
         
         // Populate list of StudySpaces
         // Performs a default search using the current time
-        reserveString = generateReserveString(getIntent());
+        reserveString = deserializeIntent(getIntent());
 
         currentRequest = intentToRequest(getIntent());
         requestTask = new SendRequestTask(this);
@@ -148,7 +146,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         roomFilter = "";
     }
 
-    private String generateReserveString(Intent intent) {
+    private String deserializeIntent(Intent intent) {
         Calendar now = Calendar.getInstance();
         int from_hr = intent.getIntExtra(SearchActivity.FROM_HR,
                 now.get(Calendar.HOUR_OF_DAY));
@@ -163,6 +161,14 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 now.get(Calendar.DAY_OF_MONTH));
         int year = intent.getIntExtra(SearchActivity.YEAR,
                 now.get(Calendar.YEAR));
+
+        dateRange.put(FRHOUR, from_hr);
+        dateRange.put(FRMIN, from_min);
+        dateRange.put(TOHOUR, end_hr);
+        dateRange.put(TOMIN, end_min);
+        dateRange.put(MONTH, month);
+        dateRange.put(DAY, day);
+        dateRange.put(YEAR, year);
 
         String date = String.format("date=%d-%d-%d", year, month, day);
         String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);

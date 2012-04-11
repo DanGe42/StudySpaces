@@ -89,7 +89,7 @@ public class SearchActivity extends Activity {
     private void setDefaults() {
         Calendar now = Calendar.getInstance();
         Calendar defaultStart = getDefaultStartTime(now);
-        Calendar defaultEnd   = getDefaultEndTime(now);
+        Calendar defaultEnd   = getDefaultEndTime(defaultStart);
 
         // set up default search times
         fromTimeHour = defaultStart.get(Calendar.HOUR_OF_DAY);
@@ -248,7 +248,7 @@ public class SearchActivity extends Activity {
         defEnd.set(Calendar.YEAR,        start.get(Calendar.YEAR));
 
         // and, NOW do the increment
-        defEnd.set(Calendar.HOUR_OF_DAY, start.get(Calendar.HOUR_OF_DAY) + 1);
+        defEnd.set(Calendar.HOUR_OF_DAY, (start.get(Calendar.HOUR_OF_DAY) + 1) % 24);
 
         return defEnd;
     }
