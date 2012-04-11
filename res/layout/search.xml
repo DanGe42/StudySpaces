@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:onClick="submitOptions"
+            android:onClick="submit"
             android:layout_weight="0"
             />
 

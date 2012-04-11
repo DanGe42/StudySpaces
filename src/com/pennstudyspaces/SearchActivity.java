@@ -1,7 +1,6 @@
 package com.pennstudyspaces;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -17,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class SearchActivity extends Activity {
@@ -51,25 +49,33 @@ public class SearchActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.options);
+        setContentView(R.layout.search);
 
         app = (StudySpacesApplication) getApplication();
 
 		numPeople = 1;
 		buildingName = "";
-		priv = wboard = computer = projector = false;
-		fromTimeHour = 9;
-		fromTimeMin  = 0;
-		toTimeHour = 17;
-		toTimeMin = 0;
 		
 		//Set up various input widgets
         expandPrefs();
+
+        Calendar now = Calendar.getInstance();
+        Calendar defaultStart = getDefaultStartTime(now);
+        Calendar defaultEnd   = getDefaultEndTime(now);
+
+        // set up default search times
+        fromTimeHour = defaultStart.get(Calendar.HOUR_OF_DAY);
+        fromTimeMin  = defaultStart.get(Calendar.MINUTE);
+
+        toTimeHour = defaultEnd.get(Calendar.HOUR_OF_DAY);
+        toTimeMin  = defaultEnd.get(Calendar.MINUTE);
+
         initTimePickers();
         initDateToggles();
 		initSpinners();
 	}
-	
+
+    /* Gets the time-picking buttons and attaches handlers to them */
 	private void initTimePickers() {
 		fromButton = (Button) findViewById(R.id.fromTime);
 		toButton = (Button) findViewById(R.id.toTime);
@@ -104,6 +110,7 @@ public class SearchActivity extends Activity {
 		};
 	}
 
+    /* Get the UI widgets dealing with dates and attach handlers */
     private void initDateToggles() {
         Calendar c = Calendar.getInstance();
         day = c.get(Calendar.DAY_OF_MONTH);
@@ -134,13 +141,13 @@ public class SearchActivity extends Activity {
         
         updateDisplay();
     }
-    
+
     private void clipDate() {
         Calendar c = Calendar.getInstance();
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH);
         int currentYear = c.get(Calendar.YEAR);
-        
+
         if(year < currentYear) {
         	year = currentYear;
         }
@@ -148,10 +155,79 @@ public class SearchActivity extends Activity {
         	month = currentMonth;
         	day = currentDay;
         }
-        
+
         if(year == currentYear && month == currentMonth && day < currentDay) {
         	day = currentDay;
         }
+    }
+
+    //Relevant methods for Date Picker
+    private void updateDisplay() {
+        //Months are zero based, so need to add 1
+        String date = month + "/" + day + "/" + year;
+        dateButton.setText(date);
+
+        String am_pm = (fromTimeHour - 12 >= 0) ? "PM" : "AM";
+        String time = formatHour(fromTimeHour) + ":" + pad(fromTimeMin) + " " + am_pm;
+        fromButton.setText(time);
+
+        am_pm = (toTimeHour - 12 >= 0) ? "PM" : "AM";
+        time = formatHour(toTimeHour) + ":" + pad(toTimeMin) + " " + am_pm;
+        toButton.setText(time);
+    }
+
+    /* Replicate the default search on the website. Basically, we round up to
+     * the nearest 15th minute interval and return a Calendar with that time. */
+    private Calendar getDefaultStartTime(Calendar now) {
+        int minute = now.get(Calendar.MINUTE);
+        int hour   = now.get(Calendar.HOUR_OF_DAY);
+        int day    = now.get(Calendar.DAY_OF_YEAR);
+        int year   = now.get(Calendar.YEAR);
+
+        int nextHour  = hour;
+        int nextDay   = day;
+        int nextYear  = year;
+
+        // round down to nearest 15 and add 15
+        int nextMinute = (minute / 15) * 15 + 15;
+        if (nextMinute >= 60) {
+            nextMinute %= 60;
+            nextHour += 1;
+
+            if (nextHour >= 24) {
+                nextHour %= 24;
+                nextDay += 1;
+
+                if (nextDay >= 365) {
+                    nextDay %= 365;
+                    nextYear += 1;
+                }
+            }
+        }
+
+        Calendar defStart = Calendar.getInstance();
+
+        defStart.set(Calendar.MINUTE, nextMinute);
+        defStart.set(Calendar.HOUR_OF_DAY, nextHour);
+        defStart.set(Calendar.DAY_OF_YEAR, nextDay);
+        defStart.set(Calendar.YEAR, nextYear);
+
+        return defStart;
+    }
+
+    /* Take the default start and add one hour to it */
+    private Calendar getDefaultEndTime(Calendar start) {
+        Calendar defEnd = Calendar.getInstance();
+
+        // copy some data over first
+        defEnd.set(Calendar.MINUTE,      start.get(Calendar.MINUTE));
+        defEnd.set(Calendar.DAY_OF_YEAR, start.get(Calendar.DAY_OF_YEAR));
+        defEnd.set(Calendar.YEAR,        start.get(Calendar.YEAR));
+
+        // and, NOW do the increment
+        defEnd.set(Calendar.HOUR_OF_DAY, start.get(Calendar.HOUR_OF_DAY) + 1);
+
+        return defEnd;
     }
 
     private void initSpinners() {
@@ -162,7 +238,7 @@ public class SearchActivity extends Activity {
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
-        
+
         numSpinner.setAdapter(adapter);
     }
 
@@ -184,70 +260,55 @@ public class SearchActivity extends Activity {
         compCheck.setChecked(computer);
         projCheck.setChecked(projector);
     }
-	
+
 	/** Called when the Submit button is pressed */
-	public void submitOptions(View view) {
+	public void submit(View view) {
 		//Get values from various fields
 		numPeople = numSpinner.getSelectedItemPosition() + 1;
-		
+
 		buildingName = ((EditText)findViewById(R.id.building_name_input))
 						.getText().toString();
-		
+
 		//Start & End Time fields
 		if(toTimeHour < fromTimeHour) {
 			toTimeHour = fromTimeHour + 1;
 		}
-		
+
 		//Amenities Fields
 		priv      = privCheck.isChecked();
 		wboard    = wboardCheck.isChecked();
 		projector = projCheck.isChecked();
 		computer  = compCheck.isChecked();
-		
+
         int[] intArray = {numPeople,fromTimeHour,fromTimeMin,
         				  toTimeHour,toTimeMin,month,day,year};
         boolean[] boolArray = {priv,wboard,projector,computer};
-		
+
         Intent i = new Intent();
         i.putExtra("INT_ARRAY", intArray);
         i.putExtra("BOOL_ARRAY", boolArray);
         i.putExtra("BUILDING NAME", buildingName);
         setResult(RESULT_OK,i);
-        
+
 		finish();
 	}
-	
-	public void backToMain(View view) {		
+
+	public void backToMain(View view) {
 		setResult(RESULT_CANCELED,new Intent());
 		finish();
 	}
-	
+
 	private String pad(int c) {
 	    if (c >= 10)
 	        return String.valueOf(c);
 	    else
 	        return "0" + String.valueOf(c);
 	}
-	
+
 	private int formatHour(int hour) {
 		return (hour - 12 > 0) ? hour - 12 : hour;
 	}
-	
-	//Relevant methods for Date Picker
-	private void updateDisplay() {
-		//Months are zero based, so need to add 1
-		String date = month + "/" + day + "/" + year;
-		dateButton.setText(date);
-		
-		String am_pm = (fromTimeHour - 12 >= 0) ? "PM" : "AM";
-		String time = formatHour(fromTimeHour) + ":" + pad(fromTimeMin) + " " + am_pm;
-		fromButton.setText(time);
-		
-		am_pm = (toTimeHour - 12 >= 0) ? "PM" : "AM";
-		time = formatHour(toTimeHour) + ":" + pad(toTimeMin) + " " + am_pm;
-		toButton.setText(time);
-	}
-	
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
