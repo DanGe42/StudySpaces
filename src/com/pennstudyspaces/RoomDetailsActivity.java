@@ -96,11 +96,21 @@ public class RoomDetailsActivity extends MapActivity {
                 ((Reserve) extras.getSerializable(MainActivity.RESERVE) ==
                         Reserve.EXTERNAL);
 
-        String reslink = extras.getString(MainActivity.RESLINK);
-        
-        
-        this.reserveLink = "http://pennstudyspaces.com/deeplink?" + reslink +
-                "&room=" + roomId;
+        reserveLink = "http://pennstudyspaces.com/deeplink?";
+        int from_hr = intent.getIntExtra(MainActivity.FRHOUR, 0);
+        int from_min = intent.getIntExtra(MainActivity.FRMIN, 0);
+        int end_hr = intent.getIntExtra(MainActivity.TOHOUR, 0);
+        int end_min = intent.getIntExtra(MainActivity.TOMIN, 0);
+        int month = intent.getIntExtra(MainActivity.MONTH, 0);
+        int day = intent.getIntExtra(MainActivity.DAY, 0);
+        int year = intent.getIntExtra(MainActivity.YEAR, 0);
+
+
+        String date = String.format("date=%d-%d-%d", year, month, day);
+        String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
+        String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
+        this.reserveLink = "http://pennstudyspaces.com/deeplink?" + date + "&" +
+                fromTime + "&" + toTime + "&room=" + roomId;
 
         TextView titleText     = (TextView) findViewById(R.id.roomTitle);
         titleText.setText(roomName);
