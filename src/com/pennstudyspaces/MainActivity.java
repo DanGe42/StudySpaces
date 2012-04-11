@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
+import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.ParamsRequest;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
@@ -36,9 +37,16 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
     private StudySpacesApplication app;
     private ListView spacesList;
-    private String reserveString;
     private LocationManager locManager;
-    
+
+    private ParamsRequest currentRequest;
+    private StudySpacesData ssData;
+
+    // some parameters that will go into the reservation string
+    private String reserveString;
+
+    private SendRequestTask requestTask;
+
     private String roomFilter;
     
     public static final int ACTIVITY_OptionsActivity = 1;
@@ -112,37 +120,78 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         
         // Populate list of StudySpaces
         // Performs a default search using the current time
-        Calendar now = Calendar.getInstance();
-        
-        int hour = now.get(Calendar.HOUR_OF_DAY);
-        int month = now.get(Calendar.MONTH);
-        int day = now.get(Calendar.DAY_OF_MONTH);
-        int year = now.get(Calendar.YEAR);
-        
-        String date = String.format("date=%d-%d-%d", year,month,day);
-		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
-		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
-		reserveString = date+"&"+fromTime+"&"+toTime;
-		
-        ParamsRequest req = new ParamsRequest("json");
-        req.setNumberOfPeople(1);
-        req.setStartTime((hour + 1) % 23, 0);
-        req.setEndTime((hour + 2) % 23, 0);
-        req.setDate(year, month, day);
-        req.setPrivate(false);
-        req.setWhiteboard(false);
-        req.setProjector(false);
-        req.setComputer(false);
-        
-        app.setData(new StudySpacesData(req));
+        reserveString = generateReserveString(getIntent());
+
+        currentRequest = intentToRequest(getIntent());
+        requestTask = new SendRequestTask(this);
+
         refresh();
         
         //Set default filter option for rooms
         roomFilter = "";
     }
+
+    private String generateReserveString(Intent intent) {
+        Calendar now = Calendar.getInstance();
+        int from_hr = intent.getIntExtra(SearchActivity.FROM_HR,
+                now.get(Calendar.HOUR_OF_DAY));
+        int from_min = intent.getIntExtra(SearchActivity.FROM_MIN,
+                now.get(Calendar.MINUTE));
+        int end_hr = intent.getIntExtra(SearchActivity.END_HR, from_hr + 1);
+        int end_min = intent.getIntExtra(SearchActivity.END_MIN, from_min);
+
+        int month = intent.getIntExtra(SearchActivity.MONTH,
+                now.get(Calendar.MONTH));
+        int day = intent.getIntExtra(SearchActivity.DAY,
+                now.get(Calendar.DAY_OF_MONTH));
+        int year = intent.getIntExtra(SearchActivity.YEAR,
+                now.get(Calendar.YEAR));
+
+        String date = String.format("date=%d-%d-%d", year, month, day);
+        String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
+        String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
+
+        return date+"&"+fromTime+"&"+toTime;
+    }
+
+    private ParamsRequest intentToRequest (Intent intent) {
+        boolean priv   = intent.getBooleanExtra(SearchActivity.PRIVATE, false);
+        boolean wboard = intent.getBooleanExtra(SearchActivity.WBOARD, false);
+        boolean proj   = intent.getBooleanExtra(SearchActivity.PROJECTOR, false);
+        boolean comp   = intent.getBooleanExtra(SearchActivity.COMPUTER, false);
+
+        Calendar now = Calendar.getInstance();
+        int quantity = intent.getIntExtra(SearchActivity.QUANTITY, 1);
+        int from_hr  = intent.getIntExtra(SearchActivity.FROM_HR,
+                now.get(Calendar.HOUR_OF_DAY));
+        int from_min = intent.getIntExtra(SearchActivity.FROM_MIN,
+                now.get(Calendar.MINUTE));
+        int end_hr  = intent.getIntExtra(SearchActivity.END_HR, from_hr + 1);
+        int end_min = intent.getIntExtra(SearchActivity.END_MIN, from_min);
+
+        int day   = intent.getIntExtra(SearchActivity.DAY,
+                now.get(Calendar.DAY_OF_MONTH));
+        int month = intent.getIntExtra(SearchActivity.MONTH,
+                now.get(Calendar.MONTH));
+        int year  = intent.getIntExtra(SearchActivity.YEAR,
+                now.get(Calendar.YEAR));
+
+        ParamsRequest req = new ParamsRequest("json");
+        req.setNumberOfPeople(quantity);
+        req.setStartTime(from_hr, from_min);
+        req.setEndTime(end_hr, end_min);
+        req.setDate(year, month, day);
+        req.setPrivate(priv);
+        req.setWhiteboard(wboard);
+        req.setProjector(proj);
+        req.setComputer(comp);
+
+        return req;
+    }
     
     public void search(View view) {
     	Intent i = new Intent(this, SearchActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     	
     	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
     }
@@ -153,13 +202,9 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     }
     
     public void refresh() {
-        Log.d(TAG, "API request created: " + app.getData().getApiRequest().toString());
+        Log.d(TAG, "API request created: " + currentRequest.toString());
 
-        (new SendRequestTask(this)).execute();
-    }
-    
-    public void roomDetails() {
-        startActivity(new Intent(this, RoomDetailsActivity.class));
+        requestTask.execute(currentRequest);
     }
 
     @Override
@@ -193,47 +238,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     	
     	switch(requestCode) {
     		case ACTIVITY_OptionsActivity:
-    			int[] intArray = (int[])intent.getExtras().get("INT_ARRAY");
-    			boolean[] boolArray = (boolean[])intent.getExtras().get("BOOL_ARRAY");
-    			roomFilter = (String)intent.getExtras().get("BUILDING NAME");
-    			
-    			int numPeople = intArray[0];
-    			
-    			int fromTimeHour = intArray[1];
-    			int fromTimeMin = intArray[2];
-    			int toTimeHour = intArray[3];
-    			int toTimeMin = intArray[4];
-    			
-    			int month = intArray[5];
-    			int day = intArray[6];
-    			int year = intArray[7];
-    			
-    			String date = String.format("date=%d-%d-%d", year,month,day);
-    			String fromTime = String.format("time_from=%02d%02d", fromTimeHour, fromTimeMin);
-    			String toTime = String.format("time_to=%02d%02d", toTimeHour, toTimeMin);
-    			reserveString = date+"&"+fromTime+"&"+toTime;
-    			
-    			boolean priv = boolArray[0];
-    			boolean wboard = boolArray[1];
-    			boolean projector = boolArray[2];
-    			boolean computer = boolArray[3];
-    			
-    	        ParamsRequest req = new ParamsRequest("json");
-    	        req.setNumberOfPeople(numPeople);
-    	        
-    	        req.setStartTime(fromTimeHour, fromTimeMin);
-    	        req.setEndTime(toTimeHour, toTimeMin);
-    	        
-    	        req.setDate(year, month, day);
-    	        
-    	        req.setPrivate(priv);
-    	        req.setWhiteboard(wboard);
-    	        req.setProjector(projector);
-    	        req.setComputer(computer);
-    	        
-                app.setData(new StudySpacesData(req));
+    			ParamsRequest req = intentToRequest(intent);
                 refresh();
-                
     			break;
     	}
     }
@@ -260,32 +266,30 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         SharedPreferences prefs = app.getPrefs();
         int sortOption = Integer.parseInt(prefs.getString("sort", "1"));
 
+        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null) {
+            location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+
+        // defaults
+        double latitude = 39.953278;
+        double longitude = -75.19846;
+
+        if (location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
         switch (sortOption) {
             case SORT_LOCATION:
-                Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(location == null) {
-                    location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                }
-                if(location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    spacesList.setAdapter(
-                            DataListAdapter.createLocationSortedAdapter(
-                                    this, data, latitude, longitude, roomFilter));
-                }
-                else {
-                    // Set yourself at Huntsman (if you location isn't working)
-                    spacesList.setAdapter(
-                            DataListAdapter.createLocationSortedAdapter(
-                                    this, data, 39.953278, -75.19846, roomFilter));
-
-                    // default (when no location)
-                    //spacesList.setAdapter(DataListAdapter.createDefaultAdapter(ctx, result));
-                }
+                spacesList.setAdapter(
+                        DataListAdapter.createLocationSortedAdapter(
+                                this, data, latitude, longitude, roomFilter));
                 break;
             case SORT_ALPHA:
                 spacesList.setAdapter(
-                        DataListAdapter.createAlphaSortedAdapater(this, data));
+                        DataListAdapter.createAlphaSortedAdapater(this, data,
+                                latitude, longitude, roomFilter));
                 break;
         }
     }
@@ -294,13 +298,14 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         if (key.equals("sort")) {
-            populateList(app.getData());
+            if (ssData != null)
+                populateList(ssData);
         }
     }
 
     // Performs a getJSON request in the background, so we don't block on the UI
     class SendRequestTask 
-            extends AsyncTask<Void, Void, StudySpacesData> {
+            extends AsyncTask<ApiRequest, Void, StudySpacesData> {
         Context ctx;
         ProgressDialog dialog;
 
@@ -316,12 +321,12 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         }
 
         @Override
-        protected StudySpacesData doInBackground(Void... req) {
+        protected StudySpacesData doInBackground(ApiRequest... req) {
             // we don't need to publish progress updates, unless we want to
             // implement some kind of timeout publishProgress();
             try {
-                app.updateData();
-                return app.getData();
+                StudySpacesData data = new StudySpacesData(req[0]);
+                return data;
             }
             catch (IOException e) {
                 Log.e(TAG, "Something bad happened", e);
@@ -337,6 +342,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 showDialog(DIALOG_BAD_CONNECTION);
             }
             else {
+                ssData = result;
                 populateList(result);
             }
 

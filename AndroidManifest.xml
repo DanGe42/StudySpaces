@@ -13,16 +13,16 @@
                  android:debuggable="true"
                  android:name=".StudySpacesApplication">
                  
-        <uses-library android:name="com.google.android.maps" />         
-        
-        <activity android:name="MainActivity"/>
-        <activity android:name=".SearchActivity"
+        <uses-library android:name="com.google.android.maps" />
+        <activity android:name="SearchActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity"/>
         <activity android:name=".RoomDetailsActivity"/>
         <activity android:name=".PrefsActivity"/>
 

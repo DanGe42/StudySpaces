@@ -9,15 +9,16 @@ public class StudySpacesData {
     private Building[] buildingData;
     private RoomKind[] roomKindsData;
     
-    public StudySpacesData (ApiRequest request) {
+    public StudySpacesData (ApiRequest request) throws IOException {
         if (request == null)
             throw new IllegalArgumentException("Request cannot be null");
         this.request = request;
         this.buildingData = null;
         this.roomKindsData = null;
+        pullData();
     }
     
-    public void pullData() throws IOException {
+    private void pullData() throws IOException {
         JsonData jsonData = JsonData.sendRequest(request);
         
         this.buildingData = jsonData.getBuildings().toArray(new Building[1]);

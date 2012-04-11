@@ -54,16 +54,6 @@ public class DataListAdapter extends SimpleAdapter {
 		setAmenityIcon(R.id.item_board, "w", amentext, v);
 		setAmenityIcon(R.id.item_private, "P", amentext, v);
 		setAmenityIcon(R.id.item_reservable, "R", amentext, v);
-		//ImageView proj   = (ImageView) v.findViewById(R.id.item_proj);
-		//ImageView comp   = (ImageView) v.findViewById(R.id.item_comp);
-		//ImageView board  = (ImageView) v.findViewById(R.id.item_board);
-		//ImageView priv   = (ImageView) v.findViewById(R.id.item_private);
-		//ImageView reserv = (ImageView) v.findViewById(R.id.item_reservable);
-		//proj.setVisibility(  amentext.contains("p") ? View.VISIBLE : View.GONE);
-		//comp.setVisibility(  amentext.contains("c") ? View.VISIBLE : View.GONE);
-		//board.setVisibility( amentext.contains("w") ? View.VISIBLE : View.GONE);
-		//priv.setVisibility(  amentext.contains("P") ? View.VISIBLE : View.GONE);
-		//reserv.setVisibility(amentext.contains("R") ? View.VISIBLE : View.GONE);		
     	 
 		return v;
     }
@@ -93,6 +83,22 @@ public class DataListAdapter extends SimpleAdapter {
         Arrays.sort(kinds, roomAlphaSort);
 
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
+    }
+
+    /**
+     * Creates a SimpleAdapter that sorts all data in alphabetical order by the name
+     * of each RoomKind entry. This method will also attach location data.
+     */
+    public static DataListAdapter createAlphaSortedAdapater(Context ctx,
+                                                            StudySpacesData data,
+                                                            double latitude,
+                                                            double longitude,
+                                                            String roomFilter) {
+        RoomKind[] kinds = data.getRoomKinds();
+        kinds = filterRooms(kinds,roomFilter);
+        Arrays.sort(kinds, roomAlphaSort);
+
+        return new DataListAdapter (ctx, generateMapList(kinds, latitude, longitude), kinds);
     }
 
     /* Removes rooms whose building names do not contain the given substring */
@@ -127,35 +133,7 @@ public class DataListAdapter extends SimpleAdapter {
         kinds = filterRooms(kinds,roomFilter);
         
         Arrays.sort(kinds, new LocationComparator(latitude, longitude));
-        List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
-
-        /*Log.e("createLocationSortedAdapter","the first roomkind is " +
-                sortedkinds[0].getParentBuilding().getName());*/
-        for (RoomKind roomKind : kinds) {
-
-            Building parent = roomKind.getParentBuilding();
-            double klat = parent.getLatitude();
-            double klon = parent.getLongitude();
-
-            String humanDistance = String.format("(%.2fmi)",distFrom(latitude, longitude, klat, klon));
-
-            Map<String, String> map = new HashMap<String, String>();
-            map.put(BUILDING, roomKind.getParentBuilding().getName());
-            map.put(DISTANCE, humanDistance);
-            map.put(ROOMKIND, roomKind.getName());
-            map.put(AMENITIES, processAmenities(roomKind));
-
-            String roomstr = roomKind.getRooms().get(0).getName();
-            int numrooms = roomKind.getRooms().size();
-            if((numrooms-1) > 0) {
-                map.put(NUM_ROOMS, roomstr+" (and "+(numrooms-1)+" others)");
-            }
-            else {
-                map.put(NUM_ROOMS, roomstr);
-            }
-
-            entries.add(map);
-        }
+        List<Map<String, String>> entries = generateMapList(kinds, latitude, longitude);
 
         return new DataListAdapter (ctx, entries, kinds);
     }
@@ -205,6 +183,40 @@ public class DataListAdapter extends SimpleAdapter {
             Map<String, String> map = new HashMap<String, String>();
             map.put(BUILDING, roomKind.getParentBuilding().getName());
             map.put(DISTANCE, "");
+            map.put(ROOMKIND, roomKind.getName());
+            map.put(AMENITIES, processAmenities(roomKind));
+
+            String roomstr = roomKind.getRooms().get(0).getName();
+            int numrooms = roomKind.getRooms().size();
+            if((numrooms-1) > 0) {
+                map.put(NUM_ROOMS, roomstr+" (and "+(numrooms-1)+" others)");
+            }
+            else {
+                map.put(NUM_ROOMS, roomstr);
+            }
+
+            entries.add(map);
+        }
+
+        return entries;
+    }
+
+    private static List<Map<String,String>> generateMapList (RoomKind[] kinds,
+                                                             double latitude,
+                                                             double longitude) {
+        List<Map<String,String>> entries = new ArrayList<Map<String, String>>();
+
+        for (RoomKind roomKind : kinds) {
+            Map<String, String> map = new HashMap<String, String>();
+            Building parent = roomKind.getParentBuilding();
+
+            double klat = parent.getLatitude();
+            double klon = parent.getLongitude();
+            String humanDistance =
+                    String.format("(%.2fmi)",distFrom(latitude, longitude, klat, klon));
+            map.put(DISTANCE, humanDistance);
+
+            map.put(BUILDING, roomKind.getParentBuilding().getName());
             map.put(ROOMKIND, roomKind.getName());
             map.put(AMENITIES, processAmenities(roomKind));
 

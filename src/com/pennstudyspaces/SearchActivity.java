@@ -22,6 +22,19 @@ public class SearchActivity extends Activity {
 	private static final String TAG = SearchActivity.class.getSimpleName();
 
     private StudySpacesApplication app;
+
+    public static final String PRIVATE   = "private",
+                               WBOARD    = "wboard",
+                               COMPUTER  = "computer",
+                               PROJECTOR = "projector",
+                               QUANTITY = "num_people",
+                               FROM_HR  = "fhr",
+                               FROM_MIN = "fmin",
+                               END_HR  = "ehr",
+                               END_MIN = "emin",
+                               DAY   = "day",
+                               MONTH = "month",
+                               YEAR  = "year";
 	
 	private boolean priv, wboard, computer, projector;
 	private int numPeople;
@@ -59,6 +72,21 @@ public class SearchActivity extends Activity {
 		//Set up various input widgets
         expandPrefs();
 
+        setDefaults();
+
+        initTimePickers();
+        initDateToggles();
+		initSpinners();
+	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setDefaults();
+        updateDisplay();
+    }
+
+    private void setDefaults() {
         Calendar now = Calendar.getInstance();
         Calendar defaultStart = getDefaultStartTime(now);
         Calendar defaultEnd   = getDefaultEndTime(now);
@@ -70,10 +98,10 @@ public class SearchActivity extends Activity {
         toTimeHour = defaultEnd.get(Calendar.HOUR_OF_DAY);
         toTimeMin  = defaultEnd.get(Calendar.MINUTE);
 
-        initTimePickers();
-        initDateToggles();
-		initSpinners();
-	}
+        day   = defaultStart.get(Calendar.DAY_OF_MONTH);
+        month = defaultStart.get(Calendar.MONTH);
+        year  = defaultStart.get(Calendar.YEAR);
+    }
 
     /* Gets the time-picking buttons and attaches handlers to them */
 	private void initTimePickers() {
@@ -112,11 +140,6 @@ public class SearchActivity extends Activity {
 
     /* Get the UI widgets dealing with dates and attach handlers */
     private void initDateToggles() {
-        Calendar c = Calendar.getInstance();
-        day = c.get(Calendar.DAY_OF_MONTH);
-        month = c.get(Calendar.MONTH);
-        year = c.get(Calendar.YEAR);
-
         dateButton = (Button) findViewById(R.id.dateButton);
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,18 +303,29 @@ public class SearchActivity extends Activity {
 		projector = projCheck.isChecked();
 		computer  = compCheck.isChecked();
 
-        int[] intArray = {numPeople,fromTimeHour,fromTimeMin,
-        				  toTimeHour,toTimeMin,month,day,year};
-        boolean[] boolArray = {priv,wboard,projector,computer};
+        Intent i = serializeToIntent();
 
-        Intent i = new Intent();
-        i.putExtra("INT_ARRAY", intArray);
-        i.putExtra("BOOL_ARRAY", boolArray);
-        i.putExtra("BUILDING NAME", buildingName);
-        setResult(RESULT_OK,i);
-
-		finish();
+        startActivity(i);
+        setResult(RESULT_OK, i);
 	}
+
+    private Intent serializeToIntent() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(PRIVATE  , priv)
+              .putExtra(WBOARD   , wboard)
+              .putExtra(PROJECTOR, projector)
+              .putExtra(COMPUTER , computer)
+              .putExtra(QUANTITY, numPeople)
+              .putExtra(FROM_HR , fromTimeHour)
+              .putExtra(FROM_MIN, fromTimeMin)
+              .putExtra(END_HR  , toTimeHour)
+              .putExtra(END_MIN , toTimeMin)
+              .putExtra(MONTH, month)
+              .putExtra(DAY  , day)
+              .putExtra(YEAR , year);
+
+        return intent;
+    }
 
 	public void backToMain(View view) {
 		setResult(RESULT_CANCELED,new Intent());
