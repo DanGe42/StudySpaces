@@ -228,7 +228,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     			int day = intArray[6];
     			int year = intArray[7];
     			
-    			fillDateRange(fromHour, fromMin, toHour, toMin, month, day, year);
+    			fillDateRange(fromHour, fromMin, toHour, toMin, month+1, day, year);
     			reserveString = generateReserveString();
     			
     			boolean priv = boolArray[0];
