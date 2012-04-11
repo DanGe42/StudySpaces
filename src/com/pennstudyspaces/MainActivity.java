@@ -2,6 +2,7 @@ package com.pennstudyspaces;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +38,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
     private StudySpacesApplication app;
     private ListView spacesList;
+
+    private HashMap<String, Integer> dateRange;
     private LocationManager locManager;
 
     private ParamsRequest currentRequest;
@@ -66,7 +69,14 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                                RESERVE    = "reserve",
                                COMMENT    = "comment",
     						   RESLINK 	  = "reservelink",
-    						   ROOMNUM 	  = "roomnum";
+    						   ROOMNUM 	  = "roomnum",
+    						   FRHOUR     = "fromhour",
+    						   FRMIN      = "fromtmin",
+					           TOHOUR     = "tohour",
+                               TOMIN      = "tomin",
+                               MONTH      = "month",
+                               DAY        = "day",
+                               YEAR       = "year";
 
     private static final int SORT_LOCATION = 1,
                              SORT_ALPHA    = 2;
@@ -78,6 +88,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         setContentView(R.layout.main);
         
         locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        dateRange = new HashMap<String, Integer>();
         
         app = (StudySpacesApplication) getApplication();
         spacesList = (ListView) findViewById(R.id.spaces_list);
@@ -114,6 +125,13 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
                 intent.putExtra(RESLINK   , reserveString);
                 intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
+                intent.putExtra(FRHOUR    , dateRange.get("fromHour"));
+                intent.putExtra(FRMIN     , dateRange.get("fromMin"));
+                intent.putExtra(TOHOUR    , dateRange.get("toHour"));
+                intent.putExtra(TOMIN     , dateRange.get("toMin"));
+                intent.putExtra(MONTH     , dateRange.get("month"));
+                intent.putExtra(DAY       , dateRange.get("day"));
+                intent.putExtra(YEAR      , dateRange.get("year"));
                 startActivity(intent);
         	}
         });
@@ -124,7 +142,6 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
         currentRequest = intentToRequest(getIntent());
         requestTask = new SendRequestTask(this);
-
         refresh();
         
         //Set default filter option for rooms
@@ -242,6 +259,24 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 refresh();
     			break;
     	}
+    }
+    
+    public void fillDateRange(int fromHour, int fromMin, int toHour, int toMin, int month, int day, int year) {
+        dateRange.put("fromHour", new Integer(fromHour));
+        dateRange.put("fromMin", new Integer(fromMin));
+        dateRange.put("toHour", new Integer(toHour));
+        dateRange.put("toMin", new Integer(toMin));
+        dateRange.put("month", new Integer(month));
+        dateRange.put("day", new Integer(day));
+        dateRange.put("year", new Integer(year));
+    }
+    
+    public String generateReserveString() {
+        String date = String.format("date=%d-%d-%d", dateRange.get("year"),dateRange.get("month"),dateRange.get("day"));
+        String fromTime = String.format("time_from=%02d%02d", dateRange.get("fromHour"), dateRange.get("fromMin"));
+        String toTime = String.format("time_to=%02d%02d", dateRange.get("toHour"), dateRange.get("toMin"));
+        reserveString = date+"&"+fromTime+"&"+toTime;
+        return reserveString;
     }
 
     @Override

@@ -1,5 +1,12 @@
 package com.pennstudyspaces;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -9,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,13 +28,8 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-
-import static com.pennstudyspaces.api.RoomKind.Privacy;
-import static com.pennstudyspaces.api.RoomKind.Reserve;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
+import com.pennstudyspaces.api.RoomKind.Privacy;
+import com.pennstudyspaces.api.RoomKind.Reserve;
 
 
 public class RoomDetailsActivity extends MapActivity {
@@ -179,7 +180,40 @@ public class RoomDetailsActivity extends MapActivity {
     }
     
     public void share(View view) {
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        long timeInMillisSinceEpoch = 0;
+        int roomId = extras.getInt(MainActivity.ROOMNUM);
+        int fromhour = extras.getInt(MainActivity.FRHOUR);
+        int frommin = extras.getInt(MainActivity.FRMIN);
+        int tohour = extras.getInt(MainActivity.TOHOUR);
+        int tomin = extras.getInt(MainActivity.TOMIN);
+        int month = extras.getInt(MainActivity.MONTH);
+        int day = extras.getInt(MainActivity.DAY);
+        int year = extras.getInt(MainActivity.YEAR);
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = sdf.parse(year+"-"+month+"-"+day);
+            timeInMillisSinceEpoch = date.getTime(); 
+            //Log.e("SHARE", year+"-"+month+"-"+day);
+            //Log.e("SHARE", "the generated time: "+timeInMillisSinceEpoch);
+        } catch (ParseException e) { e.printStackTrace();}
+        // request http://www.pennstudyspaces.com/shareevent?roomid=46&shr=8&smin=30&ehr=9&emin=30&date=1334116800000
+        String url = "http://www.pennstudyspaces.com/shareevent?" +
+                    "roomid=" + roomId +
+                    "&shr="   + fromhour +
+                    "&smin="  + frommin +
+                    "&ehr="   + tohour +
+                    "&emin="  + tomin +
+                    "&date="  + timeInMillisSinceEpoch;
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
+        startActivity(browserIntent);
+        // int starthour, startmin
+        // int endhour, endmin
+        // date
     }
     
     public void back(View view) {
