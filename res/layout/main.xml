@@ -49,6 +49,7 @@
         android:layout_height="fill_parent"
         android:divider="#AAA"
         android:dividerHeight="2dp"
+        android:drawSelectorOnTop="true"
         />
     
     <!-- This TextView displays when the ListView is empty -->
