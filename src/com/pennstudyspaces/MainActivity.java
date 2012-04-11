@@ -2,6 +2,7 @@ package com.pennstudyspaces;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     private StudySpacesApplication app;
     private ListView spacesList;
     private String reserveString;
+    private HashMap<String, Integer> dateRange;
     private LocationManager locManager;
     
     private String roomFilter;
@@ -58,7 +60,14 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                                RESERVE    = "reserve",
                                COMMENT    = "comment",
     						   RESLINK 	  = "reservelink",
-    						   ROOMNUM 	  = "roomnum";
+    						   ROOMNUM 	  = "roomnum",
+    						   FRHOUR     = "fromhour",
+    						   FRMIN      = "fromtmin",
+					           TOHOUR     = "tohour",
+                               TOMIN      = "tomin",
+                               MONTH      = "month",
+                               DAY        = "day",
+                               YEAR       = "year";
 
     private static final int SORT_LOCATION = 1,
                              SORT_ALPHA    = 2;
@@ -70,6 +79,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         setContentView(R.layout.main);
         
         locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        dateRange = new HashMap<String, Integer>();
         
         app = (StudySpacesApplication) getApplication();
         spacesList = (ListView) findViewById(R.id.spaces_list);
@@ -106,6 +116,13 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
                 intent.putExtra(RESLINK   , reserveString);
                 intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
+                intent.putExtra(FRHOUR    , dateRange.get("fromHour"));
+                intent.putExtra(FRMIN     , dateRange.get("fromMin"));
+                intent.putExtra(TOHOUR    , dateRange.get("toHour"));
+                intent.putExtra(TOMIN     , dateRange.get("toMin"));
+                intent.putExtra(MONTH     , dateRange.get("month"));
+                intent.putExtra(DAY       , dateRange.get("day"));
+                intent.putExtra(YEAR      , dateRange.get("year"));
                 startActivity(intent);
         	}
         });
@@ -114,15 +131,18 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         // Performs a default search using the current time
         Calendar now = Calendar.getInstance();
         
-        int hour = now.get(Calendar.HOUR_OF_DAY);
-        int month = now.get(Calendar.MONTH);
+        int hour = now.get(Calendar.HOUR_OF_DAY)+1;
+        int month = now.get(Calendar.MONTH)+1;
         int day = now.get(Calendar.DAY_OF_MONTH);
         int year = now.get(Calendar.YEAR);
+        fillDateRange(hour, 0, (hour+1)%24, 0, month, day, year);
+
+        reserveString = generateReserveString();
         
-        String date = String.format("date=%d-%d-%d", year,month,day);
+        /*String date = String.format("date=%d-%d-%d", year,month,day);
 		String fromTime = String.format("time_from=%02d%02d", (hour+1)%24, 0);
 		String toTime = String.format("time_to=%02d%02d", (hour+2)%24, 0);
-		reserveString = date+"&"+fromTime+"&"+toTime;
+		reserveString = date+"&"+fromTime+"&"+toTime;*/
 		
         ParamsRequest req = new ParamsRequest("json");
         req.setNumberOfPeople(1);
@@ -199,19 +219,17 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     			
     			int numPeople = intArray[0];
     			
-    			int fromTimeHour = intArray[1];
-    			int fromTimeMin = intArray[2];
-    			int toTimeHour = intArray[3];
-    			int toTimeMin = intArray[4];
+    			int fromHour = intArray[1];
+    			int fromMin = intArray[2];
+    			int toHour = intArray[3];
+    			int toMin = intArray[4];
     			
     			int month = intArray[5];
     			int day = intArray[6];
     			int year = intArray[7];
     			
-    			String date = String.format("date=%d-%d-%d", year,month,day);
-    			String fromTime = String.format("time_from=%02d%02d", fromTimeHour, fromTimeMin);
-    			String toTime = String.format("time_to=%02d%02d", toTimeHour, toTimeMin);
-    			reserveString = date+"&"+fromTime+"&"+toTime;
+    			fillDateRange(fromHour, fromMin, toHour, toMin, month, day, year);
+    			reserveString = generateReserveString();
     			
     			boolean priv = boolArray[0];
     			boolean wboard = boolArray[1];
@@ -221,8 +239,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     	        ParamsRequest req = new ParamsRequest("json");
     	        req.setNumberOfPeople(numPeople);
     	        
-    	        req.setStartTime(fromTimeHour, fromTimeMin);
-    	        req.setEndTime(toTimeHour, toTimeMin);
+    	        req.setStartTime(fromHour, fromMin);
+    	        req.setEndTime(toHour, toMin);
     	        
     	        req.setDate(year, month, day);
     	        
@@ -236,6 +254,24 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 
     			break;
     	}
+    }
+    
+    public void fillDateRange(int fromHour, int fromMin, int toHour, int toMin, int month, int day, int year) {
+        dateRange.put("fromHour", new Integer(fromHour));
+        dateRange.put("fromMin", new Integer(fromMin));
+        dateRange.put("toHour", new Integer(toHour));
+        dateRange.put("toMin", new Integer(toMin));
+        dateRange.put("month", new Integer(month));
+        dateRange.put("day", new Integer(day));
+        dateRange.put("year", new Integer(year));
+    }
+    
+    public String generateReserveString() {
+        String date = String.format("date=%d-%d-%d", dateRange.get("year"),dateRange.get("month"),dateRange.get("day"));
+        String fromTime = String.format("time_from=%02d%02d", dateRange.get("fromHour"), dateRange.get("fromMin"));
+        String toTime = String.format("time_to=%02d%02d", dateRange.get("toHour"), dateRange.get("toMin"));
+        reserveString = date+"&"+fromTime+"&"+toTime;
+        return reserveString;
     }
 
     @Override
