@@ -171,6 +171,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
         String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
 
+        roomFilter = intent.getStringExtra(SearchActivity.FILTER);
+
         return date+"&"+fromTime+"&"+toTime;
     }
 

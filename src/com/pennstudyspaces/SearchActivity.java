@@ -34,16 +34,16 @@ public class SearchActivity extends Activity {
                                END_MIN = "emin",
                                DAY   = "day",
                                MONTH = "month",
-                               YEAR  = "year";
+                               YEAR  = "year",
+                               FILTER = "filter";
 	
 	private boolean priv, wboard, computer, projector;
 	private int numPeople;
 	private int fromTimeHour, fromTimeMin;
-	private int toTimeHour, toTimeMin;	
+	private int toTimeHour, toTimeMin;
 	
 	private int day,month,year;
-	private String buildingName;
-	
+
 	private Button fromButton;
 	private TimePickerDialog.OnTimeSetListener fromListener;
 	private Button toButton;
@@ -58,8 +58,9 @@ public class SearchActivity extends Activity {
 	public final static int FROM_TIME_DIALOG_ID = 2;
 	
 	private Spinner numSpinner;
-	
-	@Override
+    private String buildingName;
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
@@ -67,8 +68,8 @@ public class SearchActivity extends Activity {
         app = (StudySpacesApplication) getApplication();
 
 		numPeople = 1;
-		buildingName = "";
-		
+        buildingName = "";
+
 		//Set up various input widgets
         expandPrefs();
 
@@ -101,6 +102,7 @@ public class SearchActivity extends Activity {
         day   = defaultStart.get(Calendar.DAY_OF_MONTH);
         month = defaultStart.get(Calendar.MONTH)+1;
         year  = defaultStart.get(Calendar.YEAR);
+
     }
 
     /* Gets the time-picking buttons and attaches handlers to them */
@@ -322,7 +324,8 @@ public class SearchActivity extends Activity {
               .putExtra(END_MIN , toTimeMin)
               .putExtra(MONTH, month)
               .putExtra(DAY  , day)
-              .putExtra(YEAR , year);
+              .putExtra(YEAR , year)
+              .putExtra(FILTER, buildingName);
 
         return intent;
     }
