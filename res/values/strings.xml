@@ -7,6 +7,9 @@
     <string name="num_people_hint">Number of People</string>
     <string name="from_hint">Select a time</string>
     <string name="date_hint">MM/DD/YYYY</string>
+    <string name="search_button_text">Search</string>
+    <string name="search_instructions">Search for places to study by selecting
+        your desired options and pressing Search</string>
     
     <!-- MainActivity strings -->
     <string name="text_refresh_button">Refresh</string>
@@ -40,5 +43,6 @@
     <string name="summaryComputerPref">Search only for rooms with computers</string>
     <string name="titleProjectorPref">Projector</string>
     <string name="summaryProjectorPref">Search only for rooms with projectors</string>
+
 
 </resources>
