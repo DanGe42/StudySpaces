@@ -5,12 +5,26 @@
   -lots of Message Chains
     -lots of getJSONObject().get...
     -line 39: calling getJSONObject(k) a lot, just store that object somewhere
+      -this functionality  
 
+    -the reader instantiation is a bit long
+      -could put the url in its own variable, then build the readers
+  -StudySpace constructor has a long paramter list
+    -could just pass the relevant objects and fetch their details in the
+    constructor
+  -lots of duplicate variable names (temp is a common one)
+    - "t" also tells us nothing about the array it refers to
+
+//Inspected by: Cory
 2. StudySpace.java - getGSRNames()
+  -don't need to call getter methods when inside the class (makes code longer)
+  -could use a switch statement in the for loop (would be faster)
+  -ArrayList names could be more descriptive
 
 //Uses JSON parsing
 3. Room.java - getAvailability()
 
+//Very Long
 4. StudySpaceListActivity.java - getView(int position, View convertView, ViewGroup parent)
 
 //Very long

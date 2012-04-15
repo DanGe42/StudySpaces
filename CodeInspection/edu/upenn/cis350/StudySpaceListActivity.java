@@ -72,38 +72,7 @@ public class StudySpaceListActivity extends ListActivity {
 		Intent i = new Intent(this, SearchActivity.class);
 		startActivityForResult(i,
 				StudySpaceListActivity.ACTIVITY_SearchActivity);
-		/*
-		engiBox.setChecked(true);
-		engiBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-					ss_adapter.filterSpaces();
-			}
-		});
-		whartonBox.setChecked(true);
-		whartonBox
-				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-							ss_adapter.filterSpaces();
-					}
-				});
-		libBox.setChecked(true);
-		libBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-					ss_adapter.filterSpaces();
-			}
-		});
-		otherBox.setChecked(true);
-		otherBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-					ss_adapter.filterSpaces();
-			}
-		});
-		
-		*/
+
 		final TextView search = (EditText)findViewById(R.id.search);
 	    search.addTextChangedListener(new TextWatcher(){
 	        public void afterTextChanged(Editable s) {
