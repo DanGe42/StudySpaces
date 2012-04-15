@@ -196,6 +196,8 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         int year  = intent.getIntExtra(SearchActivity.YEAR,
                 now.get(Calendar.YEAR));
 
+        roomFilter = intent.getStringExtra(SearchActivity.FILTER);
+        
         ParamsRequest req = new ParamsRequest("json");
         req.setNumberOfPeople(quantity);
         req.setStartTime(from_hr, from_min);
@@ -259,6 +261,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     	switch(requestCode) {
     		case ACTIVITY_OptionsActivity:
     			ParamsRequest req = intentToRequest(intent);
+    			req.toString();
                 refresh();
     			break;
     	}

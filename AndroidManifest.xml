@@ -26,6 +26,9 @@
         <activity android:name=".RoomDetailsActivity"/>
         <activity android:name=".PrefsActivity"/>
 
+        <uses-library android:name="android.test.runner" />
     </application>
 
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+       android:targetPackage="com.pennstudyspaces" android:label="Tests for StudySpaces" />
 </manifest> 

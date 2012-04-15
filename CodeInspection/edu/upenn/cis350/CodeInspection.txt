@@ -1,0 +1,18 @@
+//Major Issue: no comments anywhere
+
+//Inspected by: Cory
+1. APIAcessor.java - getStudySpaces()
+  -lots of Message Chains
+    -lots of getJSONObject().get...
+    -line 39: calling getJSONObject(k) a lot, just store that object somewhere
+
+2. StudySpace.java - getGSRNames()
+
+//Uses JSON parsing
+3. Room.java - getAvailability()
+
+4. StudySpaceListActivity.java - getView(int position, View convertView, ViewGroup parent)
+
+//Very long
+5. TabDetails.java - onActivityCreated(Bundle savedInstanceState)
+

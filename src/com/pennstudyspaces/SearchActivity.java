@@ -34,7 +34,8 @@ public class SearchActivity extends Activity {
                                END_MIN = "emin",
                                DAY   = "day",
                                MONTH = "month",
-                               YEAR  = "year";
+                               YEAR  = "year",
+    						   FILTER = "filter";
 	
 	private boolean priv, wboard, computer, projector;
 	private int numPeople;
@@ -322,7 +323,8 @@ public class SearchActivity extends Activity {
               .putExtra(END_MIN , toTimeMin)
               .putExtra(MONTH, month)
               .putExtra(DAY  , day)
-              .putExtra(YEAR , year);
+              .putExtra(YEAR , year)
+        	  .putExtra(FILTER, buildingName);
 
         return intent;
     }
