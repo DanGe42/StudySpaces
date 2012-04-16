@@ -6,3 +6,4 @@ local.properties
 out/
 GoogleMaps.properties
 gen/
+.DS_Store
