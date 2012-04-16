@@ -22,10 +22,50 @@
   -ArrayList names could be more descriptive
 
 //Uses JSON parsing
+//Inspected by Daniel
 3. Room.java - getAvailability()
+  - long method
+     - easiest ways to fix this while improving readability:
+         * lines 128 - 133: `return true` and `return false` is not idiomatic. Any time you
+           have code structured as such:
+               if (condition) return true;
+               else return false;
+           you can shorten it to `return (condition)`
+         * lines 137, 145: there is a specialized data types for storing values that can be
+           of only two types: boolean
+         * lines 149 - 154: since you're exiting when you set the flag to 1, you can rewrite
+           this loop as thus:
+               for (...) {
+                   ...
+                   if (condition) {
+                       return true;
+                   }
+               }
+               return false;
+           Sure, this won't improve asymptotic running time, but it will improve performance
+           somewhat by allowing for a short-circuit.
 
-//Very Long
+// Inspected by Daniel
 4. StudySpaceListActivity.java - getView(int position, View convertView, ViewGroup parent)
+  - Maintainability issue
+     - Line 196: Pokemon Exception Handling ("for when you got to catch them all...")
+        - avoid doing this; always be specific with the Exceptions you're catching
+        - Also, if something goes wrong here, this clause will hide bugs such that it will
+          make debugging a pain
+     - Lines 179, 187, 189, 206, 207: Variable names are not descriptive. What do these
+       two-letter variables represent?
+     - Lines 225, 227, 229, 230: set getPackageName() to something, and use that instead
+       of rewriting it multiple times.
+  - long method
+     - This method does too much. Recommendation: perform method extractions as you deem
+       necessary.
+  - Performance
+     - Lines 224, 226, 228: Calling getBuildingType() has possible overhead. Store the
+       result of this computation in a variable, and then use it. In addition, this is
+       an example of method chaining.
+  - Convention
+     - Java convention uses camelCase for variable and method names.
+     - Don't mix different conventions either.
 
 //Very long
 5. TabDetails.java - onActivityCreated(Bundle savedInstanceState)
