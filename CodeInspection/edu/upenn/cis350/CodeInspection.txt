@@ -69,4 +69,19 @@
 
 //Very long
 5. TabDetails.java - onActivityCreated(Bundle savedInstanceState)
+- maintainability
+	use strings.xml for text, not so much for localization (we can safely assume everyone at Penn knows english), 
+	but mostly to make it easier for you to keep track of all the text in your application. If you have to change something,
+	it's much easier to find it if it's in strings.xml compared with searching all your code for some string
+- short variable names - I had no idea what "o" and "p" were until looking at the top of your class. Give them more meaningful names.
+- long method
+	consider method extracting on some of the main functions of this method. 
+	Some ideas: 
+		setFavorites(View v, Preferences prefs, StudySpace space)
+		setAmenities(...)
+- duplicate code
+	you use setVisibility a ton, and though it's working on different objects, 
+	you could still potentially method extract it.
+	Maybe have a method calcVis(Boolean b, View v) that returns View.VISIBLE or View.GONE depending on the outcome of the boolean.
+	
 
