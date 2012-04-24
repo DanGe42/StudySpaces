@@ -38,6 +38,8 @@ public class RoomDetailsActivity extends MapActivity {
 	private MapController mapController;
     
     private String reserveLink;
+    
+    private GeoPoint spacePoint, currentPoint;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,13 +152,13 @@ public class RoomDetailsActivity extends MapActivity {
         Drawable drawable = this.getResources().getDrawable(R.drawable.maps_marker);
         MyItemizedOverlay itemizedOverlay = new MyItemizedOverlay(drawable, this);
         
-        GeoPoint point = new GeoPoint((int)(latitude * 1e6), (int)(longitude * 1e6));
-        OverlayItem overlayItem = new OverlayItem(point, room, building);
+        spacePoint = new GeoPoint((int)(latitude * 1e6), (int)(longitude * 1e6));
+        OverlayItem overlayItem = new OverlayItem(spacePoint, room, building);
         itemizedOverlay.addOverlay(overlayItem);
         mapOverlays.add(itemizedOverlay);
         
         //Set center for view
-        mapController.setCenter(point);
+        mapController.setCenter(spacePoint);
         mapController.setZoom(16);
         
         //User Location
@@ -166,13 +168,13 @@ public class RoomDetailsActivity extends MapActivity {
         	location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
         else {
-		latitude = location.getLatitude();
+        	latitude = location.getLatitude();
 	        longitude = location.getLongitude();
 
 	        drawable = this.getResources().getDrawable(R.drawable.maps_marker_blue);
 	        itemizedOverlay = new MyItemizedOverlay(drawable, this);
 	        
-	        GeoPoint currentPoint = new GeoPoint((int)(latitude * 1e6), (int)(longitude * 1e6));
+	        currentPoint = new GeoPoint((int)(latitude * 1e6), (int)(longitude * 1e6));
 	        overlayItem = new OverlayItem(currentPoint, "Me", "My current location");
 	        
 	        itemizedOverlay.addOverlay(overlayItem);
@@ -233,12 +235,38 @@ public class RoomDetailsActivity extends MapActivity {
         startActivity(intent);
     }
     
+    public void showRoute(View view) {
+    	if(currentPoint == null || spacePoint == null) {
+        	Context context = getApplicationContext();
+        	String text = "Unable to display route. Location data unavailable.";
+        	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        	toast.show();
+    		return;
+    	}
+    	
+		StringBuilder urlString = new StringBuilder();
+		 
+		urlString.append("http://maps.google.com/maps?f=w&hl=en");
+		urlString.append("&saddr=");
+		urlString.append(Double.toString((double)currentPoint.getLatitudeE6() / 1.0E6));
+		urlString.append(",");
+		urlString.append(Double.toString((double)currentPoint.getLongitudeE6() / 1.0E6));
+		urlString.append("&daddr=");
+		urlString.append(Double.toString((double)spacePoint.getLatitudeE6() / 1.0E6));
+		urlString.append(",");
+		urlString.append(Double.toString((double)spacePoint.getLongitudeE6() / 1.0E6));
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString.toString()));
+		startActivity(intent);
+    }
+    
     public void reserve(View view) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(reserveLink));
 
         startActivity(browserIntent);
     }
+    
     public void amenityTooltip(View view) {
     	Context context = getApplicationContext();
     	CharSequence text = "";

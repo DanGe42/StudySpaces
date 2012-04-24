@@ -113,7 +113,7 @@ public class SearchActivity extends Activity {
 		fromButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDialog(FROM_TIME_DIALOG_ID);	
+				showDialog(FROM_TIME_DIALOG_ID);
 			}
 		});
 		toButton.setOnClickListener(new View.OnClickListener() {

@@ -136,14 +136,30 @@
         android:layout_weight="1"
         />
 
-    <Button
-        android:id="@+id/reserveButton"
-        style="@style/PlainText"
-        android:layout_height="wrap_content"
+    <LinearLayout 
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_weight="0"
-        android:onClick="reserve"
-        android:text="@string/text_reserve_button"
-        />
+        android:layout_height="wrap_content">
+            
+        <Button
+            android:id="@+id/routeButton"
+            style="@style/PlainText"
+            android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="0"
+	        android:onClick="showRoute"
+	        android:text="Show Route" 
+            />
+        
+	    <Button
+	        android:id="@+id/reserveButton"
+	        style="@style/PlainText"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="0"
+	        android:onClick="reserve"
+	        android:text="@string/text_reserve_button"
+	        />
+    </LinearLayout>
 
 </LinearLayout>
