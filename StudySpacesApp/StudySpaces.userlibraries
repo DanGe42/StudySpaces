@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eclipse-userlibraries />
+<eclipse-userlibraries>
+  <library name="jackson-all-1.9.5">
+    <archive path="C:/Users/Daniel Ge/Documents/StudySpaces/StudySpacesApp/libs/jackson-all-1.9.5.jar" />
+  </library>
+</eclipse-userlibraries>
 
