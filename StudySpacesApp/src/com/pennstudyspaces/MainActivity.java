@@ -357,7 +357,7 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
             this.ctx = ctx;
         }
 
-        @Override
+       @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = ProgressDialog.show(ctx, "", "Refreshing...", true, true);

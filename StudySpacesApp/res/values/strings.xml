@@ -10,11 +10,14 @@
     <string name="search_button_text">Search</string>
     <string name="search_instructions">Search for places to study by selecting
         your desired options and pressing Search</string>
+    <string name="begin_search">Search for places to study by selecting
+        your desired options and pressing Search</string>
     
     <!-- MainActivity strings -->
     <string name="text_refresh_button">Refresh</string>
     <string name="text_search_button">Search</string>
     <string name="titleItemPrefs">Settings</string>
+    
     
     <!-- RoomDetailsActivity strings -->
     <string name="title_building">Building:</string>

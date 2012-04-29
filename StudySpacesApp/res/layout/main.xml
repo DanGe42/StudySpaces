@@ -10,44 +10,45 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
+        
         android:background="@drawable/bg"
     	android:tileMode="repeat"
+    	android:layout_gravity="center_horizontal"
         >        
                 
         <Button
             android:id="@+id/search_button"
+            style="@style/searchButton"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/text_search_button"
             android:onClick="search"          
-            android:layout_weight="0"
+            android:layout_gravity="left"
             />
         
-	    <TextView
-	        style="@style/ColorTitle"        
-	        android:layout_width="fill_parent"
+	    <ImageView 
+	        android:id="@+id/title"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-	        android:text="Available Spaces"
+            android:layout_width="wrap_content"
+	        android:src="@drawable/title"
+	        android:layout_gravity="center"
 	        />
         
         <Button
+            style="@style/refreshButton"
             android:id="@+id/refresh_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_refresh_button"
             android:onClick="refreshButton"
+            android:layout_gravity="right"
             />
     </LinearLayout>
 
     
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="600dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         >        
@@ -66,7 +67,7 @@
 	        android:id="@+id/spaces_list_empty"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:text="No data"
+	        android:text="@string/begin_search"
 	        />     
         
     </LinearLayout>
