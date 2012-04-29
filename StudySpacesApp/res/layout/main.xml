@@ -1,58 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    
-    >
+    android:background="#EEE"
+    android:baselineAligned="false">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        
-        android:background="@drawable/bg"
-    	android:tileMode="repeat"
-    	android:layout_gravity="center_horizontal"
-        >        
-                
-        <Button
-            android:id="@+id/search_button"
-            style="@style/searchButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/text_search_button"
-            android:onClick="search"          
-            android:layout_gravity="left"
-            />
-        
-	    <ImageView 
-	        android:id="@+id/title"
-	        android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-	        android:src="@drawable/title"
-	        android:layout_gravity="center"
-	        />
-        
-        <Button
-            style="@style/refreshButton"
-            android:id="@+id/refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_refresh_button"
-            android:onClick="refreshButton"
-            android:layout_gravity="right"
-            />
-    </LinearLayout>
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
 
-    
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="700dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        >        
-       	<!-- ListView for containing viewable spaces -->
+    <!-- ListView for containing viewable spaces -->
 	    <ListView
 	        android:id="@+id/spaces_list"
 	        android:layout_width="fill_parent"
@@ -71,7 +31,171 @@
 	        />     
         
     </LinearLayout>
-    
-    
+`
+    <LinearLayout
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/title_search"
+            android:textSize="24sp"/>
+
+        <TableLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="8dip">
+
+            <TableRow>
+                <TextView
+                    style="@style/smallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_group_size"
+                    />
+
+                <TextView
+                    style="@style/smallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="24dip"
+                    android:text="@string/title_date"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <Spinner
+                    android:id="@+id/num_people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/num_people_hint"
+                    android:layout_marginRight="16dip"
+                    />
+
+                <Button
+                    android:id="@+id/dateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_button_text"
+            android:onClick="submit"
+            />
+
+        <View
+            android:layout_height="2dp"
+            android:layout_width="fill_parent"
+            android:background="#888"
+            />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/title_filter"
+            android:textSize="24sp"/>
+
+        <TableLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="8dip">
+
+            <TableRow>
+                <TextView
+                    style="@style/smallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/title_from_time"
+                    />
+
+                <TextView
+                    style="@style/smallTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/title_to_time"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:id="@+id/fromTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_default_from"
+                    android:layout_marginRight="16dip"
+                    />
+
+                <Button
+                    android:id="@+id/toTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_default_to"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+
+            <TableRow>
+                <CheckBox
+                    style="@style/CheckboxText"
+                    android:id="@+id/private_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_private_box"
+                    />
+
+                <CheckBox
+                    style="@style/CheckboxText"
+                    android:id="@+id/whiteboard_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_whiteboard_box"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    style="@style/CheckboxText"
+                    android:id="@+id/computer_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_computer_box"
+                    />
+
+                <CheckBox
+                    style="@style/CheckboxText"
+                    android:id="@+id/projector_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_projector_box"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter_button_text"
+            android:onClick="filter"
+            />
+    </LinearLayout>
+
 </LinearLayout>
 

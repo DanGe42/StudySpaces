@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">StudySpaces</string>
     
-    <!-- Search-related strings for SearchActivity-->
+    <!-- Search-related strings for Search-->
     <string name="search_hint">Search</string>
     <string name="num_people_hint">Number of People</string>
     <string name="from_hint">Select a time</string>
@@ -12,6 +12,19 @@
         your desired options and pressing Search</string>
     <string name="begin_search">Search for places to study by selecting
         your desired options and pressing Search</string>
+    <string name="title_search">Search</string>
+    <string name="title_filter">Filter</string>
+    <string name="title_group_size">Group size</string>
+    <string name="title_date">Date</string>
+    <string name="title_from_time">From</string>
+    <string name="title_to_time">To</string>
+    <string name="time_default_from">12:OO AM</string>
+    <string name="time_default_to">11:00 PM</string>
+    <string name="title_private_box">Private</string>
+    <string name="title_whiteboard_box">Whiteboard</string>
+    <string name="title_computer_box">Computer</string>
+    <string name="title_projector_box">Projector</string>
+    <string name="filter_button_text">Filter</string>
     
     <!-- MainActivity strings -->
     <string name="text_refresh_button">Refresh</string>
@@ -34,8 +47,8 @@
 
     <!-- Preferences -->
     <string name="titleDisplayPrefs">Display</string>
-    <string name="titleSortPref">Sort by...</string>
-    <string name="summarySortPref">Sort the rooms list by...</string>
+    <string name="titleSortPref">Sort by…</string>
+    <string name="summarySortPref">Sort the rooms list by…</string>
 
     <string name="titleDefSearchPrefs">Default search settings</string>
     <string name="titleCapacityPref">Group size</string>
@@ -48,6 +61,7 @@
     <string name="summaryComputerPref">Search only for rooms with computers</string>
     <string name="titleProjectorPref">Projector</string>
     <string name="summaryProjectorPref">Search only for rooms with projectors</string>
+
 
 
 </resources>
