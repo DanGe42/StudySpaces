@@ -1,9 +1,6 @@
 package com.pennstudyspaces;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,6 +27,8 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.pennstudyspaces.api.RoomKind.Privacy;
 import com.pennstudyspaces.api.RoomKind.Reserve;
+
+import static com.pennstudyspaces.MainActivity.*;
 
 
 public class RoomDetailsActivity extends MapActivity {
@@ -81,32 +80,28 @@ public class RoomDetailsActivity extends MapActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        String building  = extras.getString(MainActivity.BUILDING);
-        double longitude = extras.getDouble(MainActivity.LONGITUDE);
-        double latitude  = extras.getDouble(MainActivity.LATITUDE);
+        String building  = extras.getString(BUILDING);
+        double longitude = extras.getDouble(LONGITUDE);
+        double latitude  = extras.getDouble(LATITUDE);
         
-        boolean projector  = extras.getBoolean(MainActivity.PROJECTOR);
-        boolean computer   = extras.getBoolean(MainActivity.COMPUTER);
-        boolean whiteboard = extras.getBoolean(MainActivity.WHITEBOARD);
-        String roomName    = extras.getString(MainActivity.NAME);
-        int capacity       = extras.getInt(MainActivity.CAPACITY);
-        int roomId         = extras.getInt(MainActivity.ROOMNUM);
+        boolean projector  = extras.getBoolean(PROJECTOR);
+        boolean computer   = extras.getBoolean(COMPUTER);
+        boolean whiteboard = extras.getBoolean(WHITEBOARD);
+        String roomName    = extras.getString(NAME);
+        int capacity       = extras.getInt(QUANTITY);
+        int roomId         = extras.getInt(ROOMNUM);
 
-        boolean privacy =
-                ((Privacy) extras.getSerializable(MainActivity.PRIVACY) ==
-                        Privacy.PRIVATE);
-        boolean reserve =
-                ((Reserve) extras.getSerializable(MainActivity.RESERVE) ==
-                        Reserve.EXTERNAL);
+        boolean privacy = (extras.getSerializable(PRIVACY) == Privacy.PRIVATE);
+        boolean reserve = (extras.getSerializable(RESERVE) == Reserve.EXTERNAL);
 
         reserveLink = "http://pennstudyspaces.com/deeplink?";
-        int from_hr = intent.getIntExtra(MainActivity.FRHOUR, 0);
-        int from_min = intent.getIntExtra(MainActivity.FRMIN, 0);
-        int end_hr = intent.getIntExtra(MainActivity.TOHOUR, 0);
-        int end_min = intent.getIntExtra(MainActivity.TOMIN, 0);
-        int month = intent.getIntExtra(MainActivity.MONTH, 0);
-        int day = intent.getIntExtra(MainActivity.DAY, 0);
-        int year = intent.getIntExtra(MainActivity.YEAR, 0);
+        int from_hr = intent.getIntExtra(FROM_HR, 0);
+        int from_min = intent.getIntExtra(FROM_MIN, 0);
+        int end_hr = intent.getIntExtra(END_HR, 0);
+        int end_min = intent.getIntExtra(END_MIN, 0);
+        int month = intent.getIntExtra(MONTH, 0);
+        int day = intent.getIntExtra(DAY, 0);
+        int year = intent.getIntExtra(YEAR, 0);
 
 
         String date = String.format("date=%d-%d-%d", year, month, day);
@@ -190,50 +185,6 @@ public class RoomDetailsActivity extends MapActivity {
     @Override
     protected boolean isRouteDisplayed() {
         return false;
-    }
-    
-    public void share(View view) {
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        long timeInMillisSinceEpoch = 0;
-        int roomId = extras.getInt(MainActivity.ROOMNUM);
-        int fromhour = extras.getInt(MainActivity.FRHOUR);
-        int frommin = extras.getInt(MainActivity.FRMIN);
-        int tohour = extras.getInt(MainActivity.TOHOUR);
-        int tomin = extras.getInt(MainActivity.TOMIN);
-        int month = extras.getInt(MainActivity.MONTH);
-        int day = extras.getInt(MainActivity.DAY);
-        int year = extras.getInt(MainActivity.YEAR);
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
-        Date date;
-        try {
-            date = sdf.parse(year+"-"+month+"-"+day);
-            timeInMillisSinceEpoch = date.getTime(); 
-            //Log.e("SHARE", year+"-"+month+"-"+day);
-            //Log.e("SHARE", "the generated time: "+timeInMillisSinceEpoch);
-        } catch (ParseException e) { e.printStackTrace();}
-        // request http://www.pennstudyspaces.com/shareevent?roomid=46&shr=8&smin=30&ehr=9&emin=30&date=1334116800000
-        String url = "http://www.pennstudyspaces.com/shareevent?" +
-                    "roomid=" + roomId +
-                    "&shr="   + fromhour +
-                    "&smin="  + frommin +
-                    "&ehr="   + tohour +
-                    "&emin="  + tomin +
-                    "&date="  + timeInMillisSinceEpoch;
-        Intent browserIntent =
-                new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-
-        startActivity(browserIntent);
-        // int starthour, startmin
-        // int endhour, endmin
-        // date
-    }
-    
-    public void back(View view) {
-    	Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
     }
     
     public void showRoute(View view) {
