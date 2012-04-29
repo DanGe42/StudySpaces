@@ -80,32 +80,32 @@ public class RoomDetailsActivity extends MapActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        String building  = extras.getString(MainActivity.BUILDING);
-        double longitude = extras.getDouble(MainActivity.LONGITUDE);
-        double latitude  = extras.getDouble(MainActivity.LATITUDE);
+        String building  = extras.getString(MainFragment.BUILDING);
+        double longitude = extras.getDouble(MainFragment.LONGITUDE);
+        double latitude  = extras.getDouble(MainFragment.LATITUDE);
         
-        boolean projector  = extras.getBoolean(MainActivity.PROJECTOR);
-        boolean computer   = extras.getBoolean(MainActivity.COMPUTER);
-        boolean whiteboard = extras.getBoolean(MainActivity.WHITEBOARD);
-        String roomName    = extras.getString(MainActivity.NAME);
-        int capacity       = extras.getInt(MainActivity.CAPACITY);
-        int roomId         = extras.getInt(MainActivity.ROOMNUM);
+        boolean projector  = extras.getBoolean(MainFragment.PROJECTOR);
+        boolean computer   = extras.getBoolean(MainFragment.COMPUTER);
+        boolean whiteboard = extras.getBoolean(MainFragment.WHITEBOARD);
+        String roomName    = extras.getString(MainFragment.NAME);
+        int capacity       = extras.getInt(MainFragment.CAPACITY);
+        int roomId         = extras.getInt(MainFragment.ROOMNUM);
 
         boolean privacy =
-                ((Privacy) extras.getSerializable(MainActivity.PRIVACY) ==
+                ((Privacy) extras.getSerializable(MainFragment.PRIVACY) ==
                         Privacy.PRIVATE);
         boolean reserve =
-                ((Reserve) extras.getSerializable(MainActivity.RESERVE) ==
+                ((Reserve) extras.getSerializable(MainFragment.RESERVE) ==
                         Reserve.EXTERNAL);
 
         reserveLink = "http://pennstudyspaces.com/deeplink?";
-        int from_hr = intent.getIntExtra(MainActivity.FRHOUR, 0);
-        int from_min = intent.getIntExtra(MainActivity.FRMIN, 0);
-        int end_hr = intent.getIntExtra(MainActivity.TOHOUR, 0);
-        int end_min = intent.getIntExtra(MainActivity.TOMIN, 0);
-        int month = intent.getIntExtra(MainActivity.MONTH, 0);
-        int day = intent.getIntExtra(MainActivity.DAY, 0);
-        int year = intent.getIntExtra(MainActivity.YEAR, 0);
+        int from_hr = intent.getIntExtra(MainFragment.FRHOUR, 0);
+        int from_min = intent.getIntExtra(MainFragment.FRMIN, 0);
+        int end_hr = intent.getIntExtra(MainFragment.TOHOUR, 0);
+        int end_min = intent.getIntExtra(MainFragment.TOMIN, 0);
+        int month = intent.getIntExtra(MainFragment.MONTH, 0);
+        int day = intent.getIntExtra(MainFragment.DAY, 0);
+        int year = intent.getIntExtra(MainFragment.YEAR, 0);
 
 
         String date = String.format("date=%d-%d-%d", year, month, day);
@@ -195,14 +195,14 @@ public class RoomDetailsActivity extends MapActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         long timeInMillisSinceEpoch = 0;
-        int roomId = extras.getInt(MainActivity.ROOMNUM);
-        int fromhour = extras.getInt(MainActivity.FRHOUR);
-        int frommin = extras.getInt(MainActivity.FRMIN);
-        int tohour = extras.getInt(MainActivity.TOHOUR);
-        int tomin = extras.getInt(MainActivity.TOMIN);
-        int month = extras.getInt(MainActivity.MONTH);
-        int day = extras.getInt(MainActivity.DAY);
-        int year = extras.getInt(MainActivity.YEAR);
+        int roomId = extras.getInt(MainFragment.ROOMNUM);
+        int fromhour = extras.getInt(MainFragment.FRHOUR);
+        int frommin = extras.getInt(MainFragment.FRMIN);
+        int tohour = extras.getInt(MainFragment.TOHOUR);
+        int tomin = extras.getInt(MainFragment.TOMIN);
+        int month = extras.getInt(MainFragment.MONTH);
+        int day = extras.getInt(MainFragment.DAY);
+        int year = extras.getInt(MainFragment.YEAR);
         SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         try {

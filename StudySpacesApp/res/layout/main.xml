@@ -1,64 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#EEEEEE"
     >
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="#333">        
-                
-        <Button
-            android:id="@+id/search_button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/text_search_button"
-            android:onClick="search"          
-            android:layout_weight="0"
-            />
-        
-	    <TextView
-	        style="@style/ColorTitle"        
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="vertical"
+	    android:layout_width="400dp"
+	    android:layout_height="fill_parent"
+	    android:background="#EEEEEE"
+	    >
+	
+	    <LinearLayout
+	        android:orientation="horizontal"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-	        android:text="Available Spaces"
+	        android:layout_weight="0"
+	        android:background="#333">        
+	                
+	        <Button
+	            android:id="@+id/search_button"
+	            android:layout_height="wrap_content"
+	            android:layout_width="wrap_content"
+	            android:text="@string/text_search_button"
+	            android:onClick="search"          
+	            android:layout_weight="0"
+	            />
+	        
+		    <TextView
+		        style="@style/ColorTitle"        
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+	            android:gravity="center"
+	            android:layout_gravity="center_vertical"
+	            android:ellipsize="end"
+		        android:text="Available Spaces"
+		        />
+	        
+	        <Button
+	            android:id="@+id/refresh_button"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/text_refresh_button"
+	            android:onClick="refreshButton"
+	            />
+	    </LinearLayout>
+	
+	    <!-- ListView for containing viewable spaces -->
+	    <ListView
+	        android:id="@+id/spaces_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:divider="#AAA"
+	        android:dividerHeight="2dp"
+	        android:drawSelectorOnTop="true"
 	        />
-        
-        <Button
-            android:id="@+id/refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_refresh_button"
-            android:onClick="refreshButton"
-            />
-    </LinearLayout>
-
-    <!-- ListView for containing viewable spaces -->
-    <ListView
-        android:id="@+id/spaces_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="#AAA"
-        android:dividerHeight="2dp"
-        android:drawSelectorOnTop="true"
-        />
-    
-    <!-- This TextView displays when the ListView is empty -->
-    <TextView
-        android:id="@+id/spaces_list_empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="No data"
-        />
-    
+	    
+	    <!-- This TextView displays when the ListView is empty -->
+	    <TextView
+	        android:id="@+id/spaces_list_empty"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:text="No data"
+	        />
+	    
+	</LinearLayout>
+	<fragment android:name="com.pennstudyspaces.RoomDetailsFragment"
+            android:id="@+id/roomdetailsr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+	    <!-- Preview: layout=@layout/room_details -->
+	</fragment>
 </LinearLayout>
 
