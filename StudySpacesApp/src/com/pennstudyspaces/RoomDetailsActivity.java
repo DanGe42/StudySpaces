@@ -48,6 +48,7 @@ public class RoomDetailsActivity extends MapActivity {
         
         initMap();
         initData();
+        showRoute(null);
     }
     
     private void initMap() {

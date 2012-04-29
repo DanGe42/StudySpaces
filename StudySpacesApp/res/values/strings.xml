@@ -21,6 +21,7 @@
     
     <!-- RoomDetailsActivity strings -->
     <string name="title_building">Building:</string>
+    <string name="title_room">Room:</string>
     <string name="title_occupancy">Max occupancy:</string>
     <string name="title_projector">Projector:</string>
     <string name="title_computer">Computer:</string>
@@ -28,6 +29,7 @@
     <string name="title_privacy">Private:</string>
     
     <string name="text_reserve_button">Reserve</string>
+    <string name="title_comment">Comment</string>
     
 
     <!-- Preferences -->

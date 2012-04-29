@@ -173,23 +173,6 @@
             </TableRow>
 
         </TableLayout>
-
-        <EditText
-            android:id="@+id/building_name_input"
-            style="@style/TextField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Search by Building Name"
-            />
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:text="@string/search_button_text"
-            android:onClick="submit"
-            android:layout_weight="0"
-            />
     </LinearLayout>
 
 </ScrollView>
