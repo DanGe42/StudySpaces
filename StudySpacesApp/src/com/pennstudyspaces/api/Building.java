@@ -1,8 +1,11 @@
 package com.pennstudyspaces.api;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Building {
+    private static final String TAG = Building.class.getSimpleName();
     private String name;
     private double latitude, longitude;
     private ArrayList<RoomKind> roomkinds;
@@ -40,6 +43,7 @@ public class Building {
         
         for (RoomKind kind : roomkinds) {
             kind.setParentBuilding(this);
+            Log.d(TAG, kind.getName() + " -> " + kind.getReserveType());
         }
     }
 }

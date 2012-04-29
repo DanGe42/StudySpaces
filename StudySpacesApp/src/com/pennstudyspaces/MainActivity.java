@@ -81,6 +81,12 @@ public class MainActivity extends Activity
         timeManager = new TimeManager();
 
         init();
+
+        RoomKind[] kinds = (RoomKind[]) getLastNonConfigurationInstance();
+        if (kinds != null) {
+            this.data = kinds;
+            refreshList();
+        }
     }
 
     private void init() {
@@ -400,6 +406,11 @@ public class MainActivity extends Activity
         }
 
         return null;
+    }
+
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        return data;
     }
 
     public void search(View v) {

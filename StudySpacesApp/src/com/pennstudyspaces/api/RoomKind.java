@@ -2,7 +2,6 @@ package com.pennstudyspaces.api;
 
 import java.util.ArrayList;
 
-import android.nfc.Tag;
 import android.util.Log;
 import org.codehaus.jackson.annotate.JsonSetter;
 
