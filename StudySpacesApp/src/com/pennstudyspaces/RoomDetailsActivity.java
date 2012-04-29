@@ -94,21 +94,15 @@ public class RoomDetailsActivity extends MapActivity {
         boolean privacy = (extras.getSerializable(PRIVACY) == Privacy.PRIVATE);
         boolean reserve = (extras.getSerializable(RESERVE) == Reserve.EXTERNAL);
 
-        reserveLink = "http://pennstudyspaces.com/deeplink?";
-        int from_hr = intent.getIntExtra(FROM_HR, 0);
-        int from_min = intent.getIntExtra(FROM_MIN, 0);
-        int end_hr = intent.getIntExtra(END_HR, 0);
-        int end_min = intent.getIntExtra(END_MIN, 0);
-        int month = intent.getIntExtra(MONTH, 0);
-        int day = intent.getIntExtra(DAY, 0);
-        int year = intent.getIntExtra(YEAR, 0);
-
-
-        String date = String.format("date=%d-%d-%d", year, month, day);
-        String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
-        String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
-        this.reserveLink = "http://pennstudyspaces.com/deeplink?" + date + "&" +
-                fromTime + "&" + toTime + "&room=" + roomId;
+        reserveLink = generateReserveLink(
+                intent.getIntExtra(FROM_HR, 0), 
+                intent.getIntExtra(FROM_MIN, 0), 
+                intent.getIntExtra(END_HR, 0), 
+                intent.getIntExtra(END_MIN, 0), 
+                intent.getIntExtra(MONTH, 0), 
+                intent.getIntExtra(DAY, 0), 
+                intent.getIntExtra(YEAR, 0), 
+                roomId);
 
         TextView titleText     = (TextView) findViewById(R.id.roomTitle);
         titleText.setText(roomName);
@@ -139,6 +133,19 @@ public class RoomDetailsActivity extends MapActivity {
         reserveButton.setVisibility(reserve ? View.VISIBLE : View.GONE);
 
         setLocationOnMap(latitude, longitude,roomName,building);
+    }
+    
+    protected String generateReserveLink(int fhr, int fmin, int thr, int tmin,
+            int month, int day, int year, int roomId) {
+        String genReserve = "http://pennstudyspaces.com/deeplink?";
+
+        String date = String.format("date=%d-%d-%d", year, month, day);
+        String fromTime = String.format("time_from=%02d%02d", fhr, fmin);
+        String toTime = String.format("time_to=%02d%02d", thr, tmin);
+        genReserve = "http://pennstudyspaces.com/deeplink?" + date + "&" +
+                fromTime + "&" + toTime + "&room=" + roomId;
+        
+        return genReserve;
     }
 
     /* Put a specified location on the Google Map */

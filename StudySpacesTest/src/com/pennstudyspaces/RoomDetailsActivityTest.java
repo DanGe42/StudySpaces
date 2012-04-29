@@ -41,4 +41,23 @@ public class RoomDetailsActivityTest extends ActivityInstrumentationTestCase2<Ro
         assertEquals("no",mActivity.boolToString(false));
     }
     
+    public void testgenerateReserveLink() {
+        String expect, generated;
+        expect = "http://pennstudyspaces.com/deeplink?date=1-1-1&time_from=0000&time_to=0101&room=1";
+        generated = mActivity.generateReserveLink(0, 0, 1, 1, 1, 1, 1, 1);
+        assertEquals(expect, generated);
+        
+        expect = "http://pennstudyspaces.com/deeplink?date=4-5-1991&time_from=1106&time_to=1107&room=1596";
+        generated = mActivity.generateReserveLink(11, 6, 11, 7, 4, 5, 1991, 1596);
+        assertEquals(expect, generated);
+        
+        expect = "http://pennstudyspaces.com/deeplink?date=4-20-2012&time_from=0420&time_to=0420&room=10101";
+        generated = mActivity.generateReserveLink(4, 20, 4, 20, 4, 20, 2012, 10101);
+        assertEquals(expect, generated);
+        
+        expect = "";
+        generated = mActivity.generateReserveLink(-1, -1, -1, -1, -1, -1, -1, -1);
+        assertEquals(expect, generated);
+    }
+    
 }
