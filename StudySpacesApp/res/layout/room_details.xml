@@ -2,96 +2,78 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#EEEEEE"
-    >
+    android:baselineAligned="false">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="#333">
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        >
 
-        <Button
-            android:text="Back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="back"
-            />
-
-        <TextView
-            style="@style/ColorTitle"
-            android:id="@+id/roomTitle"
+        <TableLayout
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:text="Room Info"
-            />
+            android:stretchColumns="1"
+            >
 
-        <Button
-            android:text="Share"
+            <TableRow>
+                <TextView
+                    style="@style/RoomDetailText"
+                    android:text="@string/title_building"
+                    />
+
+                <TextView
+                    style="@style/RoomDetailValue"
+                    android:id="@+id/text_building"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    style="@style/RoomDetailText"
+                    android:text="@string/title_room"
+                    />
+
+                <TextView
+                    style="@style/RoomDetailValue"
+                    android:id="@+id/roomTitle"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    style="@style/RoomDetailText"
+                    android:text="@string/title_occupancy"
+                    />
+
+                <TextView
+                    style="@style/RoomDetailValue"
+                    android:id="@+id/text_occupancy"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/RoomDetailText"
+                    android:text="@string/title_privacy"
+                    />
+
+                <TextView
+                    style="@style/RoomDetailValue"
+                    android:id="@+id/text_privacy"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="share"
-            
-            />
-
-    </LinearLayout>
-
-    <TableLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:stretchColumns="1"
-        >
-
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_building"
-                />
-
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_building"
-                />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_occupancy"
-                />
-
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_occupancy"
-                />
-        </TableRow>
-        <TableRow>
-            <TextView
-                style="@style/RoomDetailText"                
-                android:text="@string/title_privacy"
-                />
-
-            <TextView
-                style="@style/RoomDetailValue"                
-                android:id="@+id/text_privacy"
-                />
-        </TableRow>
-	</TableLayout>
-	<LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+            >
             <ImageView
                 android:id="@+id/text_projector"
                 android:src="@drawable/ic_action_projector"
@@ -107,7 +89,7 @@
                 android:id="@+id/text_computer"
                 android:src="@drawable/ic_action_monitor"
                 android:contentDescription="@string/title_computer"
-                android:scaleType="fitXY"               
+                android:scaleType="fitXY"
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:layout_margin="10dp"
@@ -118,15 +100,37 @@
                 android:id="@+id/text_whiteboard"
                 android:src="@drawable/ic_action_chalkboard"
                 android:contentDescription="@string/title_whiteboard"
-                android:scaleType="fitXY"               
+                android:scaleType="fitXY"
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:layout_margin="10dp"
                 android:onClick="amenityTooltip"
                 />
-	</LinearLayout>
-        
-    
+        </LinearLayout>
+
+        <TextView
+            style="@style/smallTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_comment" />
+
+        <TextView
+            android:id="@+id/text_comment"
+            style="@style/PlainText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/reserveButton"
+            style="@style/PlainText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="0"
+            android:onClick="reserve"
+            android:text="@string/text_reserve_button"
+            />
+    </LinearLayout>
 
     <!-- A one-child container for the MapView -->
     <FrameLayout
@@ -135,31 +139,5 @@
         android:layout_width="fill_parent"
         android:layout_weight="1"
         />
-
-    <LinearLayout 
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-            
-        <Button
-            android:id="@+id/routeButton"
-            style="@style/PlainText"
-            android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:layout_weight="0"
-	        android:onClick="showRoute"
-	        android:text="Show Route" 
-            />
-        
-	    <Button
-	        android:id="@+id/reserveButton"
-	        style="@style/PlainText"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:layout_weight="0"
-	        android:onClick="reserve"
-	        android:text="@string/text_reserve_button"
-	        />
-    </LinearLayout>
 
 </LinearLayout>

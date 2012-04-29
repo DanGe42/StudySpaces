@@ -291,8 +291,8 @@ public class SearchActivity extends Activity {
 		//Get values from various fields
 		numPeople = numSpinner.getSelectedItemPosition() + 1;
 
-		buildingName = ((EditText)findViewById(R.id.building_name_input))
-						.getText().toString();
+//		buildingName = ((EditText)findViewById(R.id.building_name_input))
+//						.getText().toString();
 
 		//Start & End Time fields
 		if(toTimeHour < fromTimeHour) {
