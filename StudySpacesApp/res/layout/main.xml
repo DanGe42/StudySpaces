@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#EEEEEE"
+    
     >
 
     <LinearLayout
@@ -11,7 +11,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="#333">        
+        android:background="@drawable/bg"
+    	android:tileMode="repeat"
+        >        
                 
         <Button
             android:id="@+id/search_button"
@@ -42,23 +44,33 @@
             />
     </LinearLayout>
 
-    <!-- ListView for containing viewable spaces -->
-    <ListView
-        android:id="@+id/spaces_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="#AAA"
-        android:dividerHeight="2dp"
-        android:drawSelectorOnTop="true"
-        />
     
-    <!-- This TextView displays when the ListView is empty -->
-    <TextView
-        android:id="@+id/spaces_list_empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="No data"
-        />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        >        
+       	<!-- ListView for containing viewable spaces -->
+	    <ListView
+	        android:id="@+id/spaces_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:divider="#AAA"
+	        android:dividerHeight="2dp"
+	        android:drawSelectorOnTop="true"
+	        />
+	    
+	    <!-- This TextView displays when the ListView is empty -->
+	    <TextView
+	        android:id="@+id/spaces_list_empty"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:text="No data"
+	        />     
+        
+    </LinearLayout>
+    
     
 </LinearLayout>
 
