@@ -1,13 +1,6 @@
 package com.pennstudyspaces;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,101 +10,101 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
-
+import android.widget.*;
 import com.pennstudyspaces.api.ApiRequest;
 import com.pennstudyspaces.api.ParamsRequest;
 import com.pennstudyspaces.api.RoomKind;
 import com.pennstudyspaces.api.StudySpacesData;
+import static com.pennstudyspaces.StudySpacesApplication.*;
 
-import static android.content.SharedPreferences.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 
-public class MainActivity extends Activity implements OnSharedPreferenceChangeListener{
-    private static final String TAG = MainActivity.class.getSimpleName();
-
+public class MainActivity extends Activity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String TAG = MainActivityDead.class.getSimpleName();
     private StudySpacesApplication app;
-    private ListView spacesList;
-
-    private HashMap<String, Integer> dateRange;
+    private RoomKind[] data;
     private LocationManager locManager;
 
-    private ParamsRequest currentRequest;
-    private StudySpacesData ssData;
+    private ListView spacesList;
+    private Spinner peopleSpinner;
+    private TextView progressButton;
+    private Button dateButton, searchButton, filterButton, fromTime, toTime;
+    private CheckBox privCheck, projCheck, compCheck, whiteCheck;
+    private static final int DIALOG_BAD_CONNECTION = 0;
+    private static final int DATE_DIALOG_ID = 1,
+                             TO_TIME_DIALOG_ID = 2,
+                             FROM_TIME_DIALOG_ID = 3;
 
-    // some parameters that will go into the reservation string
-    private String reserveString;
+    private TimeManager timeManager;
+    private TimePickerDialog.OnTimeSetListener fromListener;
+    private TimePickerDialog.OnTimeSetListener toListener;
+    private DatePickerDialog.OnDateSetListener dateListener;
+    private static final int SORT_LOCATION = 0,
+                             SORT_ALPHA = 1;
+    private EditText filterText;
 
-    private String roomFilter;
-    
-    public static final int ACTIVITY_OptionsActivity = 1;
-    
-    public static final int DIALOG_BAD_CONNECTION = 1;
-    
-    // Intent constants for RoomDetailsActivity
-    public static final String BUILDING   = "building",
-                               LONGITUDE  = "longitude",
-                               LATITUDE   = "latitude",
-                               NAME       = "name",
-                               PROJECTOR  = "projector",
-                               COMPUTER   = "computer",
-                               PRIVACY    = "privacy",
-                               WHITEBOARD = "whiteboard",
-                               QUANTITY = "capacity",
-                               RESERVE    = "reserve",
-                               COMMENT    = "comment",
-    						   ROOMNUM 	  = "roomnum",
-    						   FROM_HR = "fromhour",
-    						   FROM_MIN = "fromtmin",
-					           END_HR = "tohour",
-                               END_MIN = "tomin",
-                               MONTH      = "month",
-                               DAY        = "day",
-                               YEAR       = "year",
-                               FILTER = "filter";
 
-    private static final int SORT_LOCATION = 1,
-                             SORT_ALPHA    = 2;
-
-    /** Called when the activity is first created. */
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        dateRange = new HashMap<String, Integer>();
-        
+
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         app = (StudySpacesApplication) getApplication();
+
         spacesList = (ListView) findViewById(R.id.spaces_list);
         app.getPrefs().registerOnSharedPreferenceChangeListener(this);
-        
+
         // Display the below TextView instead if the spaces list is empty
         spacesList.setEmptyView(findViewById(R.id.spaces_list_empty));
-        
+
+        // Grab the rest of our views
+        peopleSpinner = (Spinner) findViewById(R.id.num_people);
+        dateButton   = (Button) findViewById(R.id.dateButton);
+        searchButton = (Button) findViewById(R.id.submit);
+        fromTime     = (Button) findViewById(R.id.fromTime);
+        toTime       = (Button) findViewById(R.id.toTime);
+        filterButton = (Button) findViewById(R.id.filter);
+        privCheck  = (CheckBox) findViewById(R.id.private_check);
+        projCheck  = (CheckBox) findViewById(R.id.whiteboard_check);
+        compCheck  = (CheckBox) findViewById(R.id.computer_check);
+        whiteCheck = (CheckBox) findViewById(R.id.whiteboard_check);
+        progressButton = (TextView) findViewById(R.id.search_progress);
+        filterText = (EditText) findViewById(R.id.filterText);
+
+        timeManager = new TimeManager();
+
+        init();
+    }
+
+    private void init() {
+        expandPrefs();
+        setDefaults();
+        initTimePickers();
+        initDateToggles();
+        updateDisplay();
+        initSpinners();
+
         // Listener that displays a dialog when a study space is clicked on
-        spacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
-        	@Override
-        	public void onItemClick(AdapterView<?> parentView, View childView,
-        			int position, long id) {
-        		// Get the building name of the place that was just clicked on
+        spacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parentView, View childView,
+                                    int position, long id) {
+                // Get the building name of the place that was just clicked on
                 Intent intent = new Intent(getApplicationContext(),
-                                           RoomDetailsActivity.class);
-                
+                        RoomDetailsActivity.class);
+
                 SimpleAdapter adapter = (SimpleAdapter) parentView.getAdapter();
                 RoomKind kind = (RoomKind) adapter.getItem(position);
-                
+
                 // Stuff some information into the Intent
                 intent.putExtra(BUILDING  , kind.getParentBuilding().getName());
                 intent.putExtra(LONGITUDE , kind.getParentBuilding().getLongitude());
                 intent.putExtra(LATITUDE  , kind.getParentBuilding().getLatitude());
-                
+
                 intent.putExtra(PROJECTOR , kind.hasProjector());
                 intent.putExtra(COMPUTER  , kind.hasComputer());
                 intent.putExtra(NAME      , kind.getName());
@@ -122,109 +115,232 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 intent.putExtra(COMMENT   , kind.getComments());
 
                 intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
-                intent.putExtra(FROM_HR, dateRange.get(FROM_HR));
-                intent.putExtra(FROM_MIN, dateRange.get(FROM_MIN));
-                intent.putExtra(END_HR, dateRange.get(END_HR));
-                intent.putExtra(END_MIN, dateRange.get(END_MIN));
-                intent.putExtra(MONTH     , dateRange.get(MONTH));
-                intent.putExtra(DAY       , dateRange.get(DAY));
-                intent.putExtra(YEAR      , dateRange.get(YEAR));
+                intent.putExtra(FROM_HR, timeManager.getFromTimeHour());
+                intent.putExtra(FROM_MIN, timeManager.getFromTimeMin());
+                intent.putExtra(END_HR, timeManager.getToTimeHour());
+                intent.putExtra(END_MIN, timeManager.getToTimeMin());
+                intent.putExtra(MONTH     , timeManager.getMonth());
+                intent.putExtra(DAY       , timeManager.getDay());
+                intent.putExtra(YEAR      , timeManager.getYear());
                 startActivity(intent);
-        	}
+            }
         });
-        
-        // Populate list of StudySpaces
-        // Performs a default search using the current time
-        reserveString = deserializeIntent(getIntent());
-
-        currentRequest = intentToRequest(getIntent());
-        refresh();
-        
-        //Set default filter option for rooms
-        roomFilter = "";
     }
 
-    private String deserializeIntent(Intent intent) {
+    private void updateDisplay() {
+        //Months are zero based, so need to add 1
+        int month = timeManager.getMonth();
+        int day = timeManager.getDay();
+        int year = timeManager.getYear();
+        int fromTimeHour = timeManager.getFromTimeHour();
+        int fromTimeMin = timeManager.getFromTimeMin();
+        int toTimeHour = timeManager.getToTimeHour();
+        int toTimeMin = timeManager.getToTimeMin();
+
+        String date = month + "/" + day + "/" + year;
+        dateButton.setText(date);
+
+        String am_pm = (fromTimeHour - 12 >= 0) ? "PM" : "AM";
+        String time = formatHour(fromTimeHour) + ":" + pad(fromTimeMin) + " " + am_pm;
+        fromTime.setText(time);
+
+        am_pm = (toTimeHour - 12 >= 0) ? "PM" : "AM";
+        time = formatHour(toTimeHour) + ":" + pad(toTimeMin) + " " + am_pm;
+        toTime.setText(time);
+    }
+
+    private String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+    }
+
+    private int formatHour(int hour) {
+        return (hour - 12 > 0) ? hour - 12 : hour;
+    }
+
+    private void expandPrefs() {
+        SharedPreferences prefs = app.getPrefs();
+
+        privCheck  = (CheckBox) findViewById(R.id.private_check);
+        whiteCheck = (CheckBox) findViewById(R.id.whiteboard_check);
+        compCheck  = (CheckBox) findViewById(R.id.computer_check);
+        projCheck  = (CheckBox) findViewById(R.id.projector_check);
+
+        boolean priv      = prefs.getBoolean("private",    false);
+        boolean wboard    = prefs.getBoolean("whiteboard", false);
+        boolean computer  = prefs.getBoolean("computer",   false);
+        boolean projector = prefs.getBoolean("projector",  false);
+
+        privCheck.setChecked(priv);
+        whiteCheck.setChecked(wboard);
+        compCheck.setChecked(computer);
+        projCheck.setChecked(projector);
+    }
+
+    private void setDefaults() {
         Calendar now = Calendar.getInstance();
-        int from_hr  = intent.getIntExtra(FROM_HR,  now.get(Calendar.HOUR_OF_DAY));
-        int from_min = intent.getIntExtra(FROM_MIN, now.get(Calendar.MINUTE));
-        int end_hr   = intent.getIntExtra(END_HR,   from_hr + 1);
-        int end_min  = intent.getIntExtra(END_MIN,  from_min);
+        Calendar defaultStart = getDefaultStartTime(now);
+        Calendar defaultEnd   = getDefaultEndTime(defaultStart);
 
-        int month = intent.getIntExtra(MONTH, now.get(Calendar.MONTH));
-        int day   = intent.getIntExtra(DAY,   now.get(Calendar.DAY_OF_MONTH));
-        int year  = intent.getIntExtra(YEAR,  now.get(Calendar.YEAR));
+        // set up default search times
+        int fromTimeHour = defaultStart.get(Calendar.HOUR_OF_DAY);
+        int fromTimeMin  = defaultStart.get(Calendar.MINUTE);
 
-        dateRange.put(FROM_HR, from_hr);
-        dateRange.put(FROM_MIN, from_min);
-        dateRange.put(END_HR, end_hr);
-        dateRange.put(END_MIN, end_min);
-        dateRange.put(MONTH, month);
-        dateRange.put(DAY, day);
-        dateRange.put(YEAR, year);
+        int toTimeHour = defaultEnd.get(Calendar.HOUR_OF_DAY);
+        int toTimeMin  = defaultEnd.get(Calendar.MINUTE);
 
-        String date = String.format("date=%d-%d-%d", year, month, day);
-        String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
-        String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
+        int day   = defaultStart.get(Calendar.DAY_OF_MONTH);
+        int month = defaultStart.get(Calendar.MONTH)+1;
+        int year  = defaultStart.get(Calendar.YEAR);
 
-        roomFilter = intent.getStringExtra(FILTER);
-
-        return date+"&"+fromTime+"&"+toTime;
+        timeManager.setFromTime(fromTimeHour, fromTimeMin);
+        timeManager.setToTime(toTimeHour, toTimeMin);
+        timeManager.setDate(year, month, day);
     }
 
-    private ParamsRequest intentToRequest (Intent intent) {
-        boolean priv   = intent.getBooleanExtra(PRIVACY, false);
-        boolean wboard = intent.getBooleanExtra(WHITEBOARD, false);
-        boolean proj   = intent.getBooleanExtra(PROJECTOR, false);
-        boolean comp   = intent.getBooleanExtra(COMPUTER, false);
+    /* Replicate the default search on the website. Basically, we round up to
+     * the nearest 15th minute interval and return a Calendar with that time. */
+    private Calendar getDefaultStartTime(Calendar now) {
+        int minute = now.get(Calendar.MINUTE);
+        int hour   = now.get(Calendar.HOUR_OF_DAY);
+        int day    = now.get(Calendar.DAY_OF_YEAR);
+        int year   = now.get(Calendar.YEAR);
 
-        Calendar now = Calendar.getInstance();
-        int quantity = intent.getIntExtra(QUANTITY, 1);
-        int from_hr  = intent.getIntExtra(FROM_HR,
-                now.get(Calendar.HOUR_OF_DAY));
-        int from_min = intent.getIntExtra(FROM_MIN,
-                now.get(Calendar.MINUTE));
-        int end_hr  = intent.getIntExtra(END_HR, from_hr + 1);
-        int end_min = intent.getIntExtra(END_MIN, from_min);
+        int nextHour  = hour;
+        int nextDay   = day;
+        int nextYear  = year;
 
-        int day   = intent.getIntExtra(DAY,
-                now.get(Calendar.DAY_OF_MONTH));
-        int month = intent.getIntExtra(MONTH,
-                now.get(Calendar.MONTH));
-        int year  = intent.getIntExtra(YEAR,
-                now.get(Calendar.YEAR));
+        // round down to nearest 15 and add 15
+        int nextMinute = (minute / 15) * 15 + 15;
+        if (nextMinute >= 60) {
+            nextMinute %= 60;
+            nextHour += 1;
 
-        roomFilter = intent.getStringExtra(FILTER);
-        
-        ParamsRequest req = new ParamsRequest("json");
-        req.setNumberOfPeople(quantity);
-        req.setStartTime(from_hr, from_min);
-        req.setEndTime(end_hr, end_min);
-        req.setDate(year, month, day);
-        req.setPrivate(priv);
-        req.setWhiteboard(wboard);
-        req.setProjector(proj);
-        req.setComputer(comp);
+            if (nextHour >= 24) {
+                nextHour %= 24;
+                nextDay += 1;
 
-        return req;
+                if (nextDay >= 365) {
+                    nextDay %= 365;
+                    nextYear += 1;
+                }
+            }
+        }
+
+        Calendar defStart = Calendar.getInstance();
+
+        defStart.set(Calendar.MINUTE, nextMinute);
+        defStart.set(Calendar.HOUR_OF_DAY, nextHour);
+        defStart.set(Calendar.DAY_OF_YEAR, nextDay);
+        defStart.set(Calendar.YEAR, nextYear);
+
+        return defStart;
     }
-    
-    public void search(View view) {
-    	Intent i = new Intent(this, SearchActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-    	
-    	startActivityForResult(i, MainActivity.ACTIVITY_OptionsActivity);
-    }
-    
-    public void refreshButton (View v) {
-    	roomFilter = "";
-        refresh();
-    }
-    
-    public void refresh() {
-        Log.d(TAG, "API request created: " + currentRequest.toString());
 
-        (new SendRequestTask(this)).execute(currentRequest);
+    /* Take the default start and add one hour to it */
+    private Calendar getDefaultEndTime(Calendar start) {
+        Calendar defEnd = Calendar.getInstance();
+
+        // copy some data over first
+        defEnd.set(Calendar.MINUTE,      start.get(Calendar.MINUTE));
+        defEnd.set(Calendar.DAY_OF_YEAR, start.get(Calendar.DAY_OF_YEAR));
+        defEnd.set(Calendar.YEAR,        start.get(Calendar.YEAR));
+
+        // and, NOW do the increment
+        defEnd.set(Calendar.HOUR_OF_DAY, (start.get(Calendar.HOUR_OF_DAY) + 1) % 24);
+
+        return defEnd;
+    }
+
+    /* Gets the time-picking buttons and attaches handlers to them */
+    private void initTimePickers() {
+        fromTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(FROM_TIME_DIALOG_ID);
+            }
+        });
+        toTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(TO_TIME_DIALOG_ID);
+            }
+        });
+        fromListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                timeManager.setFromTime(hourOfDay, minute);
+                updateDisplay();
+            }
+        };
+        toListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                timeManager.setToTime(hourOfDay, minute);
+                updateDisplay();
+            }
+        };
+    }
+
+    /* Get the UI widgets dealing with dates and attach handlers */
+    private void initDateToggles() {
+        dateButton = (Button) findViewById(R.id.dateButton);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
+        dateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int inputYear, int monthOfYear,
+                                  int dayOfMonth) {
+                //months in the DatePicker are 0-indexed
+                clipDate(inputYear, monthOfYear + 1, dayOfMonth);
+
+                updateDisplay();
+            }
+        };
+    }
+
+    private void clipDate(int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = c.get(Calendar.MONTH) + 1;
+        int currentYear = c.get(Calendar.YEAR);
+
+        if(year < currentYear) {
+            year = currentYear;
+        }
+        if(month < currentMonth) {
+            month = currentMonth;
+            day = currentDay;
+        }
+
+        if(year == currentYear && month == currentMonth && day < currentDay) {
+            day = currentDay;
+        }
+
+        timeManager.setDate(year, month, day);
+    }
+
+    private void initSpinners() {
+        peopleSpinner = (Spinner) findViewById(R.id.num_people);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.numPeopleArray,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+
+        peopleSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
     }
 
     @Override
@@ -235,128 +351,130 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
             case DIALOG_BAD_CONNECTION:
                 builder = new AlertDialog.Builder(this);
                 builder.setTitle("Error")
-                       .setMessage("Could not connect to Penn StudySpaces. Please" +
-                               " check your connection and touch Refresh.")
-                       .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage("Could not connect to Penn StudySpaces. Please" +
+                                " check your connection and touch Refresh.")
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
                             }
-                       });
+                        });
                 return builder.create();
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this,dateListener,
+                        timeManager.getYear(), timeManager.getMonth() - 1,
+                        timeManager.getDay());
+            case TO_TIME_DIALOG_ID:
+                return new TimePickerDialog(this, toListener,
+                        timeManager.getToTimeHour(),
+                        timeManager.getToTimeMin(), false);
+            case FROM_TIME_DIALOG_ID:
+                return new TimePickerDialog(this, fromListener,
+                        timeManager.getFromTimeHour(),
+                        timeManager.getFromTimeMin(), false);
         }
 
         return null;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    	super.onActivityResult(requestCode, resultCode, intent);
-    	
-    	if(resultCode == RESULT_CANCELED || intent.getExtras().isEmpty()) {
-    		return;
-    	}
-    	
-    	switch(requestCode) {
-    		case ACTIVITY_OptionsActivity:
-    			ParamsRequest req = intentToRequest(intent);
-    			req.toString();
-                refresh();
-    			break;
-    	}
-    }
-    
-    public void fillDateRange(int fromHour, int fromMin, int toHour, int toMin, int month, int day, int year) {
-        dateRange.put("fromHour", fromHour);
-        dateRange.put("fromMin", fromMin);
-        dateRange.put("toHour", toHour);
-        dateRange.put("toMin", toMin);
-        dateRange.put("month", month);
-        dateRange.put("day", day);
-        dateRange.put("year", year);
-    }
-    
-    public String generateReserveString() {
-        String date = String.format("date=%d-%d-%d", dateRange.get("year"),dateRange.get("month"),dateRange.get("day"));
-        String fromTime = String.format("time_from=%02d%02d", dateRange.get("fromHour"), dateRange.get("fromMin"));
-        String toTime = String.format("time_to=%02d%02d", dateRange.get("toHour"), dateRange.get("toMin"));
-        reserveString = date+"&"+fromTime+"&"+toTime;
-        return reserveString;
+    public void search(View v) {
+        search();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
+    public void filter(View v) {
+        filter();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemPrefs:
-                startActivity(new Intent(this, PrefsActivity.class));
-                break;
+    private void search() {
+        int numPeople = peopleSpinner.getSelectedItemPosition() + 1;
+
+//        String date = String.format("date=%d-%d-%d", timeManager.getYear(),
+//                timeManager.getMonth(), timeManager.getDay());
+
+        ParamsRequest request = new ParamsRequest();
+        request.setDate(timeManager.getYear(), timeManager.getMonth(),
+                timeManager.getDay());
+        request.setStartTime(timeManager.getFromTimeHour(),
+                timeManager.getFromTimeMin());
+        request.setEndTime(timeManager.getToTimeHour(),
+                timeManager.getToTimeMin());
+        request.setNumberOfPeople(numPeople);
+
+        (new SendRequestTask(this)).execute(request);
+    }
+
+    private void filter() {
+        refreshList();
+    }
+
+    // Private class for managing the state of time in the search/filter section
+    private class TimeManager {
+        private int fromTimeHour, fromTimeMin,
+                toTimeHour, toTimeMin,
+                day, month, year;
+
+        public void setFromTime(int hour, int min) {
+            fromTimeHour = hour;
+            fromTimeMin = min;
         }
 
-        return true;
-    }
-
-    private void populateList(StudySpacesData data) {
-        SharedPreferences prefs = app.getPrefs();
-        int sortOption = Integer.parseInt(prefs.getString("sort", "1"));
-
-        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location == null) {
-            location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        public void setToTime(int hour, int min) {
+            toTimeHour = hour;
+            toTimeMin = min;
         }
 
-        // defaults
-        double latitude = 39.953278;
-        double longitude = -75.19846;
-
-        if (location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
+        public void setDate(int year, int month, int day) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
         }
 
-        switch (sortOption) {
-            case SORT_LOCATION:
-                spacesList.setAdapter(
-                        DataListAdapter.createLocationSortedAdapter(
-                                this, data, latitude, longitude, roomFilter));
-                break;
-            case SORT_ALPHA:
-                spacesList.setAdapter(
-                        DataListAdapter.createAlphaSortedAdapater(this, data,
-                                latitude, longitude, roomFilter));
-                break;
+        public int getFromTimeHour() {
+            return fromTimeHour;
         }
-    }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
-        if (key.equals("sort")) {
-            if (ssData != null)
-                populateList(ssData);
+        public int getFromTimeMin() {
+            return fromTimeMin;
+        }
+
+        public int getToTimeHour() {
+            return toTimeHour;
+        }
+
+        public int getToTimeMin() {
+            return toTimeMin;
+        }
+
+        public int getDay() {
+            return day;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public int getYear() {
+            return year;
         }
     }
 
     // Performs a getJSON request in the background, so we don't block on the UI
-    class SendRequestTask 
+    class SendRequestTask
             extends AsyncTask<ApiRequest, Void, StudySpacesData> {
         Context ctx;
-        ProgressDialog dialog;
+        // ProgressDialog dialog;
 
         public SendRequestTask(Context ctx) {
             super();
             this.ctx = ctx;
         }
 
-       @Override
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(ctx, "", "Refreshing...", true, true);
+            progressButton.setText("Searching...");
+            searchButton.setEnabled(false);
+            //dialog = ProgressDialog.show(ctx, "", "Refreshing...", true, true);
         }
 
         @Override
@@ -374,17 +492,83 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         }
 
         protected void onPostExecute(StudySpacesData result) {
-            dialog.dismiss();
-            dialog = null;
-
+            searchButton.setEnabled(true);
             if (result == null) {
                 showDialog(DIALOG_BAD_CONNECTION);
+                progressButton.setText("Error");
+                return;
             }
-            else {
-                ssData = result;
-                populateList(result);
-            }
-
+            progressButton.setText("Done!");
+            data = result.getRoomKinds();
+            refreshList();
         }
+    }
+
+    private void refreshList() {
+        SharedPreferences prefs = app.getPrefs();
+        int sortOption = Integer.parseInt(prefs.getString("sort", "1"));
+
+        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null) {
+            location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+
+        // defaults
+        double latitude = 39.953278;
+        double longitude = -75.19846;
+
+        if (location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+        RoomKind[] filtered = applyFilter(data,
+                                          privCheck.isChecked(),
+                                          compCheck.isChecked(),
+                                          whiteCheck.isChecked(),
+                                          projCheck.isChecked(),
+                                          filterText.getText().toString()
+                                          );
+
+        switch (sortOption) {
+            case SORT_LOCATION:
+                spacesList.setAdapter(
+                        DataListAdapter.createLocationSortedAdapter(
+                                this, filtered, latitude, longitude));
+                break;
+            case SORT_ALPHA:
+                spacesList.setAdapter(
+                        DataListAdapter.createAlphaSortedAdapater(this, filtered,
+                                latitude, longitude));
+                break;
+        }
+    }
+
+    private RoomKind[] applyFilter (RoomKind[] kinds, boolean priv, boolean comp,
+                                    boolean white, boolean proj, String filter) {
+        ArrayList<RoomKind> filtered = new ArrayList<RoomKind>(kinds.length);
+
+        for (RoomKind kind : kinds) {
+            // Boolean tests
+            if (!(!priv || (kind.getPrivacy() == RoomKind.Privacy.PRIVATE)))
+                continue;
+            if (!(!comp || kind.hasComputer()))
+                continue;
+            if (!(!white || kind.hasWhiteboard()))
+                continue;
+            if (!(!proj || kind.hasProjector()))
+                continue;
+
+            // String filter
+            if (!(kind.getName().contains(filter) ||
+                    kind.getParentBuilding().getName().contains(filter)))
+                continue;
+
+            filtered.add(kind);
+        }
+
+        RoomKind[] results = new RoomKind[1];
+        results = filtered.toArray(results);
+        return results;
     }
 }

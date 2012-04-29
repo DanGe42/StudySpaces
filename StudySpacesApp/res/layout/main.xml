@@ -39,10 +39,10 @@
         android:layout_weight="1">
 
         <TextView
+            style="@style/largeTitle"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:text="@string/title_search"
-            android:textSize="24sp"/>
+            android:text="@string/title_search"/>
 
         <TableLayout
             android:layout_height="wrap_content"
@@ -84,67 +84,84 @@
             </TableRow>
         </TableLayout>
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_button_text"
-            android:onClick="submit"
-            />
+        <TableLayout
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="8dip">
 
+            <TableRow>
+                <TextView
+                        style="@style/smallTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/title_from_time"
+                        />
+
+                <TextView
+                        style="@style/smallTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/title_to_time"
+                        />
+            </TableRow>
+
+            <TableRow>
+                <Button
+                        android:id="@+id/fromTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_default_from"
+                        android:layout_marginRight="16dip"
+                        />
+
+                <Button
+                        android:id="@+id/toTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_default_to"
+                        />
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_button_text"
+                android:onClick="search"
+                />
+
+            <TextView
+                android:id="@+id/search_progress"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="8dip"
+                />
+        </LinearLayout>
+
+        <!-- Separator -->
         <View
             android:layout_height="2dp"
             android:layout_width="fill_parent"
             android:background="#888"
             />
 
+        <!-- Filter -->
         <TextView
+            style="@style/largeTitle"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:text="@string/title_filter"
-            android:textSize="24sp"/>
+            android:text="@string/title_filter" />
 
-        <TableLayout
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="8dip">
 
-            <TableRow>
-                <TextView
-                    style="@style/smallTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/title_from_time"
-                    />
-
-                <TextView
-                    style="@style/smallTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/title_to_time"
-                    />
-            </TableRow>
-
-            <TableRow>
-                <Button
-                    android:id="@+id/fromTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/time_default_from"
-                    android:layout_marginRight="16dip"
-                    />
-
-                <Button
-                    android:id="@+id/toTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/time_default_to"
-                    />
-            </TableRow>
-
-        </TableLayout>
 
         <TableLayout
             android:layout_height="wrap_content"
@@ -187,6 +204,22 @@
             </TableRow>
 
         </TableLayout>
+
+        <TextView
+            style="@style/smallTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_filter_text"
+            />
+
+        <EditText
+            style="@style/TextField"
+            android:id="@+id/filterText"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginRight="64dip"
+            android:hint="@string/filter_hint"
+            />
 
         <Button
             android:id="@+id/filter"

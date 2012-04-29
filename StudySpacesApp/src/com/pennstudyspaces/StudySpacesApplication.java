@@ -19,6 +19,26 @@ import java.util.Calendar;
 public class StudySpacesApplication extends Application {
     private static final String TAG = StudySpacesApplication.class.getSimpleName();
 
+    public static final String BUILDING   = "building",
+            LONGITUDE  = "longitude",
+            LATITUDE   = "latitude",
+            NAME       = "name",
+            PROJECTOR  = "projector",
+            COMPUTER   = "computer",
+            PRIVACY    = "privacy",
+            WHITEBOARD = "whiteboard",
+            QUANTITY = "capacity",
+            RESERVE    = "reserve",
+            COMMENT    = "comment",
+            ROOMNUM 	  = "roomnum",
+            FROM_HR = "fromhour",
+            FROM_MIN = "fromtmin",
+            END_HR = "tohour",
+            END_MIN = "tomin",
+            MONTH      = "month",
+            DAY        = "day",
+            YEAR       = "year",
+            FILTER = "filter";
 
     private SharedPreferences prefs;
 

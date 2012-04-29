@@ -36,7 +36,7 @@ public class StudySpacesData {
         return request;
     }
     
-    public Building[] getBuildings() {
+    private Building[] getBuildings() {
         return this.buildingData;
     }
     

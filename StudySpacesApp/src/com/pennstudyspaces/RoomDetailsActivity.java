@@ -28,7 +28,7 @@ import com.google.android.maps.OverlayItem;
 import com.pennstudyspaces.api.RoomKind.Privacy;
 import com.pennstudyspaces.api.RoomKind.Reserve;
 
-import static com.pennstudyspaces.MainActivity.*;
+import static com.pennstudyspaces.StudySpacesApplication.*;
 
 
 public class RoomDetailsActivity extends MapActivity {

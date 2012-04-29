@@ -61,7 +61,8 @@
     <string name="summaryComputerPref">Search only for rooms with computers</string>
     <string name="titleProjectorPref">Projector</string>
     <string name="summaryProjectorPref">Search only for rooms with projectors</string>
-
+    <string name="title_filter_text">Text filter</string>
+    <string name="filter_hint">Room or building name</string>
 
 
 </resources>

@@ -17,7 +17,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import static com.pennstudyspaces.MainActivity.*;
+import static com.pennstudyspaces.MainActivityDead.*;
 
 public class SearchActivity extends Activity {
 	private static final String TAG = SearchActivity.class.getSimpleName();
@@ -50,7 +50,7 @@ public class SearchActivity extends Activity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.search);
+        //setContentView(R.layout.search);
 
         app = (StudySpacesApplication) getApplication();
 
@@ -299,7 +299,7 @@ public class SearchActivity extends Activity {
 	}
 
     private Intent serializeToIntent() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivityDead.class);
         intent.putExtra(PRIVACY  , priv)
               .putExtra(WHITEBOARD   , wboard)
               .putExtra(PROJECTOR, projector)

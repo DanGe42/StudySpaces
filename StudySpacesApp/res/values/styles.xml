@@ -16,6 +16,7 @@
     
     <style name="CheckboxText">
         <item name="android:textColor">#666666</item>
+        <item name="android:textSize">16sp</item>
     </style>
     
     <style name="RoomDetailText">
@@ -32,6 +33,12 @@
     <style name="smallTitle">
         <item name="android:textColor">#333333</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="largeTitle">
+        <item name="android:textColor">#333</item>
+        <item name="android:textSize">24sp</item>
     </style>
     
     <style name="searchButton">

@@ -67,9 +67,7 @@ public class DataListAdapter extends SimpleAdapter {
      * Creates a default SimpleAdapter using the provided data.
      */
     public static DataListAdapter createDefaultAdapter(Context ctx,
-                                                       StudySpacesData data) {
-        RoomKind[] kinds = data.getRoomKinds();
-
+                                                       RoomKind[] kinds) {
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
 
@@ -78,10 +76,8 @@ public class DataListAdapter extends SimpleAdapter {
      * of each RoomKind entry.
      */
     public static DataListAdapter createAlphaSortedAdapater(Context ctx,
-                                                            StudySpacesData data) {
-        RoomKind[] kinds = data.getRoomKinds();
+                                                            RoomKind[] kinds) {
         Arrays.sort(kinds, roomAlphaSort);
-
         return new DataListAdapter (ctx, generateMapList(kinds), kinds);
     }
 
@@ -90,12 +86,9 @@ public class DataListAdapter extends SimpleAdapter {
      * of each RoomKind entry. This method will also attach location data.
      */
     public static DataListAdapter createAlphaSortedAdapater(Context ctx,
-                                                            StudySpacesData data,
+                                                            RoomKind[] kinds,
                                                             double latitude,
-                                                            double longitude,
-                                                            String roomFilter) {
-        RoomKind[] kinds = data.getRoomKinds();
-        kinds = filterRooms(kinds,roomFilter);
+                                                            double longitude) {
         Arrays.sort(kinds, roomAlphaSort);
 
         return new DataListAdapter (ctx, generateMapList(kinds, latitude, longitude), kinds);
@@ -124,14 +117,10 @@ public class DataListAdapter extends SimpleAdapter {
      * Creates a SimpleAdapter sorted by proximity to the user's current location
      */
     public static DataListAdapter createLocationSortedAdapter(Context ctx,
-                                                              StudySpacesData data,
+                                                              RoomKind[] kinds,
                                                               double latitude,
-                                                              double longitude,
-                                                              String roomFilter) {
+                                                              double longitude) {
 
-        RoomKind[] kinds = data.getRoomKinds();
-        kinds = filterRooms(kinds,roomFilter);
-        
         Arrays.sort(kinds, new LocationComparator(latitude, longitude));
         List<Map<String, String>> entries = generateMapList(kinds, latitude, longitude);
 
