@@ -1,5 +1,6 @@
 package com.pennstudyspaces;
 
+import com.pennstudyspaces.SearchActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**

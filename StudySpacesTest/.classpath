@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Android 2.3.3 Platform"/>
-	<classpathentry kind="src" path="/StudySpacesTest/src"/>
-	<classpathentry kind="src" path="/StudySpacesTest/gen"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="bin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/StudySpaces"/>
-	<classpathentry kind="output" path="/out/production/StudySpacesTest"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
