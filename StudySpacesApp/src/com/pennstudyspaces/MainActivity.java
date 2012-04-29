@@ -547,15 +547,13 @@ public class MainActivity extends Activity
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
-
         RoomKind[] filtered = applyFilter(data,
                                           privCheck.isChecked(),
                                           compCheck.isChecked(),
                                           whiteCheck.isChecked(),
                                           projCheck.isChecked(),
-                                          filterText.getText().toString()
+                                          filterText.getText().toString().toLowerCase()
                                           );
-
         switch (sortOption) {
             case SORT_LOCATION:
                 spacesList.setAdapter(
@@ -586,8 +584,9 @@ public class MainActivity extends Activity
                 continue;
 
             // String filter
-            if (!(kind.getName().contains(filter) ||
-                    kind.getParentBuilding().getName().contains(filter)))
+            String kindname = kind.getName().toLowerCase();
+            String bldgname = kind.getParentBuilding().getName().toLowerCase();
+            if ( !(kindname.contains(filter) || bldgname.contains(filter)) )
                 continue;
 
             filtered.add(kind);

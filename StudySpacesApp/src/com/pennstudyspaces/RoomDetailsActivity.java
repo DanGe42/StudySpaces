@@ -191,10 +191,10 @@ public class RoomDetailsActivity extends MapActivity {
     
     public void showRoute(View view) {
     	if(currentPoint == null || spacePoint == null) {
-        	Context context = getApplicationContext();
+        	/*Context context = getApplicationContext();
         	String text = "Unable to display route. Location data unavailable.";
         	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        	toast.show();
+        	toast.show();*/
     		return;
     	}
     	

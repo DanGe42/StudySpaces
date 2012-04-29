@@ -3,6 +3,7 @@ package com.pennstudyspaces;
 import java.util.*;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -199,8 +200,11 @@ public class DataListAdapter extends SimpleAdapter {
         }
 
         for (RoomKind roomKind : kinds) {
+            if(roomKind == null) return entries;
             Map<String, String> map = new HashMap<String, String>();
+            
             Building parent = roomKind.getParentBuilding();
+            
 
             double klat = parent.getLatitude();
             double klon = parent.getLongitude();
