@@ -180,7 +180,7 @@ public class RoomDetailsActivity extends MapActivity {
         }
     }
     
-    private String boolToString(boolean b) {
+    protected String boolToString(boolean b) {
         return b ? "yes" : "no";
     }
 

@@ -152,14 +152,14 @@ public class MainActivity extends Activity
         toTime.setText(time);
     }
 
-    private String pad(int c) {
+    protected String pad(int c) {
         if (c >= 10)
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
     }
 
-    private int formatHour(int hour) {
+    protected int formatHour(int hour) {
         return (hour - 12 > 0) ? hour - 12 : hour;
     }
 
