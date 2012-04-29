@@ -63,17 +63,18 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                                COMPUTER   = "computer",
                                PRIVACY    = "privacy",
                                WHITEBOARD = "whiteboard",
-                               CAPACITY   = "capacity",
+                               QUANTITY = "capacity",
                                RESERVE    = "reserve",
                                COMMENT    = "comment",
     						   ROOMNUM 	  = "roomnum",
-    						   FRHOUR     = "fromhour",
-    						   FRMIN      = "fromtmin",
-					           TOHOUR     = "tohour",
-                               TOMIN      = "tomin",
+    						   FROM_HR = "fromhour",
+    						   FROM_MIN = "fromtmin",
+					           END_HR = "tohour",
+                               END_MIN = "tomin",
                                MONTH      = "month",
                                DAY        = "day",
-                               YEAR       = "year";
+                               YEAR       = "year",
+                               FILTER = "filter";
 
     private static final int SORT_LOCATION = 1,
                              SORT_ALPHA    = 2;
@@ -116,15 +117,15 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
                 intent.putExtra(NAME      , kind.getName());
                 intent.putExtra(PRIVACY   , kind.getPrivacy());
                 intent.putExtra(WHITEBOARD, kind.hasWhiteboard());
-                intent.putExtra(CAPACITY  , kind.getCapacity());
+                intent.putExtra(QUANTITY, kind.getCapacity());
                 intent.putExtra(RESERVE   , kind.getReserveType());
                 intent.putExtra(COMMENT   , kind.getComments());
 
                 intent.putExtra(ROOMNUM   , kind.getRooms().get(0).getId());
-                intent.putExtra(FRHOUR    , dateRange.get(FRHOUR));
-                intent.putExtra(FRMIN     , dateRange.get(FRMIN));
-                intent.putExtra(TOHOUR    , dateRange.get(TOHOUR));
-                intent.putExtra(TOMIN     , dateRange.get(TOMIN));
+                intent.putExtra(FROM_HR, dateRange.get(FROM_HR));
+                intent.putExtra(FROM_MIN, dateRange.get(FROM_MIN));
+                intent.putExtra(END_HR, dateRange.get(END_HR));
+                intent.putExtra(END_MIN, dateRange.get(END_MIN));
                 intent.putExtra(MONTH     , dateRange.get(MONTH));
                 intent.putExtra(DAY       , dateRange.get(DAY));
                 intent.putExtra(YEAR      , dateRange.get(YEAR));
@@ -145,24 +146,19 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
 
     private String deserializeIntent(Intent intent) {
         Calendar now = Calendar.getInstance();
-        int from_hr = intent.getIntExtra(SearchActivity.FROM_HR,
-                now.get(Calendar.HOUR_OF_DAY));
-        int from_min = intent.getIntExtra(SearchActivity.FROM_MIN,
-                now.get(Calendar.MINUTE));
-        int end_hr = intent.getIntExtra(SearchActivity.END_HR, from_hr + 1);
-        int end_min = intent.getIntExtra(SearchActivity.END_MIN, from_min);
+        int from_hr  = intent.getIntExtra(FROM_HR,  now.get(Calendar.HOUR_OF_DAY));
+        int from_min = intent.getIntExtra(FROM_MIN, now.get(Calendar.MINUTE));
+        int end_hr   = intent.getIntExtra(END_HR,   from_hr + 1);
+        int end_min  = intent.getIntExtra(END_MIN,  from_min);
 
-        int month = intent.getIntExtra(SearchActivity.MONTH,
-                now.get(Calendar.MONTH));
-        int day = intent.getIntExtra(SearchActivity.DAY,
-                now.get(Calendar.DAY_OF_MONTH));
-        int year = intent.getIntExtra(SearchActivity.YEAR,
-                now.get(Calendar.YEAR));
+        int month = intent.getIntExtra(MONTH, now.get(Calendar.MONTH));
+        int day   = intent.getIntExtra(DAY,   now.get(Calendar.DAY_OF_MONTH));
+        int year  = intent.getIntExtra(YEAR,  now.get(Calendar.YEAR));
 
-        dateRange.put(FRHOUR, from_hr);
-        dateRange.put(FRMIN, from_min);
-        dateRange.put(TOHOUR, end_hr);
-        dateRange.put(TOMIN, end_min);
+        dateRange.put(FROM_HR, from_hr);
+        dateRange.put(FROM_MIN, from_min);
+        dateRange.put(END_HR, end_hr);
+        dateRange.put(END_MIN, end_min);
         dateRange.put(MONTH, month);
         dateRange.put(DAY, day);
         dateRange.put(YEAR, year);
@@ -171,34 +167,34 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
         String fromTime = String.format("time_from=%02d%02d", from_hr, from_min);
         String toTime = String.format("time_to=%02d%02d", end_hr, end_min);
 
-        roomFilter = intent.getStringExtra(SearchActivity.FILTER);
+        roomFilter = intent.getStringExtra(FILTER);
 
         return date+"&"+fromTime+"&"+toTime;
     }
 
     private ParamsRequest intentToRequest (Intent intent) {
-        boolean priv   = intent.getBooleanExtra(SearchActivity.PRIVATE, false);
-        boolean wboard = intent.getBooleanExtra(SearchActivity.WBOARD, false);
-        boolean proj   = intent.getBooleanExtra(SearchActivity.PROJECTOR, false);
-        boolean comp   = intent.getBooleanExtra(SearchActivity.COMPUTER, false);
+        boolean priv   = intent.getBooleanExtra(PRIVACY, false);
+        boolean wboard = intent.getBooleanExtra(WHITEBOARD, false);
+        boolean proj   = intent.getBooleanExtra(PROJECTOR, false);
+        boolean comp   = intent.getBooleanExtra(COMPUTER, false);
 
         Calendar now = Calendar.getInstance();
-        int quantity = intent.getIntExtra(SearchActivity.QUANTITY, 1);
-        int from_hr  = intent.getIntExtra(SearchActivity.FROM_HR,
+        int quantity = intent.getIntExtra(QUANTITY, 1);
+        int from_hr  = intent.getIntExtra(FROM_HR,
                 now.get(Calendar.HOUR_OF_DAY));
-        int from_min = intent.getIntExtra(SearchActivity.FROM_MIN,
+        int from_min = intent.getIntExtra(FROM_MIN,
                 now.get(Calendar.MINUTE));
-        int end_hr  = intent.getIntExtra(SearchActivity.END_HR, from_hr + 1);
-        int end_min = intent.getIntExtra(SearchActivity.END_MIN, from_min);
+        int end_hr  = intent.getIntExtra(END_HR, from_hr + 1);
+        int end_min = intent.getIntExtra(END_MIN, from_min);
 
-        int day   = intent.getIntExtra(SearchActivity.DAY,
+        int day   = intent.getIntExtra(DAY,
                 now.get(Calendar.DAY_OF_MONTH));
-        int month = intent.getIntExtra(SearchActivity.MONTH,
+        int month = intent.getIntExtra(MONTH,
                 now.get(Calendar.MONTH));
-        int year  = intent.getIntExtra(SearchActivity.YEAR,
+        int year  = intent.getIntExtra(YEAR,
                 now.get(Calendar.YEAR));
 
-        roomFilter = intent.getStringExtra(SearchActivity.FILTER);
+        roomFilter = intent.getStringExtra(FILTER);
         
         ParamsRequest req = new ParamsRequest("json");
         req.setNumberOfPeople(quantity);
@@ -270,13 +266,13 @@ public class MainActivity extends Activity implements OnSharedPreferenceChangeLi
     }
     
     public void fillDateRange(int fromHour, int fromMin, int toHour, int toMin, int month, int day, int year) {
-        dateRange.put("fromHour", new Integer(fromHour));
-        dateRange.put("fromMin", new Integer(fromMin));
-        dateRange.put("toHour", new Integer(toHour));
-        dateRange.put("toMin", new Integer(toMin));
-        dateRange.put("month", new Integer(month));
-        dateRange.put("day", new Integer(day));
-        dateRange.put("year", new Integer(year));
+        dateRange.put("fromHour", fromHour);
+        dateRange.put("fromMin", fromMin);
+        dateRange.put("toHour", toHour);
+        dateRange.put("toMin", toMin);
+        dateRange.put("month", month);
+        dateRange.put("day", day);
+        dateRange.put("year", year);
     }
     
     public String generateReserveString() {

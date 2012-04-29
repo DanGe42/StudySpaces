@@ -14,28 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+
+import static com.pennstudyspaces.MainActivity.*;
 
 public class SearchActivity extends Activity {
 	private static final String TAG = SearchActivity.class.getSimpleName();
 
     private StudySpacesApplication app;
-
-    public static final String PRIVATE   = "private",
-                               WBOARD    = "wboard",
-                               COMPUTER  = "computer",
-                               PROJECTOR = "projector",
-                               QUANTITY = "num_people",
-                               FROM_HR  = "fhr",
-                               FROM_MIN = "fmin",
-                               END_HR  = "ehr",
-                               END_MIN = "emin",
-                               DAY   = "day",
-                               MONTH = "month",
-                               YEAR  = "year",
-                               FILTER = "filter";
 	
 	private boolean priv, wboard, computer, projector;
 	private int numPeople;
@@ -313,8 +300,8 @@ public class SearchActivity extends Activity {
 
     private Intent serializeToIntent() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(PRIVATE  , priv)
-              .putExtra(WBOARD   , wboard)
+        intent.putExtra(PRIVACY  , priv)
+              .putExtra(WHITEBOARD   , wboard)
               .putExtra(PROJECTOR, projector)
               .putExtra(COMPUTER , computer)
               .putExtra(QUANTITY, numPeople)

@@ -173,6 +173,14 @@
             </TableRow>
 
         </TableLayout>
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:text="@string/search_button_text"
+            android:onClick="submit"
+            android:layout_weight="0"
+            />
     </LinearLayout>
 
 </ScrollView>
