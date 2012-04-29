@@ -2,6 +2,8 @@ package com.pennstudyspaces.api;
 
 import java.util.ArrayList;
 
+import android.nfc.Tag;
+import android.util.Log;
 import org.codehaus.jackson.annotate.JsonSetter;
 
 public class RoomKind {
@@ -12,6 +14,7 @@ public class RoomKind {
     private int capacity;
     private ArrayList<Room> rooms;
     private Building parent;
+    private static final String TAG = RoomKind.class.getSimpleName();
 
     public enum Privacy {
         COMMON,
@@ -73,6 +76,7 @@ public class RoomKind {
 
     @JsonSetter("reserve_type")
     private void setReserveType(String reserveType) {
+        Log.d(TAG, "reserveType = " + reserveType);
         if ("N".equals(reserveType))
             this.reserveType = Reserve.NONE;
         else if ("E".equals(reserveType))

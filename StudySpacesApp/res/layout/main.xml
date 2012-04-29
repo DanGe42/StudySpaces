@@ -4,7 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#EEE"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,11 +33,21 @@
 	        />     
         
     </LinearLayout>
-`
+
+    <View
+        android:layout_height="fill_parent"
+        android:layout_width="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#AAA"
+        />
+
     <LinearLayout
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:layout_weight="1">
 
         <TextView
@@ -226,6 +238,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/filter_button_text"
+            android:enabled="false"
             android:onClick="filter"
             />
     </LinearLayout>

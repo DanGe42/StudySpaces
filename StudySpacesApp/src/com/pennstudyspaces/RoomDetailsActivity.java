@@ -131,6 +131,8 @@ public class RoomDetailsActivity extends MapActivity {
         ImageView wbText        = (ImageView) findViewById(R.id.text_whiteboard);
         wbText.setVisibility(whiteboard ? View.VISIBLE : View.GONE);
 
+        TextView commentText = (TextView) findViewById(R.id.text_comment);
+        commentText.setText(extras.getString(COMMENT));
 
         Button reserveButton = (Button) findViewById(R.id.reserveButton);
         reserveButton.setEnabled(reserve);

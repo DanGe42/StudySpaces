@@ -12,6 +12,8 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:layout_weight="1"
         >
 
@@ -132,11 +134,20 @@
             />
     </LinearLayout>
 
+    <View
+        android:layout_width="4dp"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#AAA"
+        />
+
     <!-- A one-child container for the MapView -->
     <FrameLayout
         android:id="@+id/map_container"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
+        android:padding="8dp"
         android:layout_weight="1"
         />
 

@@ -10,6 +10,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.pennstudyspaces.api.ApiRequest;
@@ -340,9 +343,31 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                          String key) {
+        if (key.equals("sort")) {
+            if (data != null)
+                refreshList();
+        }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemPrefs:
+                startActivity(new Intent(this, PrefsActivity.class));
+                break;
+        }
+
+        return true;
+    }
     @Override
     protected Dialog onCreateDialog(int id) {
         AlertDialog.Builder builder;
@@ -499,6 +524,7 @@ public class MainActivity extends Activity
                 return;
             }
             progressButton.setText("Done!");
+            filterButton.setEnabled(true);
             data = result.getRoomKinds();
             refreshList();
         }

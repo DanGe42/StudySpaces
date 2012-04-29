@@ -194,6 +194,9 @@ public class DataListAdapter extends SimpleAdapter {
                                                              double latitude,
                                                              double longitude) {
         List<Map<String,String>> entries = new ArrayList<Map<String, String>>();
+        if (kinds == null || kinds.length == 0) {
+            return entries;
+        }
 
         for (RoomKind roomKind : kinds) {
             Map<String, String> map = new HashMap<String, String>();
