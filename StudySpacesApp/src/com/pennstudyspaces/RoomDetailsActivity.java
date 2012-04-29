@@ -172,7 +172,7 @@ public class RoomDetailsActivity extends MapActivity {
         if(location == null) {
         	location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
-        else {
+        if(location != null) {
         	latitude = location.getLatitude();
 	        longitude = location.getLongitude();
 
@@ -184,6 +184,12 @@ public class RoomDetailsActivity extends MapActivity {
 	        
 	        itemizedOverlay.addOverlay(overlayItem);
 	        mapOverlays.add(itemizedOverlay);
+        }
+        else {
+        	Context context = getApplicationContext();
+        	String text = "Unable to display location. Location services unavailable.";
+        	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        	toast.show();
         }
     }
     
