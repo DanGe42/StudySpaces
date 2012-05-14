@@ -323,10 +323,10 @@ public class SearchActivity extends Activity {
 	}
 
 	protected String pad(int c) {
-	    if (c >= 10)
-	        return String.valueOf(c);
-	    else
-	        return "0" + String.valueOf(c);
+	   if (c >= 10)
+	       return String.valueOf(c);
+	   else
+	       return "0" + String.valueOf(c);
 	}
 
 	protected int formatHour(int hour) {
