@@ -172,18 +172,24 @@ public class RoomDetailsActivity extends MapActivity {
         if(location == null) {
         	location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
-        else {
+        if(location != null) {
         	latitude = location.getLatitude();
 	        longitude = location.getLongitude();
 
 	        drawable = this.getResources().getDrawable(R.drawable.maps_marker_blue);
 	        itemizedOverlay = new MyItemizedOverlay(drawable, this);
-	        
+
 	        currentPoint = new GeoPoint((int)(latitude * 1e6), (int)(longitude * 1e6));
 	        overlayItem = new OverlayItem(currentPoint, "Me", "My current location");
 	        
 	        itemizedOverlay.addOverlay(overlayItem);
 	        mapOverlays.add(itemizedOverlay);
+        }
+        else {
+        	Context context = getApplicationContext();
+        	String text = "Unable to display location. Location services unavailable.";
+        	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        	toast.show();
         }
     }
     
@@ -198,10 +204,10 @@ public class RoomDetailsActivity extends MapActivity {
     
     public void showRoute(View view) {
     	if(currentPoint == null || spacePoint == null) {
-        	/*Context context = getApplicationContext();
+        	Context context = getApplicationContext();
         	String text = "Unable to display route. Location data unavailable.";
         	Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        	toast.show();*/
+        	toast.show();
     		return;
     	}
     	
@@ -247,3 +253,4 @@ public class RoomDetailsActivity extends MapActivity {
     	toast.show();
     }
 }
+//
